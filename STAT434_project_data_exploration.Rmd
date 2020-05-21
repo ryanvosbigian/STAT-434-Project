@@ -1,0 +1,39 @@
+---
+title: "STAT434 Project Data Exploration"
+author: "Emma Barton"
+date: "5/21/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Set Up
+
+```{r load packages}
+library(tidyverse)
+```
+
+```{r load data}
+## Local Pathways
+
+# Emma
+pathway = "/Users/emmabarton/Desktop/spring_2020/STAT434/project/"
+
+# Ryan
+#pathway = 
+
+redlist_df = read_csv(paste0(pathway, "STAT-434---not-the-dodo-/IUCN_redlist.csv"))
+```
+
+# Data Exploration
+
+```{r assessments general summary}
+dim(redlist_df)
+summary(redlist_df)
+```
+
+# Descriptive Statistics
+
+# Data Visualization 
