@@ -16,7 +16,7 @@ library(tidyverse)
 ```
 
 ```{r load data}
-## Local Pathways
+## Local Pathways - copy/paste your local pathway to the github repository
 
 # Emma
 pathway = "/Users/emmabarton/Desktop/spring_2020/STAT434/project/"
@@ -24,7 +24,10 @@ pathway = "/Users/emmabarton/Desktop/spring_2020/STAT434/project/"
 # Ryan
 #pathway = 
 
-redlist_df = read_csv(paste0(pathway, "STAT-434---not-the-dodo-/IUCN_redlist.csv"))
+redlist_df = read.csv(paste0(pathway, "STAT-434---not-the-dodo-/IUCN_redlist.csv"))
+amniote_df = read.csv(paste0(pathway, "STAT-434---not-the-dodo-/amniote_database.csv"))
+pantheria93_df = read.csv(paste0(pathway,"STAT-434---not-the-dodo-/pantheria_wr93.txt"), sep = "\t")
+pantheria05_df = read.csv(paste0(pathway,"STAT-434---not-the-dodo-/pantheria_wr05.txt"), sep = "\t")
 ```
 
 # Data Exploration
