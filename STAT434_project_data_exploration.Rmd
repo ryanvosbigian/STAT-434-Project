@@ -32,9 +32,20 @@ pantheria05_df = read.csv(paste0(pathway,"STAT-434---not-the-dodo-/pantheria_wr0
 
 # Data Exploration
 
-```{r assessments general summary}
+## General Summaries of the Datasets
+
+We need to figure out what traits we are interested in using to predict the status of a species. We also need to see how much overlap in taxa between the datasets we have. 
+
+```{r redlist general summary}
 dim(redlist_df)
+names(redlist_df)
 summary(redlist_df)
+```
+
+```{r amniote general summary}
+dim(amniote_df)
+names(amniote_df)
+summary(amniote_df)
 ```
 
 # Descriptive Statistics
