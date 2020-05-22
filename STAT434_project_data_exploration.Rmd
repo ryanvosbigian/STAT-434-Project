@@ -19,10 +19,10 @@ library(tidyverse)
 ## Local Pathways - copy/paste your local pathway to the github repository
 
 # Emma
-pathway = "/Users/emmabarton/Desktop/spring_2020/STAT434/project/"
+#pathway = "/Users/emmabarton/Desktop/spring_2020/STAT434/project/"
 
 # Ryan
-#pathway = 
+pathway = "~/GitHub/STAT-434---not-the-dodo-/"
 
 redlist_df = read.csv(paste0(pathway, "STAT-434---not-the-dodo-/IUCN_redlist.csv"))
 amniote_df = read.csv(paste0(pathway, "STAT-434---not-the-dodo-/amniote_database.csv"))

@@ -1,0 +1,56 @@
+---
+title: "Data Cleaning"
+author: "Ryan Vosbigian & Emma Barton"
+date: "5/21/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Set Up
+
+```{r load packages}
+library(tidyverse)
+```
+
+```{r load data}
+## Local Pathways - copy/paste your local pathway to the github repository
+
+# Emma
+#pathway = "/Users/emmabarton/Desktop/spring_2020/STAT434/project/"
+
+# Ryan
+pathway = "~/GitHub/"
+
+SppSynonymID1.0
+
+
+redlist_df = read.csv(paste0(pathway, "STAT-434---not-the-dodo-/IUCN_redlist.csv"))
+amniote_df = read.csv(paste0(pathway, "STAT-434---not-the-dodo-/amniote_database.csv"))
+pantheria93_df = read.csv(paste0(pathway,"STAT-434---not-the-dodo-/pantheria_wr93.txt"), sep = "\t")
+pantheria05_df = read.csv(paste0(pathway,"STAT-434---not-the-dodo-/pantheria_wr05.txt"), sep = "\t")
+sppsynonym_df = read.csv(paste0(pathway,"STAT-434---not-the-dodo-/SppSynonymID1.0.txt"), sep = "\t")
+```
+
+Match species
+
+```{r}
+redlist_df$MSW05_Binomial = redlist_df$scientificName
+amniote_df$MSW05_Binomial = paste(amniote_df$genus,amniote_df$species,sep = " ")
+#pantheria93_df$MSW05_Binomial
+pantheria05_df$MSW93_Binomial
+
+head(sppsynonym_df$Subspecies)
+
+
+redlist_df$MSW05_Binomial = as.factor(gsub("^([^\\s]*\\s[^\\s]*)\\s.*$", "\\1",redlist_df$scientificName)) 
+#https://stackoverflow.com/questions/7449564/regex-return-all-before-the-second-occurrence
+#returns everything before the second space, so that we get the binomial
+redlist_df$MSW05_Binomial[40:50]
+
+fulldata_df = left_join()
+
+```
+
