@@ -37,20 +37,29 @@ sppsynonym_df = read.csv(paste0(pathway,"STAT-434---not-the-dodo-/SppSynonymID1.
 Match species
 
 ```{r}
+fulldata_df=NULL
 redlist_df$MSW05_Binomial = redlist_df$scientificName
 amniote_df$MSW05_Binomial = paste(amniote_df$genus,amniote_df$species,sep = " ")
-#pantheria93_df$MSW05_Binomial
-pantheria05_df$MSW93_Binomial
+pantheria93_df$MSW05_Binomial = as.character(pantheria93_df$MSW05_Binomial)
 
-head(sppsynonym_df$Subspecies)
-
-
-redlist_df$MSW05_Binomial = as.factor(gsub("^([^\\s]*\\s[^\\s]*)\\s.*$", "\\1",redlist_df$scientificName)) 
+redlist_df$MSW05_Binomial = as.character(gsub("^([^\\s]*\\s[^\\s]*)\\s.*$", "\\1",redlist_df$scientificName)) 
 #https://stackoverflow.com/questions/7449564/regex-return-all-before-the-second-occurrence
 #returns everything before the second space, so that we get the binomial
 redlist_df$MSW05_Binomial[40:50]
 
-fulldata_df = left_join()
+fulldata_df = left_join(x = redlist_df,amniote_df,by="MSW05_Binomial")
+
+fulldata_df = left_join(x = fulldata_df,pantheria93_df,by="MSW05_Binomial")
+
+write.csv(fulldata_df,"fulldataset.csv")
+
+```
+
+
+```{r}
+
+fulldata_df = read.csv("fulldataset.csv",header = TRUE)
+
 
 ```
 
