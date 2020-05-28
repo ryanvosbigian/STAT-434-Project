@@ -25,51 +25,92 @@ library(tidyverse)
 pathway = "~/GitHub/"
 
 
-redlist_df = read.csv(paste0(pathway, "STAT-434---not-the-dodo-/IUCN_redlist.csv"))
-amniote_df = read.csv(paste0(pathway, "STAT-434---not-the-dodo-/amniote_database.csv"))
-pantheria93_df = read.csv(paste0(pathway,"STAT-434---not-the-dodo-/pantheria_wr93.txt"), sep = "\t")
-pantheria05_df = read.csv(paste0(pathway,"STAT-434---not-the-dodo-/pantheria_wr05.txt"), sep = "\t")
-sppsynonym_df = read.csv(paste0(pathway,"STAT-434---not-the-dodo-/SppSynonymID1.0.txt"), sep = "\t")
+
 ```
 
 Match species
 
 ```{r}
-fulldata_df=NULL
-redlist_df$MSW05_Binomial = redlist_df$scientificName
-amniote_df$MSW05_Binomial = paste(amniote_df$genus,amniote_df$species,sep = " ")
-pantheria93_df$MSW05_Binomial = as.character(pantheria93_df$MSW05_Binomial)
-
-redlist_df$MSW05_Binomial = as.character(gsub("^([^\\s]*\\s[^\\s]*)\\s.*$", "\\1",redlist_df$scientificName)) 
-#https://stackoverflow.com/questions/7449564/regex-return-all-before-the-second-occurrence
-#returns everything before the second space, so that we get the binomial
-redlist_df$MSW05_Binomial[40:50]
-
-fulldata_df = left_join(x = redlist_df,amniote_df,by="MSW05_Binomial")
-
-fulldata_df = left_join(x = fulldata_df,pantheria93_df,by="MSW05_Binomial")
-
-write.csv(fulldata_df,"fulldataset2.csv")
+# fulldata_df=NULL
+# redlist_df$MSW05_Binomial = redlist_df$scientificName
+# amniote_df$MSW05_Binomial = paste(amniote_df$genus,amniote_df$species,sep = " ")
+# pantheria93_df$MSW05_Binomial = as.character(pantheria93_df$MSW05_Binomial)
+# 
+# redlist_df$MSW05_Binomial = as.character(gsub("^([^\\s]*\\s[^\\s]*)\\s.*$", "\\1",redlist_df$scientificName)) 
+# #https://stackoverflow.com/questions/7449564/regex-return-all-before-the-second-occurrence
+# #returns everything before the second space, so that we get the binomial
+# redlist_df$MSW05_Binomial[40:50]
+# 
+# fulldata_df = left_join(x = redlist_df,amniote_df,by="MSW05_Binomial")
+# 
+# fulldata_df = left_join(x = fulldata_df,pantheria93_df,by="MSW05_Binomial")
+# 
+# write.csv(fulldata_df,"fulldataset2.csv")
 
 ```
 
 
 ```{r}
 
-fulldata_df = read.csv("fulldataset.csv",header = TRUE)
-
-
+# fulldata_df = read.csv("fulldataset.csv",header = TRUE)
+# 
+# 
+# # for (i in 1:ncol(fulldata_df)) {
+# #   fulldata_df[,i][fulldata_df[,i]== "-999" | fulldata_df[,i]=="NA"] = NA
+# # }
+# 
+# 
 # for (i in 1:ncol(fulldata_df)) {
-#   fulldata_df[,i][fulldata_df[,i]== "-999" | fulldata_df[,i]=="NA"] = NA
+#   print(colnames(fulldata_df)[i])
+#   print(table(is.na(fulldata_df[,i])))
 # }
+# 
+# 
+
+```
+
+Loading in datasets
+
+```{r}
+redlist_df = read.csv(paste0(pathway, "STAT-434---not-the-dodo-/simple_summary_IUCN_birds_mammals.csv"))
+elton_mammal_df = read.csv(paste0(pathway, "STAT-434---not-the-dodo-/EltonTraits/MamFuncDat.txt"),sep = "\t")
+elton_bird_df = read.csv(paste0(pathway, "STAT-434---not-the-dodo-/EltonTraits/BirdFuncDat.txt"),sep = "\t")
+
+redlist_mammals_df = redlist_df[redlist_df$className=="MAMMALIA",]
+
+redlist_birds_df = redlist_df[redlist_df$className=="AVES",]
+
+elton_mammal_df$scientificName = elton_mammal_df$Scientific
+
+mammal_df = left_join(x = redlist_mammals_df,elton_mammal_df,by="scientificName")
+
+elton_bird_df$scientificName = elton_bird_df$Scientific
+
+bird_df = left_join(x = redlist_birds_df,elton_bird_df,by="scientificName")
+
+write.csv(mammal_df,"uncleaned_mammal_df.csv")
+write.csv(bird_df,"uncleaned_bird_df.csv")
+```
 
 
-for (i in 1:ncol(fulldata_df)) {
-  print(colnames(fulldata_df)[i])
-  print(table(is.na(fulldata_df[,i])))
-}
+```{r}
+mammal_df = read.csv("uncleaned_mammal_df.csv")
+bird_df = read.csv("uncleaned_bird_df.csv")
 
+```
 
+Looking at missing data
+
+```{r}
+table(is.na(mammal_df$Diet.Vect))
+nrow(mammal_df)
+nrow(elton_mammal_df)
+nrow(redlist_mammals_df)
+
+redlist_mammals_df$scientificName[!redlist_mammals_df$scientificName %in% elton_mammal_df$scientificName] %>%
+  length()
+
+elton_mammal_df$scientificName[!elton_mammal_df$scientificName %in% redlist_mammals_df$scientificName]
 
 ```
 
