@@ -15,22 +15,23 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 ```
 
-```{r load data}
+```{r set pathway}
+
 ## Local Pathways - copy/paste your local pathway to the github repository
 
 # Emma
-#pathway = "/Users/emmabarton/Desktop/spring_2020/STAT434/project/"
+pathway = "/Users/emmabarton/Desktop/spring_2020/STAT434/project/"
 
 # Ryan
-pathway = "~/GitHub/"
-
-
+#pathway = "~/GitHub/"
 
 ```
 
-Match species
+## Old Code
 
-```{r}
+Old Code to match species
+```{r format species name}
+
 # fulldata_df=NULL
 # redlist_df$MSW05_Binomial = redlist_df$scientificName
 # amniote_df$MSW05_Binomial = paste(amniote_df$genus,amniote_df$species,sep = " ")
@@ -49,8 +50,7 @@ Match species
 
 ```
 
-
-```{r}
+```{r check nas}
 
 # fulldata_df = read.csv("fulldataset.csv",header = TRUE)
 # 
@@ -69,35 +69,62 @@ Match species
 
 ```
 
-Loading in datasets
+## Loading Datasets
 
-```{r}
+```{r raw data}
+
 redlist_df = read.csv(paste0(pathway, "STAT-434---not-the-dodo-/simple_summary_IUCN_birds_mammals.csv"))
+
 elton_mammal_df = read.csv(paste0(pathway, "STAT-434---not-the-dodo-/EltonTraits/MamFuncDat.txt"),sep = "\t")
+
 elton_bird_df = read.csv(paste0(pathway, "STAT-434---not-the-dodo-/EltonTraits/BirdFuncDat.txt"),sep = "\t")
 
-redlist_mammals_df = redlist_df[redlist_df$className=="MAMMALIA",]
-
-redlist_birds_df = redlist_df[redlist_df$className=="AVES",]
-
-elton_mammal_df$scientificName = elton_mammal_df$Scientific
-
-mammal_df = left_join(x = redlist_mammals_df,elton_mammal_df,by="scientificName")
-
-elton_bird_df$scientificName = elton_bird_df$Scientific
-
-bird_df = left_join(x = redlist_birds_df,elton_bird_df,by="scientificName")
-
-write.csv(mammal_df,"uncleaned_mammal_df.csv")
-write.csv(bird_df,"uncleaned_bird_df.csv")
 ```
 
+```{r change raw data types}
 
-```{r}
+redlist_df$scientificName = as.character(redlist_df$scientificName)
+elton_mammal_df$scientificName = as.character(elton_mammal_df$Scientific)
+elton_bird_df$scientificName = as.character(elton_bird_df$Scientific)
+
+```
+
+```{r join elton and redlist}
+
+# Filter mammals and birds from redlist species
+redlist_mammals_df = redlist_df[redlist_df$className=="MAMMALIA",]
+redlist_birds_df = redlist_df[redlist_df$className=="AVES",]
+
+# Join Elton traits and redlist species for mammals
+mammal_df = left_join(x = elton_mammal_df, y = redlist_mammals_df, 
+                      by="scientificName")
+
+# Join Elton traits and redlist species for birds
+bird_df = left_join(x = elton_bird_df, y = redlist_birds_df,  
+                    by="scientificName")
+
+# Write data
+write.csv(mammal_df, "uncleaned_mammal_df.csv")
+write.csv(bird_df, "uncleaned_bird_df.csv")
+
+```
+
+```{r uncleaned data}
+
 mammal_df = read.csv("uncleaned_mammal_df.csv")
 bird_df = read.csv("uncleaned_bird_df.csv")
 
 ```
+
+## Data Cleaning
+
+```{r}
+
+dim(mammal_df)
+dim(bird_df)
+
+```
+
 
 Looking at missing data
 
