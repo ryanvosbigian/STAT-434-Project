@@ -125,19 +125,75 @@ dim(bird_df)
 
 ```
 
+```{r missing redlist species}
 
-Looking at missing data
-
-```{r}
 table(is.na(mammal_df$Diet.Vect))
 nrow(mammal_df)
 nrow(elton_mammal_df)
 nrow(redlist_mammals_df)
 
-redlist_mammals_df$scientificName[!redlist_mammals_df$scientificName %in% elton_mammal_df$scientificName] %>%
-  length()
+# Check redlist mammals that do not have Elton traits
+redlist_mammals_df %>% 
+  filter(!(scientificName %in% elton_mammal_df$scientificName)) %>% 
+  nrow()
 
-elton_mammal_df$scientificName[!elton_mammal_df$scientificName %in% redlist_mammals_df$scientificName]
+# Check redlist birds that do not have Elton traits
+redlist_birds_df %>% 
+  filter(!(scientificName %in% elton_bird_df$scientificName)) %>% 
+  nrow()
+
+```
+
+```{r select columns}
+
+# Removed unnecessary or mostly empty columns
+mammal_df = mammal_df %>% 
+  select(-X, -MSW3_ID, -infraType, -infraName, -infraAuthority, 
+         -redlistCriteria, -criteriaVersion)
+
+bird_df = bird_df %>% 
+  select(-X, -infraType, -infraName, -infraAuthority, 
+         -redlistCriteria, -criteriaVersion)
+
+```
+
+```{r missing redlist status}
+
+mammal_df %>% 
+  filter(is.na(redlistCategory)) %>% 
+  nrow()
+
+bird_df %>% 
+  filter(is.na(redlistCategory)) %>% 
+  nrow()
+
+```
+
+```{r filter out missing redlist status}
+
+# Create prediction/test datasets 
+mammal_pred_df = mammal_df %>% 
+  filter(is.na(redlistCategory))
+
+bird_pred_df = bird_df %>% 
+  filter(is.na(redlistCategory))
+
+# Filter out rows with missing redlist category to make training dataset
+mammal_df = mammal_df %>% 
+  filter(!is.na(redlistCategory))
+
+bird_df = bird_df %>% 
+  filter(!is.na(redlistCategory))
+
+```
+
+```{r write cleaned data}
+
+write.csv(mammal_df, "cleaned_mammal_df.csv")
+write.csv(bird_df, "cleaned_bird_df.csv")
+
+write.csv(mammal_pred_df, "mammal_pred_df.csv")
+write.csv(bird_pred_df, "bird_pred_df.csv")
 
 ```
 

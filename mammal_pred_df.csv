@@ -1,0 +1,538 @@
+"","Scientific","MSWFamilyLatin","Diet.Inv","Diet.Vend","Diet.Vect","Diet.Vfish","Diet.Vunk","Diet.Scav","Diet.Fruit","Diet.Nect","Diet.Seed","Diet.PlantO","Diet.Source","Diet.Certainty","ForStrat.Value","ForStrat.Certainty","ForStrat.Comment","Activity.Nocturnal","Activity.Crepuscular","Activity.Diurnal","Activity.Source","Activity.Certainty","BodyMass.Value","BodyMass.Source","BodyMass.SpecLevel","scientificName","assessmentId","internalTaxonId","kingdomName","phylumName","orderName","className","familyName","genusName","speciesName","authority","redlistCategory","populationTrend","scopes"
+"1","Zaglossus bruijni","Tachyglossidae",100,0,0,0,0,0,0,0,0,0,"Ref_1","ABC","G","A","",1,0,0,"Ref_1","ABC",10139.5,"Ref_117",1,"Zaglossus bruijni",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"2","Gracilinanus formosus","Didelphidae",50,0,0,0,0,0,30,20,0,0,"Ref_2","D1","S","A","",1,1,0,"Ref_2","D1",18.9,"Ref_2, Ref_3",0,"Gracilinanus formosus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"3","Gracilinanus agricolai","Didelphidae",50,0,0,0,0,0,30,20,0,0,"Ref_2","D1","S","A","",1,1,0,"Ref_2","D1",18.9,"Ref_2, Ref_3",0,"Gracilinanus agricolai",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"4","Gracilinanus ignitus","Didelphidae",50,0,0,0,0,0,30,20,0,0,"Ref_2","D1","S","A","",1,1,0,"Ref_2","D1",18.9,"Ref_2, Ref_3",0,"Gracilinanus ignitus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"5","Marmosops dorothea","Didelphidae",50,0,0,0,0,0,50,0,0,0,"Ref_1","ABC","Ar","A","",1,0,0,"Ref_1","ABC",37.5,"Ref_117",1,"Marmosops dorothea",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"6","Micoureus demerarae","Didelphidae",90,0,0,0,0,0,10,0,0,0,"Ref_1","ABC","S","A","",1,0,0,"Ref_1","ABC",75.75,"Ref_117",1,"Micoureus demerarae",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"7","Micoureus regina","Didelphidae",90,0,0,0,0,0,10,0,0,0,"Ref_1","ABC","S","A","",1,0,0,"Ref_1","ABC",118.6,"Ref_117",1,"Micoureus regina",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"8","Micoureus paraguayanus","Didelphidae",30,0,0,0,30,0,20,20,0,0,"Ref_21","ABC","S","A","",1,0,0,"Ref_1","ABC",112.43,"Ref_58",1,"Micoureus paraguayanus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"9","Micoureus constantiae","Didelphidae",90,0,0,0,0,0,10,0,0,0,"Ref_1","ABC","S","A","",1,0,0,"Ref_1","ABC",90,"Ref_117",1,"Micoureus constantiae",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"10","Micoureus alstoni","Didelphidae",90,0,0,0,0,0,10,0,0,0,"Ref_1","ABC","S","A","",1,0,0,"Ref_1","ABC",132.3,"Ref_117",1,"Micoureus alstoni",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"11","Micoureus phaeus","Didelphidae",90,0,0,0,0,0,10,0,0,0,"Ref_2","D1","S","A","",1,0,0,"Ref_1","ABC",103.76,"Ref_2, Ref_3",0,"Micoureus phaeus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"12","Monodelphis umbristriata","Didelphidae",20,20,0,0,0,20,20,0,20,0,"Ref_2","D1","G","A","",1,0,0,"Ref_2","D1",61.54,"Ref_2, Ref_3",0,"Monodelphis umbristriata",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"13","Monodelphis theresa","Didelphidae",20,20,0,0,0,20,20,0,20,0,"Ref_1","ABC","G","A","",1,0,0,"Ref_1","ABC",112,"Ref_117",1,"Monodelphis theresa",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"14","Monodelphis sorex","Didelphidae",20,20,0,0,0,20,20,0,20,0,"Ref_1","ABC","G","A","",1,0,0,"Ref_1","ABC",48,"Ref_117",1,"Monodelphis sorex",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"15","Monodelphis rubida","Didelphidae",20,20,0,0,0,20,20,0,20,0,"Ref_1","ABC","G","A","",1,0,0,"Ref_1","ABC",45.5,"Ref_117",1,"Monodelphis rubida",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"16","Monodelphis maraxina","Didelphidae",20,20,0,0,0,20,20,0,20,0,"Ref_1","ABC","G","A","",1,0,0,"Ref_1","ABC",61.57,"Ref_178",2,"Monodelphis maraxina",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"17","Thylamys sponsorius","Didelphidae",80,0,0,0,20,0,0,0,0,0,"Ref_1","ABC","S","A","",1,0,0,"Ref_1","ABC",24.41,"Ref_2, Ref_3",0,"Thylamys sponsorius",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"18","Myoictis wallacii","Dasyuridae",50,50,0,0,0,0,0,0,0,0,"Ref_1","ABC","G","A","",1,0,0,"Ref_1","ABC",200,"Ref_2, Ref_3",0,"Myoictis wallacii",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"19","Neophascogale lorentzi","Dasyuridae",80,0,0,0,20,0,0,0,0,0,"Ref_1","ABC","Ar","A","",0,1,1,"Ref_1","ABC",212,"Ref_117",1,"Neophascogale lorentzi",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"20","Micromurexia habbema","Dasyuridae",70,10,20,0,0,0,0,0,0,0,"Ref_3","D2","G","A","",1,0,0,"Ref_1","ABC",46.97,"Ref_2, Ref_3",0,"Micromurexia habbema",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"21","Murexechinus melanurus","Dasyuridae",90,10,0,0,0,0,0,0,0,0,"Ref_1","ABC","G","A","",1,1,1,"Ref_1","ABC",38.02,"Ref_58",1,"Murexechinus melanurus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"22","Paramurexia rothschildi","Dasyuridae",60,20,20,0,0,0,0,0,0,0,"Ref_1","ABC","G","A","",1,1,1,"Ref_1","ABC",53.77,"Ref_58",1,"Paramurexia rothschildi",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"23","Phascomurexia naso","Dasyuridae",90,10,0,0,0,0,0,0,0,0,"Ref_1","ABC","G","A","",1,1,1,"Ref_1","ABC",52.62,"Ref_58",1,"Phascomurexia naso",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"24","Ningaui yvonnae","Dasyuridae",80,0,0,0,20,0,0,0,0,0,"Ref_1","ABC","G","A","",1,0,0,"Ref_1","ABC",7,"Ref_117",1,"Ningaui yvonnae",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"25","Sminthopsis boullangerensis","Dasyuridae",80,10,10,0,0,0,0,0,0,0,"Ref_2","D1","G","A","",1,0,0,"Ref_2","D1",19.89,"Ref_2, Ref_3",0,"Sminthopsis boullangerensis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"26","Sminthopsis aitkeni","Dasyuridae",80,10,10,0,0,0,0,0,0,0,"Ref_1","ABC","G","A","",1,0,0,"Ref_1","ABC",22.5,"Ref_117",1,"Sminthopsis aitkeni",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"27","Trichosurus arnhemensis","Phalangeridae",0,0,0,0,0,0,20,0,20,60,"Ref_1","ABC","Ar","A","",1,0,0,"Ref_1","ABC",1300,"Ref_117",1,"Trichosurus arnhemensis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"28","Trichosurus johnstonii","Phalangeridae",0,0,0,0,0,0,20,0,0,80,"Ref_1","ABC","Ar","A","",1,0,0,"Ref_1","ABC",2293.08,"Ref_2, Ref_3",0,"Trichosurus johnstonii",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"29","Dactylopsila palpator","Petauridae",80,0,0,0,0,0,10,0,0,10,"Ref_1","ABC","Ar","A","",1,0,0,"Ref_1","ABC",398,"Ref_117",1,"Dactylopsila palpator",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"30","Calcochloris leucorhinus","Chrysochloridae",100,0,0,0,0,0,0,0,0,0,"Ref_1","ABC","G","A","",1,1,1,"Ref_3","D2",49.7,"Ref_178",2,"Calcochloris leucorhinus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"31","Elephantulus revoili","Macroscelididae",100,0,0,0,0,0,0,0,0,0,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",32.5,"Ref_117",1,"Elephantulus revoili",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"32","Loxodonta cyclotis","Elephantidae",0,0,0,0,0,0,10,0,0,90,"Ref_1","ABC","G","A","",1,1,1,"Ref_1","ABC",4750000.01,"Ref_58",1,"Loxodonta cyclotis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"33","Chaetophractus nationi","Dasypodidae",50,10,10,0,0,0,0,0,0,30,"Ref_1","ABC","G","A","",1,1,1,"Ref_1","ABC",2150.01,"Ref_117",1,"Chaetophractus nationi",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"34","Tupaia moellendorffi","Tupaiidae",90,0,0,0,0,0,0,0,0,10,"Ref_2","D1","G","A","",0,0,1,"Ref_1","ABC",150.45,"Ref_2, Ref_3",0,"Tupaia moellendorffi",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"35","Urogale everetti","Tupaiidae",60,0,0,0,20,0,10,0,0,10,"Ref_1","ABC","S","A","",0,0,1,"Ref_1","ABC",350,"Ref_117",1,"Urogale everetti",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"36","Galeopterus variegates","Cynocephalidae",0,0,0,0,0,0,0,0,0,100,"Ref_1","ABC","Ar","A","",1,0,0,"Ref_1","ABC",1112.2,"Ref_58",1,"Galeopterus variegates",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"37","Cheirogaleus minusculus","Cheirogaleidae",10,0,0,0,0,0,50,0,0,40,"Ref_12","ABC","Ar","A","",1,0,0,"Ref_1","ABC",285.39,"Ref_2, Ref_3",0,"Cheirogaleus minusculus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"38","Cheirogaleus ravus","Cheirogaleidae",10,0,0,0,0,0,50,0,0,40,"Ref_12","ABC","Ar","A","",1,0,0,"Ref_1","ABC",285.39,"Ref_2, Ref_3",0,"Cheirogaleus ravus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"39","Cheirogaleus adipicaudatus","Cheirogaleidae",10,0,0,0,0,0,50,0,0,40,"Ref_12","ABC","Ar","A","",1,0,0,"Ref_1","ABC",285.39,"Ref_2, Ref_3",0,"Cheirogaleus adipicaudatus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"40","Eulemur albocollaris","Lemuridae",0,0,0,0,0,0,80,0,0,20,"Ref_57","ABC","Ar","A","",0,0,1,"Ref_1","ABC",2397.37,"Ref_58",1,"Eulemur albocollaris",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"41","Pseudopotto martini","Lorisidae",10,0,0,0,0,0,80,10,0,0,"Ref_2","D1","Ar","A","",1,0,0,"Ref_1","ABC",474.8,"Ref_2, Ref_3",0,"Pseudopotto martini",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"42","Galago gabonensis","Galagidae",20,0,0,0,0,0,80,0,0,0,"Ref_1","ABC","Ar","A","",1,0,0,"Ref_1","ABC",165.68,"Ref_2, Ref_3",0,"Galago gabonensis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"43","Galago thomasi","Galagidae",80,0,0,0,0,0,20,0,0,0,"Ref_14","ABC","Ar","A","",1,0,0,"Ref_1","ABC",117.35,"Ref_58",1,"Galago thomasi",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"44","Galago rondoensis","Galagidae",50,0,0,0,0,0,50,0,0,0,"Ref_13","ABC","Ar","A","",1,0,0,"Ref_1","ABC",165.68,"Ref_2, Ref_3",0,"Galago rondoensis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"45","Galago nyasae","Galagidae",90,0,0,0,0,0,10,0,0,0,"Ref_1","ABC","Ar","A","",1,0,0,"Ref_1","ABC",165.68,"Ref_2, Ref_3",0,"Galago nyasae",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"46","Galago orinus","Galagidae",80,0,0,0,0,0,20,0,0,0,"Ref_2","D1","Ar","A","",1,0,0,"Ref_1","ABC",165.68,"Ref_2, Ref_3",0,"Galago orinus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"47","Galago zanzibaricus","Galagidae",80,0,0,0,0,0,10,10,0,0,"Ref_1","ABC","Ar","A","",1,0,0,"Ref_1","ABC",147.35,"Ref_58",1,"Galago zanzibaricus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"48","Galago granti","Galagidae",80,0,0,0,0,0,20,0,0,0,"Ref_2","D1","Ar","A","",1,0,0,"Ref_1","ABC",165.68,"Ref_2, Ref_3",0,"Galago granti",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"49","Galago alleni","Galagidae",40,0,0,0,0,0,0,60,0,0,"Ref_1","ABC","Ar","A","",1,0,0,"Ref_1","ABC",260,"Ref_117",1,"Galago alleni",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"50","Galago cameronensis","Galagidae",50,0,0,0,0,0,50,0,0,0,"Ref_45","ABC","Ar","A","",1,0,0,"Ref_1","ABC",165.68,"Ref_2, Ref_3",0,"Galago cameronensis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"51","Galago demidoff","Galagidae",80,0,0,0,0,0,10,10,0,0,"Ref_1","ABC","Ar","A","",1,0,0,"Ref_1","ABC",66.04,"Ref_58",1,"Galago demidoff",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"52","Otolemur monteiri","Galagidae",20,0,0,0,0,0,20,60,0,0,"Ref_2","D1","Ar","A","",1,0,0,"Ref_1","ABC",1577.16,"Ref_58",1,"Otolemur monteiri",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"53","Saguinus pileatus","Cebidae",40,0,0,0,0,0,30,30,0,0,"Ref_1","ABC","Ar","A","",0,0,1,"Ref_1","ABC",462.13,"Ref_2, Ref_3",0,"Saguinus pileatus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"54","Saguinus nigricollis","Cebidae",40,0,0,0,0,0,30,30,0,0,"Ref_1","ABC","Ar","A","",0,0,1,"Ref_1","ABC",462,"Ref_117",1,"Saguinus nigricollis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"55","Saguinus tripartitus","Cebidae",40,0,0,0,0,0,30,30,0,0,"Ref_1","ABC","Ar","A","",0,0,1,"Ref_1","ABC",393.5,"Ref_117",1,"Saguinus tripartitus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"56","Saguinus graellsi","Cebidae",10,0,0,0,10,0,40,40,0,0,"Ref_1","ABC","Ar","A","",0,0,1,"Ref_1","ABC",462.13,"Ref_2, Ref_3",0,"Saguinus graellsi",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"57","Callithrix nigriceps","Cebidae",20,0,0,0,0,0,0,70,10,0,"Ref_35","ABC","Ar","A","",0,0,1,"Ref_1","ABC",401.12,"Ref_58",1,"Callithrix nigriceps",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"58","Callithrix intermedia","Cebidae",50,0,0,0,0,0,30,20,0,0,"Ref_92","ABC","Ar","A","",0,0,1,"Ref_1","ABC",335.61,"Ref_2, Ref_3",0,"Callithrix intermedia",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"59","Callithrix leucippe","Cebidae",20,0,0,0,0,0,40,40,0,0,"Ref_1","ABC","Ar","A","",0,0,1,"Ref_1","ABC",335.61,"Ref_2, Ref_3",0,"Callithrix leucippe",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"60","Callithrix manicorensis","Cebidae",20,0,0,0,10,0,30,40,0,0,"Ref_2","D1","Ar","A","",0,0,1,"Ref_1","ABC",335.61,"Ref_2, Ref_3",0,"Callithrix manicorensis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"61","Callithrix marcai","Cebidae",20,0,0,0,10,0,30,40,0,0,"Ref_2","D1","Ar","A","",0,0,1,"Ref_1","ABC",335.61,"Ref_2, Ref_3",0,"Callithrix marcai",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"62","Callithrix melanura","Cebidae",20,0,0,0,0,0,40,20,0,20,"Ref_93","ABC","Ar","A","",0,0,1,"Ref_1","ABC",335.61,"Ref_2, Ref_3",0,"Callithrix melanura",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"63","Callithrix humeralifera","Cebidae",20,0,0,0,20,0,60,0,0,0,"Ref_1","ABC","Ar","A","",0,0,1,"Ref_1","ABC",374.99,"Ref_58",1,"Callithrix humeralifera",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"64","Callithrix saterei","Cebidae",20,0,0,0,10,0,30,40,0,0,"Ref_2","D1","Ar","A","",0,0,1,"Ref_1","ABC",441.25,"Ref_154",1,"Callithrix saterei",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"65","Callithrix mauesi","Cebidae",20,0,0,0,10,0,30,40,0,0,"Ref_2","D1","Ar","A","",0,0,1,"Ref_1","ABC",443.79,"Ref_58",1,"Callithrix mauesi",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"66","Callithrix emiliae","Cebidae",20,0,0,0,10,0,30,40,0,0,"Ref_2","D1","Ar","A","",0,0,1,"Ref_1","ABC",309.58,"Ref_58",1,"Callithrix emiliae",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"67","Callithrix chrysoleuca","Cebidae",20,0,0,0,10,0,30,40,0,0,"Ref_2","D1","Ar","A","",0,0,1,"Ref_1","ABC",335.61,"Ref_2, Ref_3",0,"Callithrix chrysoleuca",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"68","Callithrix argentata","Cebidae",20,0,0,0,20,0,60,0,0,0,"Ref_1","ABC","Ar","A","",0,0,1,"Ref_1","ABC",440,"Ref_117",1,"Callithrix argentata",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"69","Callithrix acariensis","Cebidae",20,0,0,0,10,0,30,40,0,0,"Ref_2","D1","Ar","A","",0,0,1,"Ref_1","ABC",335.61,"Ref_2, Ref_3",0,"Callithrix acariensis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"70","Callithrix pygmaea","Cebidae",20,0,0,0,20,0,0,60,0,0,"Ref_1","ABC","Ar","A","",0,0,1,"Ref_1","ABC",125,"Ref_117",1,"Callithrix pygmaea",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"71","Callithrix humilis","Cebidae",20,0,0,0,10,0,30,40,0,0,"Ref_2","D1","Ar","A","",0,0,1,"Ref_1","ABC",335.61,"Ref_2, Ref_3",0,"Callithrix humilis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"72","Cebus apella","Cebidae",20,0,0,0,10,0,20,10,20,20,"Ref_1","ABC","Ar","A","",0,0,1,"Ref_1","ABC",2500,"Ref_117",1,"Cebus apella",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"73","Cebus capucinus","Cebidae",20,0,0,0,10,0,20,10,20,20,"Ref_1","ABC","Ar","A","",0,0,1,"Ref_1","ABC",2733.32,"Ref_117",1,"Cebus capucinus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"74","Cebus nigritus","Cebidae",20,0,0,0,10,0,40,20,0,10,"Ref_59","ABC","Ar","A","",0,0,1,"Ref_1","ABC",2687.21,"Ref_2, Ref_3",0,"Cebus nigritus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"75","Cebus olivaceus","Cebidae",20,0,0,0,10,0,20,10,20,20,"Ref_1","ABC","Ar","A","",0,0,1,"Ref_1","ABC",2599.98,"Ref_117",1,"Cebus olivaceus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"76","Cebus xanthosternos","Cebidae",20,0,0,0,10,0,40,20,0,10,"Ref_59","ABC","Ar","A","",0,0,1,"Ref_1","ABC",2687.21,"Ref_2, Ref_3",0,"Cebus xanthosternos",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"77","Cebus libidinosus","Cebidae",20,0,0,0,10,0,40,20,0,10,"Ref_59","ABC","Ar","A","",0,0,1,"Ref_1","ABC",2687.21,"Ref_2, Ref_3",0,"Cebus libidinosus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"78","Lagothrix lagotricha","Atelidae",10,0,0,0,0,0,70,0,10,10,"Ref_1","ABC","Ar","A","",0,0,1,"Ref_1","ABC",6299.99,"Ref_117",1,"Lagothrix lagotricha",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"79","Oreonax flavicauda","Atelidae",0,0,0,0,0,0,70,10,0,20,"Ref_2","D1","Ar","A","",0,0,1,"Ref_1","ABC",8229.12,"Ref_58",1,"Oreonax flavicauda",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"80","Alouatta coibensis","Atelidae",0,0,0,0,0,0,40,0,0,60,"Ref_1","ABC","Ar","A","",0,0,1,"Ref_1","ABC",6320.06,"Ref_2, Ref_3",0,"Alouatta coibensis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"81","Aotus hershkovitzi","Aotidae",20,0,0,0,10,0,20,10,20,20,"Ref_1","ABC","Ar","A","",1,0,0,"Ref_1","ABC",800,"Ref_117",1,"Aotus hershkovitzi",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"82","Callicebus ornatus","Pitheciidae",20,0,0,0,0,0,70,0,0,10,"Ref_27","ABC","Ar","A","",0,0,1,"Ref_1","ABC",1170.5,"Ref_127",1,"Callicebus ornatus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"83","Callicebus caligatus","Pitheciidae",20,0,0,0,0,0,50,0,0,30,"Ref_1","ABC","Ar","A","",0,0,1,"Ref_1","ABC",992.41,"Ref_117",1,"Callicebus caligatus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"84","Callicebus baptista","Pitheciidae",10,0,0,0,0,0,70,0,10,10,"Ref_108","ABC","Ar","A","",0,0,1,"Ref_1","ABC",1011.32,"Ref_2, Ref_3",0,"Callicebus baptista",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"85","Callicebus brunneus","Pitheciidae",20,0,0,0,0,0,50,0,0,30,"Ref_1","ABC","Ar","A","",0,0,1,"Ref_1","ABC",992.41,"Ref_117",1,"Callicebus brunneus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"86","Callicebus bernhardi","Pitheciidae",20,0,0,0,0,0,50,0,0,30,"Ref_1","ABC","Ar","A","",0,0,1,"Ref_1","ABC",950,"Ref_141",1,"Callicebus bernhardi",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"87","Callicebus stephennashi","Pitheciidae",20,0,0,0,0,0,50,0,0,30,"Ref_1","ABC","Ar","A","",0,0,1,"Ref_1","ABC",690,"Ref_141",1,"Callicebus stephennashi",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"88","Callicebus cinerascens","Pitheciidae",20,0,0,0,0,0,50,0,0,30,"Ref_1","ABC","Ar","A","",0,0,1,"Ref_1","ABC",992.41,"Ref_117",1,"Callicebus cinerascens",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"89","Callicebus pallescens","Pitheciidae",20,0,0,0,0,0,50,0,0,30,"Ref_1","ABC","Ar","A","",0,0,1,"Ref_1","ABC",800,"Ref_127",1,"Callicebus pallescens",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"90","Callicebus olallae","Pitheciidae",20,0,0,0,0,0,50,0,0,30,"Ref_1","ABC","Ar","A","",0,0,1,"Ref_1","ABC",992.41,"Ref_117",1,"Callicebus olallae",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"91","Callicebus oenanthe","Pitheciidae",20,0,0,0,0,0,50,0,0,30,"Ref_1","ABC","Ar","A","",0,0,1,"Ref_1","ABC",992.41,"Ref_117",1,"Callicebus oenanthe",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"92","Callicebus dubius","Pitheciidae",20,0,0,0,0,0,50,0,0,30,"Ref_1","ABC","Ar","A","",0,0,1,"Ref_1","ABC",992.41,"Ref_117",1,"Callicebus dubius",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"93","Callicebus hoffmannsi","Pitheciidae",20,0,0,0,0,0,50,0,0,30,"Ref_1","ABC","Ar","A","",0,0,1,"Ref_1","ABC",992.41,"Ref_117",1,"Callicebus hoffmannsi",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"94","Callicebus donacophilus","Pitheciidae",20,0,0,0,0,0,50,0,0,30,"Ref_1","ABC","Ar","A","",0,0,1,"Ref_1","ABC",795.01,"Ref_117",1,"Callicebus donacophilus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"95","Callicebus discolor","Pitheciidae",20,0,0,0,0,0,50,0,0,30,"Ref_1","ABC","Ar","A","",0,0,1,"Ref_1","ABC",1005,"Ref_127",1,"Callicebus discolor",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"96","Callicebus modestus","Pitheciidae",20,0,0,0,0,0,50,0,0,30,"Ref_1","ABC","Ar","A","",0,0,1,"Ref_1","ABC",992.41,"Ref_117",1,"Callicebus modestus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"97","Callicebus cupreus","Pitheciidae",20,0,0,0,0,0,50,0,0,30,"Ref_1","ABC","Ar","A","",0,0,1,"Ref_1","ABC",915,"Ref_117",1,"Callicebus cupreus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"98","Callicebus moloch","Pitheciidae",20,0,0,0,0,0,50,0,0,30,"Ref_1","ABC","Ar","A","",0,0,1,"Ref_1","ABC",854.73,"Ref_117",1,"Callicebus moloch",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"99","Callicebus regulus","Pitheciidae",20,0,0,0,0,0,50,0,0,30,"Ref_1","ABC","Ar","A","",0,0,1,"Ref_1","ABC",1011.32,"Ref_2, Ref_3",0,"Callicebus regulus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"100","Callicebus torquatus","Pitheciidae",20,0,0,0,0,0,50,0,0,30,"Ref_1","ABC","Ar","A","",0,0,1,"Ref_1","ABC",1050,"Ref_117",1,"Callicebus torquatus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"101","Callicebus purinus","Pitheciidae",20,0,0,0,0,0,50,0,0,30,"Ref_1","ABC","Ar","A","",0,0,1,"Ref_1","ABC",1011.32,"Ref_2, Ref_3",0,"Callicebus purinus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"102","Callicebus lugens","Pitheciidae",20,0,0,0,0,0,50,0,0,30,"Ref_1","ABC","Ar","A","",0,0,1,"Ref_1","ABC",1011.32,"Ref_2, Ref_3",0,"Callicebus lugens",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"103","Callicebus lucifer","Pitheciidae",20,0,0,0,0,0,50,0,0,30,"Ref_1","ABC","Ar","A","",0,0,1,"Ref_1","ABC",1500,"Ref_127",1,"Callicebus lucifer",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"104","Callicebus medemi","Pitheciidae",20,0,0,0,0,0,50,0,0,30,"Ref_1","ABC","Ar","A","",0,0,1,"Ref_1","ABC",1205,"Ref_127",1,"Callicebus medemi",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"105","Chiropotes israelita","Pitheciidae",10,0,0,0,0,0,70,0,20,0,"Ref_83","ABC","Ar","A","",0,0,1,"Ref_2","D1",2949.58,"Ref_2, Ref_3",0,"Chiropotes israelita",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"106","Cercopithecus solatus","Cercopithecidae",0,0,0,0,10,0,50,0,30,10,"Ref_1","ABC","Ar","A","",0,0,1,"Ref_1","ABC",6500,"Ref_117",1,"Cercopithecus solatus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"107","Cercopithecus kandti","Cercopithecidae",10,0,0,0,0,0,60,0,0,30,"Ref_1","ABC","Ar","A","",0,0,1,"Ref_1","ABC",4291.5,"Ref_2, Ref_3",0,"Cercopithecus kandti",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"108","Cercopithecus preussi","Cercopithecidae",0,0,0,0,10,0,50,0,30,10,"Ref_1","ABC","Ar","A","",0,0,1,"Ref_1","ABC",5250,"Ref_117",1,"Cercopithecus preussi",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"109","Cercopithecus doggetti","Cercopithecidae",0,0,0,0,10,0,50,0,30,10,"Ref_1","ABC","Ar","A","",0,0,1,"Ref_1","ABC",4291.5,"Ref_2, Ref_3",0,"Cercopithecus doggetti",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"110","Cercopithecus albogularis","Cercopithecidae",20,0,0,0,10,0,50,0,10,10,"Ref_2","D1","Ar","A","",0,0,1,"Ref_1","ABC",4291.5,"Ref_2, Ref_3",0,"Cercopithecus albogularis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"111","Cercopithecus lhoesti","Cercopithecidae",0,0,0,0,10,0,50,0,30,10,"Ref_1","ABC","Ar","A","",0,0,1,"Ref_1","ABC",5375.02,"Ref_117",1,"Cercopithecus lhoesti",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"112","Lophocebus opdenboschi","Cercopithecidae",0,0,0,0,0,0,40,20,40,0,"Ref_2","D1","Ar","A","",0,0,1,"Ref_1","ABC",7075.67,"Ref_2, Ref_3",0,"Lophocebus opdenboschi",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"113","Trachypithecus ebenus","Cercopithecidae",0,0,0,0,0,0,30,0,0,70,"Ref_2","D1","Ar","A","",0,0,1,"Ref_1","ABC",8516.46,"Ref_2, Ref_3",0,"Trachypithecus ebenus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"114","Bunopithecus hoolock","Hylobatidae",10,0,0,0,0,0,70,0,0,20,"Ref_10","ABC","Ar","A","",0,0,1,"Ref_1","ABC",6699,"Ref_58",1,"Bunopithecus hoolock",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"115","Hylopetes lepidus","Sciuridae",20,0,20,0,0,0,0,0,20,40,"Ref_1","ABC","Ar","A","",1,0,0,"Ref_1","ABC",50,"Ref_117",1,"Hylopetes lepidus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"116","Petinomys sagitta","Sciuridae",0,0,0,0,0,0,30,0,30,40,"Ref_1","ABC","Ar","A","",1,0,0,"Ref_1","ABC",50,"Ref_117",1,"Petinomys sagitta",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"117","Tamiops mcclellandii","Sciuridae",20,0,0,0,0,0,40,0,40,0,"Ref_1","ABC","Ar","A","",0,0,1,"Ref_1","ABC",45.84,"Ref_58",1,"Tamiops mcclellandii",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"118","Spermophilus mollis","Sciuridae",20,0,0,0,0,0,0,0,40,40,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",165.4,"Ref_117",1,"Spermophilus mollis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"119","Spermophilus canus","Sciuridae",20,0,0,0,0,0,0,0,40,40,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",272.85,"Ref_178",2,"Spermophilus canus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"120","Spermophilus beldingi","Sciuridae",20,0,0,0,0,0,0,0,40,40,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",280.5,"Ref_117",1,"Spermophilus beldingi",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"121","Spermophilus armatus","Sciuridae",20,0,0,0,0,0,0,0,40,40,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",313,"Ref_117",1,"Spermophilus armatus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"122","Spermophilus elegans","Sciuridae",20,0,0,0,0,0,0,0,40,40,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",453.6,"Ref_117",1,"Spermophilus elegans",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"123","Spermophilus brunneus","Sciuridae",20,0,0,0,0,0,0,0,40,40,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",300,"Ref_117",1,"Spermophilus brunneus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"124","Spermophilus richardsonii","Sciuridae",20,0,0,0,0,0,0,0,40,40,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",406,"Ref_117",1,"Spermophilus richardsonii",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"125","Spermophilus washingtoni","Sciuridae",20,0,0,0,0,0,0,0,40,40,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",207.5,"Ref_117",1,"Spermophilus washingtoni",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"126","Spermophilus townsendii","Sciuridae",20,0,0,0,0,0,0,0,40,40,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",213,"Ref_117",1,"Spermophilus townsendii",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"127","Spermophilus variegatus","Sciuridae",20,0,0,0,0,0,0,0,40,40,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",691.64,"Ref_117",1,"Spermophilus variegatus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"128","Spermophilus beecheyi","Sciuridae",20,0,0,0,0,0,0,0,40,40,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",578.5,"Ref_117",1,"Spermophilus beecheyi",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"129","Spermophilus atricapillus","Sciuridae",20,0,0,0,0,0,0,0,40,40,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",551,"Ref_117",1,"Spermophilus atricapillus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"130","Spermophilus mexicanus","Sciuridae",20,0,0,0,0,0,0,0,40,40,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",189.64,"Ref_117",1,"Spermophilus mexicanus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"131","Spermophilus perotensis","Sciuridae",20,0,0,0,0,0,0,0,40,40,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",140,"Ref_117",1,"Spermophilus perotensis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"132","Spermophilus tridecemlineatus","Sciuridae",20,0,0,0,0,0,0,0,40,40,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",131.67,"Ref_117",1,"Spermophilus tridecemlineatus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"133","Spermophilus spilosoma","Sciuridae",20,0,0,0,0,0,0,0,40,40,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",89,"Ref_117",1,"Spermophilus spilosoma",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"134","Spermophilus tereticaudus","Sciuridae",20,0,0,0,0,0,0,0,40,40,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",156.5,"Ref_117",1,"Spermophilus tereticaudus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"135","Spermophilus mohavensis","Sciuridae",20,0,0,0,0,0,0,0,40,40,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",190,"Ref_117",1,"Spermophilus mohavensis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"136","Spermophilus franklinii","Sciuridae",20,0,0,0,0,0,0,0,40,40,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",363,"Ref_117",1,"Spermophilus franklinii",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"137","Spermophilus saturatus","Sciuridae",20,0,0,0,0,0,0,0,40,40,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",220,"Ref_117",1,"Spermophilus saturatus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"138","Spermophilus lateralis","Sciuridae",20,0,0,0,0,0,0,0,40,40,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",191,"Ref_117",1,"Spermophilus lateralis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"139","Spermophilus madrensis","Sciuridae",20,0,0,0,0,0,0,0,40,40,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",275,"Ref_117",1,"Spermophilus madrensis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"140","Spermophilus columbianus","Sciuridae",20,0,0,0,0,0,0,0,40,40,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",493,"Ref_117",1,"Spermophilus columbianus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"141","Spermophilus undulatus","Sciuridae",20,0,0,0,0,0,0,0,40,40,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",840,"Ref_117",1,"Spermophilus undulatus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"142","Spermophilus adocetus","Sciuridae",20,0,0,0,0,0,0,0,40,40,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",125,"Ref_117",1,"Spermophilus adocetus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"143","Spermophilus parryii","Sciuridae",20,0,0,0,0,0,0,0,40,40,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",759.99,"Ref_117",1,"Spermophilus parryii",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"144","Spermophilus annulatus","Sciuridae",20,0,0,0,0,0,0,0,40,40,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",500,"Ref_117",1,"Spermophilus annulatus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"145","Ammospermophilus insularis","Sciuridae",20,0,0,0,0,10,20,0,20,30,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",122.31,"Ref_2, Ref_3",0,"Ammospermophilus insularis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"146","Tamias sibiricus","Sciuridae",10,0,0,0,0,0,10,0,60,20,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",85,"Ref_117",1,"Tamias sibiricus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"147","Tamias quadrimaculatus","Sciuridae",0,0,0,0,0,0,50,0,50,0,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",85.25,"Ref_117",1,"Tamias quadrimaculatus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"148","Tamias quadrivittatus","Sciuridae",0,0,0,0,0,0,50,0,50,0,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",62.2,"Ref_117",1,"Tamias quadrivittatus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"149","Tamias ruficaudus","Sciuridae",0,0,0,0,0,0,50,0,50,0,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",68,"Ref_117",1,"Tamias ruficaudus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"150","Tamias rufus","Sciuridae",0,0,0,0,0,0,50,0,50,0,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",53.6,"Ref_117",1,"Tamias rufus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"151","Tamias senex","Sciuridae",0,0,0,0,0,0,50,0,50,0,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",89.35,"Ref_117",1,"Tamias senex",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"152","Tamias sonomae","Sciuridae",0,0,0,0,0,0,50,0,50,0,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",75,"Ref_117",1,"Tamias sonomae",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"153","Tamias umbrinus","Sciuridae",0,0,0,0,0,0,50,0,50,0,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",63,"Ref_117",1,"Tamias umbrinus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"154","Tamias siskiyou","Sciuridae",0,0,0,0,0,0,50,0,50,0,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",75,"Ref_117",1,"Tamias siskiyou",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"155","Tamias panamintinus","Sciuridae",0,0,0,0,0,0,50,0,50,0,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",52.3,"Ref_117",1,"Tamias panamintinus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"156","Tamias townsendii","Sciuridae",0,0,0,0,0,0,50,0,50,0,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",74.78,"Ref_117",1,"Tamias townsendii",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"157","Tamias cinereicollis","Sciuridae",0,0,0,0,0,0,50,0,50,0,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",61.7,"Ref_117",1,"Tamias cinereicollis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"158","Tamias amoenus","Sciuridae",0,0,0,0,0,0,50,0,50,0,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",50.5,"Ref_117",1,"Tamias amoenus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"159","Tamias bulleri","Sciuridae",0,0,0,0,0,0,50,0,50,0,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",100,"Ref_117",1,"Tamias bulleri",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"160","Tamias palmeri","Sciuridae",0,0,0,0,0,0,50,0,50,0,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",69.4,"Ref_117",1,"Tamias palmeri",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"161","Tamias speciosus","Sciuridae",0,0,0,0,0,0,50,0,50,0,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",62,"Ref_117",1,"Tamias speciosus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"162","Tamias alpinus","Sciuridae",0,0,0,0,0,0,50,0,50,0,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",36.55,"Ref_117",1,"Tamias alpinus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"163","Tamias dorsalis","Sciuridae",0,0,0,0,0,0,50,0,50,0,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",71.1,"Ref_117",1,"Tamias dorsalis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"164","Tamias durangae","Sciuridae",0,0,0,0,0,0,50,0,50,0,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",85,"Ref_117",1,"Tamias durangae",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"165","Tamias merriami","Sciuridae",0,0,0,0,0,0,50,0,50,0,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",74.8,"Ref_117",1,"Tamias merriami",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"166","Tamias minimus","Sciuridae",0,0,0,0,0,0,50,0,50,0,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",135.27,"Ref_117",1,"Tamias minimus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"167","Tamias obscurus","Sciuridae",0,0,0,0,0,0,50,0,50,0,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",73,"Ref_117",1,"Tamias obscurus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"168","Tamias ochrogenys","Sciuridae",0,0,0,0,0,0,50,0,50,0,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",91.7,"Ref_117",1,"Tamias ochrogenys",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"169","Tamias canipes","Sciuridae",0,0,0,0,0,0,50,0,50,0,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",70.4,"Ref_117",1,"Tamias canipes",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"170","Cratogeomys neglectus","Geomyidae",0,0,0,0,0,0,0,0,0,100,"Ref_1","ABC","G","A","",1,1,0,"Ref_3","D2",302.48,"Ref_58",1,"Cratogeomys neglectus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"171","Cratogeomys tylorhinus","Geomyidae",0,0,0,0,0,0,0,0,0,100,"Ref_1","ABC","G","A","",1,1,0,"Ref_3","D2",403.42,"Ref_58",1,"Cratogeomys tylorhinus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"172","Cratogeomys gymnurus","Geomyidae",0,0,0,0,0,0,0,0,0,100,"Ref_1","ABC","G","A","",1,1,0,"Ref_3","D2",599.99,"Ref_58",1,"Cratogeomys gymnurus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"173","Cratogeomys zinseri","Geomyidae",0,0,0,0,0,0,0,0,0,100,"Ref_1","ABC","G","A","",1,1,0,"Ref_3","D2",150,"Ref_58",1,"Cratogeomys zinseri",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"174","Orthogeomys lanius","Geomyidae",0,0,0,0,0,0,0,0,0,100,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",500,"Ref_117",1,"Orthogeomys lanius",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"175","Orthogeomys cherriei","Geomyidae",0,0,0,0,0,0,0,0,0,100,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",225,"Ref_117",1,"Orthogeomys cherriei",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"176","Orthogeomys dariensis","Geomyidae",0,0,0,0,0,0,0,0,0,100,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",438,"Ref_117",1,"Orthogeomys dariensis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"177","Orthogeomys matagalpae","Geomyidae",0,0,0,0,0,0,0,0,0,100,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",293,"Ref_128",1,"Orthogeomys matagalpae",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"178","Orthogeomys thaeleri","Geomyidae",0,0,0,0,0,0,0,0,0,100,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",440.75,"Ref_148",1,"Orthogeomys thaeleri",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"179","Pappogeomys alcorni","Geomyidae",0,0,0,0,0,0,0,0,0,100,"Ref_1","ABC","G","A","",1,1,0,"Ref_3","D2",150,"Ref_117",1,"Pappogeomys alcorni",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"180","Perognathus alticolus","Heteromyidae",10,0,0,0,0,0,0,0,80,10,"Ref_1","ABC","G","A","",1,0,0,"Ref_1","ABC",23.99,"Ref_58",1,"Perognathus alticolus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"181","Chaetodipus dalquesti","Heteromyidae",20,0,0,0,0,0,0,0,70,10,"Ref_2","D1","G","A","",1,0,0,"Ref_1","ABC",20.31,"Ref_2, Ref_3",0,"Chaetodipus dalquesti",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"182","Liomys adspersus","Heteromyidae",0,0,0,0,0,0,0,0,50,50,"Ref_1","ABC","G","A","",1,0,0,"Ref_1","ABC",65,"Ref_117",1,"Liomys adspersus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"183","Liomys irroratus","Heteromyidae",0,0,0,0,0,0,0,0,50,50,"Ref_1","ABC","G","A","",1,0,0,"Ref_1","ABC",50,"Ref_117",1,"Liomys irroratus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"184","Liomys spectabilis","Heteromyidae",0,0,0,0,0,0,0,0,50,50,"Ref_1","ABC","G","A","",1,0,0,"Ref_1","ABC",65,"Ref_117",1,"Liomys spectabilis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"185","Liomys salvini","Heteromyidae",0,0,0,0,0,0,0,0,50,50,"Ref_1","ABC","G","A","",1,0,0,"Ref_1","ABC",42,"Ref_117",1,"Liomys salvini",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"186","Liomys pictus","Heteromyidae",0,0,0,0,0,0,0,0,50,50,"Ref_1","ABC","G","A","",1,0,0,"Ref_1","ABC",40,"Ref_117",1,"Liomys pictus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"187","Pygeretmus shitkovi","Dipodidae",40,0,0,0,0,0,0,0,0,60,"Ref_1","ABC","G","A","",1,0,0,"Ref_1","ABC",58.3,"Ref_146",1,"Pygeretmus shitkovi",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"188","Salpingotus thomasi","Dipodidae",50,0,0,0,0,0,0,0,0,50,"Ref_1","ABC","G","A","",1,0,0,"Ref_1","ABC",10.45,"Ref_2, Ref_3",0,"Salpingotus thomasi",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"189","Beamys major","Nesomyidae",0,0,0,0,0,0,50,0,50,0,"Ref_1","ABC","G","A","",1,0,0,"Ref_1","ABC",75.8,"Ref_2, Ref_3",0,"Beamys major",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"190","Cricetomys kivuensis","Nesomyidae",40,0,0,0,0,0,30,0,20,10,"Ref_2","D1","G","A","",1,0,0,"Ref_2","D1",1285.41,"Ref_2, Ref_3",0,"Cricetomys kivuensis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"191","Dendromus nyasae","Nesomyidae",20,10,20,0,10,0,20,0,20,0,"Ref_1","ABC","G","A","",1,0,0,"Ref_2","D1",13.72,"Ref_178",2,"Dendromus nyasae",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"192","Dendromus leucostomus","Nesomyidae",20,10,20,0,10,0,20,0,20,0,"Ref_2","D1","G","A","",1,0,0,"Ref_2","D1",10.79,"Ref_2, Ref_3",0,"Dendromus leucostomus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"193","Myodes imaizumii","Cricetidae",20,0,0,0,0,0,0,0,20,60,"Ref_2","D1","G","A","",1,1,1,"Ref_2","D1",24,"Ref_2, Ref_3",0,"Myodes imaizumii",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"194","Neotoma anthonyi","Cricetidae",10,0,0,0,0,0,0,0,20,70,"Ref_1","ABC","G","A","",1,0,0,"Ref_1","ABC",195.4,"Ref_117",1,"Neotoma anthonyi",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"195","Neotoma bunkeri","Cricetidae",10,0,0,0,0,0,0,0,20,70,"Ref_1","ABC","G","A","",1,0,0,"Ref_1","ABC",375,"Ref_117",1,"Neotoma bunkeri",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"196","Neotoma martinensis","Cricetidae",10,0,0,0,0,0,0,0,20,70,"Ref_1","ABC","G","A","",1,0,0,"Ref_1","ABC",246,"Ref_117",1,"Neotoma martinensis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"197","Juscelinomys guaporensis","Cricetidae",20,0,0,0,0,0,0,0,0,80,"Ref_2","D1","G","A","",1,0,0,"Ref_1","ABC",97.3,"Ref_2, Ref_3",0,"Juscelinomys guaporensis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"198","Kunsia fronto","Cricetidae",20,0,0,0,0,0,10,0,40,30,"Ref_3","D2","G","A","",1,0,0,"Ref_1","ABC",168,"Ref_117",1,"Kunsia fronto",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"199","Abrothrix markhami","Cricetidae",30,0,0,0,0,0,0,0,0,70,"Ref_2","D1","G","A","",1,1,1,"Ref_1","ABC",29.03,"Ref_178",2,"Abrothrix markhami",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"200","Abrothrix illuteus","Cricetidae",30,0,0,0,0,0,0,0,0,70,"Ref_2","D1","G","A","",1,1,1,"Ref_1","ABC",47.79,"Ref_58",1,"Abrothrix illuteus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"201","Abrothrix hershkovitzi","Cricetidae",30,0,0,0,0,0,0,0,0,70,"Ref_2","D1","G","A","",1,1,1,"Ref_1","ABC",32.42,"Ref_178",2,"Abrothrix hershkovitzi",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"202","Akodon bogotensis","Cricetidae",80,0,0,0,0,0,0,0,0,20,"Ref_1","ABC","G","A","",1,1,1,"Ref_1","ABC",13,"Ref_117",1,"Akodon bogotensis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"203","Akodon neocenus","Cricetidae",80,0,0,0,0,0,0,0,0,20,"Ref_1","ABC","G","A","",1,1,1,"Ref_1","ABC",42.4,"Ref_117",1,"Akodon neocenus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"204","Akodon leucolimnaeus","Cricetidae",70,0,0,0,0,0,0,0,0,30,"Ref_2","D1","G","A","",1,1,1,"Ref_1","ABC",31.32,"Ref_2, Ref_3",0,"Akodon leucolimnaeus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"205","Akodon aliquantulus","Cricetidae",70,0,0,0,0,0,0,0,0,30,"Ref_2","D1","G","A","",1,1,1,"Ref_1","ABC",31.32,"Ref_2, Ref_3",0,"Akodon aliquantulus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"206","Akodon oenos","Cricetidae",70,0,0,0,0,0,0,0,0,30,"Ref_2","D1","G","A","",1,1,1,"Ref_1","ABC",31.32,"Ref_2, Ref_3",0,"Akodon oenos",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"207","Akodon latebricola","Cricetidae",80,0,0,0,0,0,0,0,0,20,"Ref_1","ABC","G","A","",1,1,1,"Ref_1","ABC",39,"Ref_117",1,"Akodon latebricola",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"208","Andalgalomys roigi","Cricetidae",20,0,0,0,0,0,10,0,40,30,"Ref_3","D2","G","A","",1,0,0,"Ref_3","D2",28.91,"Ref_2, Ref_3",0,"Andalgalomys roigi",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"209","Brucepattersonius albinasus","Cricetidae",90,0,0,0,0,0,0,0,0,10,"Ref_2","D1","G","A","",1,0,0,"Ref_3","D2",20,"Ref_139",1,"Brucepattersonius albinasus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"210","Chelemys delfini","Cricetidae",30,0,0,0,0,0,0,0,0,70,"Ref_2","D1","G","A","",1,1,1,"Ref_1","ABC",61.02,"Ref_2, Ref_3",0,"Chelemys delfini",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"211","Graomys centralis","Cricetidae",0,0,0,0,0,0,30,0,30,40,"Ref_2","D1","S","A","",1,0,0,"Ref_3","D2",65.28,"Ref_2, Ref_3",0,"Graomys centralis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"212","Nectomys magdalenae","Cricetidae",30,0,20,20,0,0,0,0,0,30,"Ref_1","ABC","G","A","",1,0,0,"Ref_1","ABC",217.85,"Ref_2, Ref_3",0,"Nectomys magdalenae",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"213","Oryzomys subflavus","Cricetidae",20,0,0,0,0,0,20,0,20,40,"Ref_1","ABC","G","A","",1,1,1,"Ref_1","ABC",50,"Ref_117",1,"Oryzomys subflavus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"214","Oryzomys talamancae","Cricetidae",20,0,0,0,0,0,20,0,20,40,"Ref_1","ABC","G","A","",1,1,1,"Ref_1","ABC",55,"Ref_117",1,"Oryzomys talamancae",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"215","Oryzomys tatei","Cricetidae",20,0,0,0,0,0,20,0,20,40,"Ref_2","D1","G","A","",1,1,1,"Ref_1","ABC",57.93,"Ref_2, Ref_3",0,"Oryzomys tatei",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"216","Oryzomys xanthaeolus","Cricetidae",20,0,0,0,0,0,20,0,20,40,"Ref_1","ABC","G","A","",1,1,1,"Ref_1","ABC",79.79,"Ref_58",1,"Oryzomys xanthaeolus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"217","Oryzomys perenensis","Cricetidae",20,0,0,0,0,0,20,0,20,40,"Ref_2","D1","G","A","",1,1,1,"Ref_1","ABC",57.93,"Ref_2, Ref_3",0,"Oryzomys perenensis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"218","Oryzomys seuanezi","Cricetidae",20,0,0,0,0,0,20,0,20,40,"Ref_2","D1","G","A","",1,1,1,"Ref_1","ABC",57.93,"Ref_2, Ref_3",0,"Oryzomys seuanezi",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"219","Oryzomys yunganus","Cricetidae",20,0,0,0,0,0,20,0,20,40,"Ref_1","ABC","G","A","",1,1,1,"Ref_1","ABC",60.5,"Ref_117",1,"Oryzomys yunganus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"220","Oryzomys chapmani","Cricetidae",20,0,0,0,0,0,20,0,20,40,"Ref_1","ABC","G","A","",1,1,1,"Ref_1","ABC",50,"Ref_117",1,"Oryzomys chapmani",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"221","Oryzomys hammondi","Cricetidae",20,0,0,0,0,0,20,0,20,40,"Ref_1","ABC","G","A","",1,1,1,"Ref_1","ABC",60.5,"Ref_117",1,"Oryzomys hammondi",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"222","Oryzomys galapagoensis","Cricetidae",20,0,0,0,0,0,20,0,20,40,"Ref_1","ABC","G","A","",1,1,1,"Ref_1","ABC",63.51,"Ref_58",1,"Oryzomys galapagoensis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"223","Oryzomys emmonsae","Cricetidae",20,0,0,0,0,0,20,0,20,40,"Ref_2","D1","G","A","",1,1,1,"Ref_1","ABC",57.93,"Ref_2, Ref_3",0,"Oryzomys emmonsae",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"224","Oryzomys devius","Cricetidae",20,0,0,0,0,0,20,0,20,40,"Ref_1","ABC","G","A","",1,1,1,"Ref_1","ABC",57.93,"Ref_2, Ref_3",0,"Oryzomys devius",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"225","Oryzomys rhabdops","Cricetidae",20,0,0,0,0,0,20,0,20,40,"Ref_1","ABC","G","A","",1,1,1,"Ref_1","ABC",54.88,"Ref_178",2,"Oryzomys rhabdops",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"226","Oryzomys laticeps","Cricetidae",20,0,0,0,0,0,20,0,20,40,"Ref_1","ABC","G","A","",1,1,1,"Ref_1","ABC",49.11,"Ref_58",1,"Oryzomys laticeps",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"227","Oryzomys caracolus","Cricetidae",20,0,0,0,0,0,20,0,20,40,"Ref_2","D1","G","A","",1,1,1,"Ref_1","ABC",57.93,"Ref_2, Ref_3",0,"Oryzomys caracolus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"228","Oryzomys bolivaris","Cricetidae",20,0,0,0,0,0,20,0,20,40,"Ref_1","ABC","G","A","",1,1,1,"Ref_1","ABC",60.5,"Ref_117",1,"Oryzomys bolivaris",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"229","Oryzomys balneator","Cricetidae",20,0,0,0,0,0,20,0,20,40,"Ref_1","ABC","G","A","",1,1,1,"Ref_1","ABC",60.5,"Ref_117",1,"Oryzomys balneator",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"230","Oryzomys auriventer","Cricetidae",20,0,0,0,0,0,20,0,20,40,"Ref_1","ABC","G","A","",1,1,1,"Ref_1","ABC",60.5,"Ref_117",1,"Oryzomys auriventer",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"231","Oryzomys angouya","Cricetidae",20,0,0,0,0,0,20,0,20,40,"Ref_1","ABC","G","A","",1,1,1,"Ref_1","ABC",120.17,"Ref_58",1,"Oryzomys angouya",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"232","Oryzomys alfaroi","Cricetidae",20,0,0,0,0,0,20,0,20,40,"Ref_1","ABC","G","A","",1,1,1,"Ref_1","ABC",33.3,"Ref_117",1,"Oryzomys alfaroi",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"233","Oryzomys albigularis","Cricetidae",20,0,0,0,0,0,20,0,20,40,"Ref_1","ABC","G","A","",1,1,1,"Ref_1","ABC",60.5,"Ref_117",1,"Oryzomys albigularis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"234","Oryzomys curasoae","Cricetidae",20,0,0,0,0,0,20,0,20,40,"Ref_2","D1","G","A","",1,1,1,"Ref_1","ABC",57.93,"Ref_2, Ref_3",0,"Oryzomys curasoae",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"235","Oryzomys melanotis","Cricetidae",20,0,0,0,0,0,20,0,20,40,"Ref_1","ABC","G","A","",1,1,1,"Ref_1","ABC",50,"Ref_117",1,"Oryzomys melanotis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"236","Oryzomys saturatior","Cricetidae",20,0,0,0,0,0,20,0,20,40,"Ref_1","ABC","G","A","",1,1,1,"Ref_1","ABC",54.82,"Ref_178",2,"Oryzomys saturatior",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"237","Oryzomys russatus","Cricetidae",20,0,0,0,0,0,20,0,20,40,"Ref_1","ABC","G","A","",1,1,1,"Ref_1","ABC",60.5,"Ref_58",1,"Oryzomys russatus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"238","Oryzomys rostratus","Cricetidae",20,0,0,0,0,0,20,0,20,40,"Ref_1","ABC","G","A","",1,1,1,"Ref_1","ABC",43.5,"Ref_128",1,"Oryzomys rostratus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"239","Oryzomys polius","Cricetidae",20,0,0,0,0,0,20,0,20,40,"Ref_1","ABC","G","A","",1,1,1,"Ref_1","ABC",60.5,"Ref_117",1,"Oryzomys polius",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"240","Oryzomys nitidus","Cricetidae",20,0,0,0,0,0,20,0,20,40,"Ref_1","ABC","G","A","",1,1,1,"Ref_1","ABC",55.2,"Ref_117",1,"Oryzomys nitidus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"241","Oryzomys keaysi","Cricetidae",20,0,0,0,0,0,20,0,20,40,"Ref_1","ABC","G","A","",1,1,1,"Ref_1","ABC",58.3,"Ref_117",1,"Oryzomys keaysi",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"242","Oryzomys meridensis","Cricetidae",20,0,0,0,0,0,20,0,20,40,"Ref_2","D1","G","A","",1,1,1,"Ref_1","ABC",57.93,"Ref_2, Ref_3",0,"Oryzomys meridensis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"243","Oryzomys lamia","Cricetidae",20,0,0,0,0,0,20,0,20,40,"Ref_1","ABC","G","A","",1,1,1,"Ref_1","ABC",60.5,"Ref_117",1,"Oryzomys lamia",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"244","Oryzomys megacephalus","Cricetidae",20,0,0,0,0,0,20,0,20,40,"Ref_1","ABC","G","A","",1,1,1,"Ref_1","ABC",57,"Ref_58",1,"Oryzomys megacephalus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"245","Oryzomys marinhus","Cricetidae",20,0,0,0,0,0,20,0,20,40,"Ref_2","D1","G","A","",1,1,1,"Ref_1","ABC",57.93,"Ref_2, Ref_3",0,"Oryzomys marinhus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"246","Oryzomys maracajuensis","Cricetidae",20,0,0,0,0,0,20,0,20,40,"Ref_2","D1","G","A","",1,1,1,"Ref_1","ABC",57.93,"Ref_2, Ref_3",0,"Oryzomys maracajuensis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"247","Oryzomys macconnelli","Cricetidae",20,0,0,0,0,0,20,0,20,40,"Ref_1","ABC","G","A","",1,1,1,"Ref_1","ABC",58,"Ref_117",1,"Oryzomys macconnelli",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"248","Oryzomys levipes","Cricetidae",20,0,0,0,0,0,20,0,20,40,"Ref_1","ABC","G","A","",1,1,1,"Ref_1","ABC",60.5,"Ref_117",1,"Oryzomys levipes",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"249","Oryzomys legatus","Cricetidae",20,0,0,0,0,0,20,0,20,40,"Ref_1","ABC","G","A","",1,1,1,"Ref_1","ABC",61.5,"Ref_117",1,"Oryzomys legatus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"250","Oryzomys scotti","Cricetidae",20,0,0,0,0,0,20,0,20,40,"Ref_2","D1","G","A","",1,1,1,"Ref_1","ABC",57.93,"Ref_2, Ref_3",0,"Oryzomys scotti",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"251","Oxymycterus akodontius","Cricetidae",90,0,0,0,0,0,0,0,0,10,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",68,"Ref_117",1,"Oxymycterus akodontius",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"252","Paralomys gerbillus","Cricetidae",0,0,0,0,0,0,0,0,40,60,"Ref_1","ABC","G","A","",1,0,0,"Ref_3","D2",17.4,"Ref_58",1,"Paralomys gerbillus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"253","Pearsonomys annectens","Cricetidae",20,0,0,0,0,0,10,0,40,30,"Ref_3","D2","G","A","",1,0,0,"Ref_3","D2",38.74,"Ref_168",1,"Pearsonomys annectens",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"254","Sigmodon planifrons","Cricetidae",50,0,0,0,0,0,0,0,0,50,"Ref_2","D1","G","A","",1,1,1,"Ref_2","D1",130.37,"Ref_2, Ref_3",0,"Sigmodon planifrons",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"255","Sigmodon zanjonensis","Cricetidae",50,0,0,0,0,0,0,0,0,50,"Ref_2","D1","G","A","",1,1,1,"Ref_2","D1",130.37,"Ref_2, Ref_3",0,"Sigmodon zanjonensis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"256","Sigmodontomys aphrastus","Cricetidae",20,0,0,0,0,0,10,0,40,30,"Ref_3","D2","G","A","",1,0,0,"Ref_3","D2",71,"Ref_117",1,"Sigmodontomys aphrastus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"257","Thomasomys rhoadsi","Cricetidae",20,0,0,0,0,0,30,0,30,20,"Ref_2","D1","S","A","",1,0,0,"Ref_3","D2",77,"Ref_117",1,"Thomasomys rhoadsi",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"258","Acomys chudeaui","Muridae",10,0,0,0,30,0,0,0,10,50,"Ref_2","D1","G","A","",1,1,0,"Ref_1","ABC",28.81,"Ref_2, Ref_3",0,"Acomys chudeaui",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"259","Lophuromys zena","Muridae",80,0,10,0,0,0,0,0,0,10,"Ref_2","D1","G","A","",0,0,1,"Ref_1","ABC",36.5,"Ref_2, Ref_3",0,"Lophuromys zena",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"260","Lophuromys verhageni","Muridae",80,0,10,0,0,0,0,0,0,10,"Ref_2","D1","G","A","",0,0,1,"Ref_1","ABC",36.5,"Ref_2, Ref_3",0,"Lophuromys verhageni",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"261","Lophuromys aquilus","Muridae",80,0,10,0,0,0,0,0,0,10,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",36.5,"Ref_2, Ref_3",0,"Lophuromys aquilus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"262","Lophuromys angolensis","Muridae",80,0,10,0,0,0,0,0,0,10,"Ref_2","D1","G","A","",0,0,1,"Ref_1","ABC",36.5,"Ref_2, Ref_3",0,"Lophuromys angolensis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"263","Lophuromys ansorgei","Muridae",80,0,10,0,0,0,0,0,0,10,"Ref_2","D1","G","A","",0,0,1,"Ref_1","ABC",36.5,"Ref_2, Ref_3",0,"Lophuromys ansorgei",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"264","Lophuromys brunneus","Muridae",80,0,10,0,0,0,0,0,0,10,"Ref_2","D1","G","A","",0,0,1,"Ref_1","ABC",36.5,"Ref_2, Ref_3",0,"Lophuromys brunneus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"265","Lophuromys dudui","Muridae",80,0,10,0,0,0,0,0,0,10,"Ref_2","D1","G","A","",0,0,1,"Ref_1","ABC",36.5,"Ref_2, Ref_3",0,"Lophuromys dudui",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"266","Taterillus harringtoni","Muridae",50,0,0,0,0,0,0,0,50,0,"Ref_1","ABC","G","A","",1,0,0,"Ref_1","ABC",51.4,"Ref_2, Ref_3",0,"Taterillus harringtoni",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"267","Dipodillus simoni","Muridae",20,0,0,0,0,0,0,0,30,50,"Ref_1","ABC","G","A","",1,1,0,"Ref_1","ABC",17.4,"Ref_58",1,"Dipodillus simoni",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"268","Dipodillus maghrebi","Muridae",20,0,0,0,0,0,0,0,30,50,"Ref_1","ABC","G","A","",1,1,0,"Ref_1","ABC",23.63,"Ref_2, Ref_3",0,"Dipodillus maghrebi",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"269","Dipodillus zakariai","Muridae",20,0,0,0,0,0,0,0,30,50,"Ref_2","D1","G","A","",1,1,0,"Ref_1","ABC",35.95,"Ref_178",2,"Dipodillus zakariai",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"270","Dipodillus jamesi","Muridae",20,0,0,0,0,0,0,0,30,50,"Ref_1","ABC","G","A","",1,1,0,"Ref_1","ABC",23.63,"Ref_2, Ref_3",0,"Dipodillus jamesi",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"271","Dipodillus lowei","Muridae",20,0,0,0,0,0,0,0,30,50,"Ref_1","ABC","G","A","",1,1,0,"Ref_1","ABC",34.71,"Ref_178",2,"Dipodillus lowei",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"272","Dipodillus mackilligini","Muridae",20,0,0,0,0,0,0,0,30,50,"Ref_1","ABC","G","A","",1,1,0,"Ref_1","ABC",34.37,"Ref_178",2,"Dipodillus mackilligini",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"273","Dipodillus rupicola","Muridae",20,0,0,0,0,0,0,0,30,50,"Ref_2","D1","G","A","",1,1,0,"Ref_2","D1",23.63,"Ref_2, Ref_3",0,"Dipodillus rupicola",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"274","Dipodillus stigmonyx","Muridae",20,0,0,0,0,0,0,0,30,50,"Ref_1","ABC","G","A","",1,1,0,"Ref_1","ABC",35.91,"Ref_178",2,"Dipodillus stigmonyx",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"275","Dipodillus dasyurus","Muridae",20,0,0,0,0,0,0,0,30,50,"Ref_1","ABC","G","A","",1,1,0,"Ref_1","ABC",27.5,"Ref_58",1,"Dipodillus dasyurus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"276","Dipodillus campestris","Muridae",20,0,0,0,0,0,0,0,30,50,"Ref_1","ABC","G","A","",1,1,0,"Ref_1","ABC",27.58,"Ref_58",1,"Dipodillus campestris",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"277","Dipodillus bottai","Muridae",20,0,0,0,0,0,0,0,30,50,"Ref_1","ABC","G","A","",1,1,0,"Ref_1","ABC",35.1,"Ref_178",2,"Dipodillus bottai",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"278","Dipodillus harwoodi","Muridae",20,0,0,0,0,0,0,0,30,50,"Ref_1","ABC","G","A","",1,1,0,"Ref_1","ABC",23.63,"Ref_2, Ref_3",0,"Dipodillus harwoodi",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"279","Dipodillus somalicus","Muridae",20,0,0,0,0,0,0,0,30,50,"Ref_1","ABC","G","A","",1,1,0,"Ref_1","ABC",36.01,"Ref_178",2,"Dipodillus somalicus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"280","Gerbillus mauritaniae","Muridae",20,0,0,0,0,0,0,0,30,50,"Ref_1","ABC","G","A","",1,1,0,"Ref_1","ABC",23.26,"Ref_2, Ref_3",0,"Gerbillus mauritaniae",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"281","Gerbillus dongolanus","Muridae",20,0,0,0,0,0,0,0,30,50,"Ref_1","ABC","G","A","",1,1,0,"Ref_1","ABC",23.26,"Ref_2, Ref_3",0,"Gerbillus dongolanus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"282","Gerbillus garamantis","Muridae",20,0,0,0,0,0,0,0,30,50,"Ref_1","ABC","G","A","",1,1,0,"Ref_1","ABC",23.26,"Ref_2, Ref_3",0,"Gerbillus garamantis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"283","Gerbillus vivax","Muridae",20,0,0,0,0,0,0,0,30,50,"Ref_1","ABC","G","A","",1,1,0,"Ref_1","ABC",23.26,"Ref_2, Ref_3",0,"Gerbillus vivax",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"284","Gerbillus syrticus","Muridae",20,0,0,0,0,0,0,0,30,50,"Ref_1","ABC","G","A","",1,1,0,"Ref_1","ABC",23.26,"Ref_2, Ref_3",0,"Gerbillus syrticus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"285","Archboldomys musseri","Muridae",100,0,0,0,0,0,0,0,0,0,"Ref_2","D1","G","A","",0,0,1,"Ref_1","ABC",35.4,"Ref_2, Ref_3",0,"Archboldomys musseri",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"286","Coccymys albidens","Muridae",0,0,0,0,0,0,0,0,0,100,"Ref_1","ABC","S","A","",1,0,0,"Ref_3","D2",40.4,"Ref_178",2,"Coccymys albidens",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"287","Dasymys rwandae","Muridae",0,0,0,0,0,0,0,0,0,100,"Ref_2","D1","G","A","",1,0,0,"Ref_2","D1",102.35,"Ref_2, Ref_3",0,"Dasymys rwandae",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"288","Dasymys sua","Muridae",0,0,0,0,0,0,0,0,0,100,"Ref_2","D1","G","A","",1,0,0,"Ref_2","D1",102.35,"Ref_2, Ref_3",0,"Dasymys sua",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"289","Dasymys alleni","Muridae",0,0,0,0,0,0,0,0,0,100,"Ref_2","D1","G","A","",1,0,0,"Ref_2","D1",102.35,"Ref_2, Ref_3",0,"Dasymys alleni",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"290","Dasymys cabrali","Muridae",0,0,0,0,0,0,0,0,0,100,"Ref_2","D1","G","A","",1,0,0,"Ref_2","D1",102.35,"Ref_2, Ref_3",0,"Dasymys cabrali",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"291","Dephomys eburneae","Muridae",10,0,0,0,0,0,90,0,0,0,"Ref_1","ABC","Ar","A","",1,0,0,"Ref_1","ABC",52.5,"Ref_58",1,"Dephomys eburneae",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"292","Grammomys poensis","Muridae",10,0,0,0,0,0,20,0,20,50,"Ref_1","ABC","Ar","A","",1,0,0,"Ref_1","ABC",50.03,"Ref_58",1,"Grammomys poensis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"293","Hydromys habbema","Muridae",50,10,10,30,0,0,0,0,0,0,"Ref_1","ABC","G","A","",1,1,1,"Ref_2","D1",136.19,"Ref_178",2,"Hydromys habbema",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"294","Hydromys shawmayeri","Muridae",50,10,10,30,0,0,0,0,0,0,"Ref_1","ABC","G","A","",1,1,1,"Ref_2","D1",141.42,"Ref_178",2,"Hydromys shawmayeri",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"295","Malpaisomys insularis","Muridae",10,0,0,0,0,0,10,0,20,60,"Ref_3","D2","G","A","",1,0,0,"Ref_3","D2",71.33,"Ref_2, Ref_3",0,"Malpaisomys insularis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"296","Melomys spechti","Muridae",0,0,0,0,0,0,60,0,0,40,"Ref_2","D1","G","A","",1,0,0,"Ref_1","ABC",86.68,"Ref_2, Ref_3",0,"Melomys spechti",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"297","Microhydromys musseri","Muridae",100,0,0,0,0,0,0,0,0,0,"Ref_1","ABC","G","A","",1,0,0,"Ref_3","D2",17.32,"Ref_178",2,"Microhydromys musseri",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"298","Mus orangiae","Muridae",20,0,0,0,0,0,0,0,20,60,"Ref_1","ABC","G","A","",1,0,0,"Ref_1","ABC",9.5,"Ref_178",2,"Mus orangiae",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"299","Papagomys theodorverhoeveni","Muridae",20,0,0,0,0,0,30,0,0,50,"Ref_1","ABC","G","A","",1,0,0,"Ref_3","D2",71.33,"Ref_2, Ref_3",0,"Papagomys theodorverhoeveni",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"300","Pogonomelomys bruijni","Muridae",10,0,0,0,0,0,10,0,20,60,"Ref_3","D2","S","A","",1,0,0,"Ref_1","ABC",82.01,"Ref_178",2,"Pogonomelomys bruijni",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"301","Pseudomys laborifex","Muridae",20,0,0,0,0,0,0,0,30,50,"Ref_1","ABC","G","A","",1,0,0,"Ref_1","ABC",12,"Ref_117",1,"Pseudomys laborifex",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"302","Rattus sanila","Muridae",30,0,0,0,0,0,20,0,40,10,"Ref_1","ABC","G","A","",1,0,0,"Ref_1","ABC",149.96,"Ref_2, Ref_3",0,"Rattus sanila",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"303","Rhagamys orthodon","Muridae",10,0,0,0,0,0,10,0,20,60,"Ref_3","D2","G","A","",1,0,0,"Ref_3","D2",71.33,"Ref_2, Ref_3",0,"Rhagamys orthodon",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"304","Solomys spriggsarum","Muridae",0,0,0,0,0,0,50,50,0,0,"Ref_1","ABC","Ar","A","",1,0,0,"Ref_3","D2",630.08,"Ref_2, Ref_3",0,"Solomys spriggsarum",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"305","Spelaeomys florensis","Muridae",40,0,0,0,0,0,0,0,0,60,"Ref_1","ABC","S","A","",1,0,0,"Ref_3","D2",71.33,"Ref_2, Ref_3",0,"Spelaeomys florensis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"306","Thamnomys major","Muridae",0,0,0,0,0,0,0,0,50,50,"Ref_2","D1","Ar","A","",1,0,0,"Ref_1","ABC",68.12,"Ref_2, Ref_3",0,"Thamnomys major",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"307","Zyzomys palatilis","Muridae",10,0,0,0,0,0,0,0,0,90,"Ref_1","ABC","G","A","",1,0,0,"Ref_1","ABC",123,"Ref_117",1,"Zyzomys palatilis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"308","Leimacomys buttneri","Muridae",20,0,0,0,0,0,0,0,0,80,"Ref_1","ABC","G","A","",1,0,0,"Ref_3","D2",55,"Ref_117",1,"Leimacomys buttneri",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"309","Myotomys sloggetti","Muridae",0,0,0,0,0,0,10,0,10,80,"Ref_1","ABC","G","A","",1,1,1,"Ref_1","ABC",106.25,"Ref_58",1,"Myotomys sloggetti",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"310","Myotomys unisulcatus","Muridae",0,0,0,0,0,0,10,0,10,80,"Ref_1","ABC","G","A","",1,1,1,"Ref_1","ABC",102.5,"Ref_58",1,"Myotomys unisulcatus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"311","Otomys saundersiae","Muridae",0,0,0,0,0,0,10,0,10,80,"Ref_1","ABC","G","A","",1,1,1,"Ref_1","ABC",103,"Ref_117",1,"Otomys saundersiae",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"312","Otomys orestes","Muridae",0,0,0,0,0,0,20,0,20,60,"Ref_2","D1","G","A","",1,1,1,"Ref_2","D1",127.2,"Ref_2, Ref_3",0,"Otomys orestes",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"313","Otomys maximus","Muridae",0,0,0,0,0,0,10,0,10,80,"Ref_1","ABC","G","A","",1,1,0,"Ref_1","ABC",192,"Ref_117",1,"Otomys maximus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"314","Otomys jacksoni","Muridae",0,0,0,0,0,0,20,0,20,60,"Ref_2","D1","G","A","",1,1,1,"Ref_2","D1",127.2,"Ref_2, Ref_3",0,"Otomys jacksoni",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"315","Otomys uzungwensis","Muridae",0,0,0,0,0,0,20,0,20,60,"Ref_2","D1","G","A","",1,1,1,"Ref_2","D1",127.2,"Ref_2, Ref_3",0,"Otomys uzungwensis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"316","Otomys dollmani","Muridae",0,0,0,0,0,0,20,0,20,60,"Ref_2","D1","G","A","",1,1,1,"Ref_2","D1",127.2,"Ref_2, Ref_3",0,"Otomys dollmani",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"317","Spalax nehringi","Spalacidae",0,0,0,0,0,0,0,0,30,70,"Ref_1","ABC","G","A","",1,0,0,"Ref_1","ABC",295.05,"Ref_2, Ref_3",0,"Spalax nehringi",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"318","Spalax leucodon","Spalacidae",0,0,0,0,0,0,0,0,30,70,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",188.67,"Ref_58",1,"Spalax leucodon",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"319","Spalax judaei","Spalacidae",0,0,0,0,0,0,0,0,20,80,"Ref_2","D1","G","A","",1,1,1,"Ref_2","D1",295.05,"Ref_2, Ref_3",0,"Spalax judaei",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"320","Spalax galili","Spalacidae",0,0,0,0,0,0,0,0,20,80,"Ref_2","D1","G","A","",1,1,1,"Ref_2","D1",295.05,"Ref_2, Ref_3",0,"Spalax galili",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"321","Spalax ehrenbergi","Spalacidae",0,0,0,0,0,0,0,0,30,70,"Ref_1","ABC","G","A","",1,0,0,"Ref_1","ABC",164.35,"Ref_58",1,"Spalax ehrenbergi",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"322","Spalax carmeli","Spalacidae",0,0,0,0,0,0,0,0,20,80,"Ref_2","D1","G","A","",1,1,1,"Ref_2","D1",295.05,"Ref_2, Ref_3",0,"Spalax carmeli",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"323","Spalax golani","Spalacidae",0,0,0,0,0,0,0,0,20,80,"Ref_2","D1","G","A","",1,1,1,"Ref_2","D1",295.05,"Ref_2, Ref_3",0,"Spalax golani",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"324","Tachyoryctes ibeanus","Spalacidae",0,0,0,0,0,0,0,0,0,100,"Ref_2","D1","G","A","",1,0,0,"Ref_1","ABC",309.95,"Ref_2, Ref_3",0,"Tachyoryctes ibeanus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"325","Tachyoryctes storeyi","Spalacidae",0,0,0,0,0,0,0,0,0,100,"Ref_2","D1","G","A","",1,0,0,"Ref_1","ABC",309.95,"Ref_2, Ref_3",0,"Tachyoryctes storeyi",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"326","Tachyoryctes spalacinus","Spalacidae",0,0,0,0,0,0,0,0,0,100,"Ref_1","ABC","G","A","",1,0,0,"Ref_1","ABC",309.95,"Ref_2, Ref_3",0,"Tachyoryctes spalacinus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"327","Tachyoryctes ruddi","Spalacidae",0,0,0,0,0,0,0,0,0,100,"Ref_1","ABC","G","A","",1,0,0,"Ref_1","ABC",309.95,"Ref_2, Ref_3",0,"Tachyoryctes ruddi",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"328","Tachyoryctes ruandae","Spalacidae",0,0,0,0,0,0,0,0,0,100,"Ref_1","ABC","G","A","",1,0,0,"Ref_1","ABC",309.95,"Ref_2, Ref_3",0,"Tachyoryctes ruandae",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"329","Tachyoryctes rex","Spalacidae",0,0,0,0,0,0,0,0,0,100,"Ref_1","ABC","G","A","",1,0,0,"Ref_1","ABC",309.95,"Ref_2, Ref_3",0,"Tachyoryctes rex",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"330","Tachyoryctes daemon","Spalacidae",0,0,0,0,0,0,0,0,0,100,"Ref_1","ABC","G","A","",1,0,0,"Ref_1","ABC",309.95,"Ref_2, Ref_3",0,"Tachyoryctes daemon",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"331","Tachyoryctes audax","Spalacidae",0,0,0,0,0,0,0,0,0,100,"Ref_1","ABC","G","A","",1,0,0,"Ref_1","ABC",235,"Ref_117",1,"Tachyoryctes audax",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"332","Tachyoryctes annectens","Spalacidae",0,0,0,0,0,0,0,0,0,100,"Ref_1","ABC","G","A","",1,0,0,"Ref_1","ABC",309.95,"Ref_2, Ref_3",0,"Tachyoryctes annectens",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"333","Tachyoryctes ankoliae","Spalacidae",0,0,0,0,0,0,0,0,0,100,"Ref_1","ABC","G","A","",1,0,0,"Ref_1","ABC",309.95,"Ref_2, Ref_3",0,"Tachyoryctes ankoliae",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"334","Tachyoryctes naivashae","Spalacidae",0,0,0,0,0,0,0,0,0,100,"Ref_1","ABC","G","A","",1,0,0,"Ref_1","ABC",309.95,"Ref_2, Ref_3",0,"Tachyoryctes naivashae",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"335","Cryptomys zechi","Bathyergidae",0,0,0,0,0,0,0,0,0,100,"Ref_1","ABC","G","A","",1,1,1,"Ref_1","ABC",223.06,"Ref_117",1,"Cryptomys zechi",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"336","Cryptomys ochraceocinereus","Bathyergidae",0,0,0,0,0,0,0,0,0,100,"Ref_1","ABC","G","A","",1,1,1,"Ref_1","ABC",200,"Ref_117",1,"Cryptomys ochraceocinereus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"337","Cryptomys mechowi","Bathyergidae",0,0,0,0,0,0,0,0,0,100,"Ref_1","ABC","G","A","",1,1,1,"Ref_1","ABC",272,"Ref_117",1,"Cryptomys mechowi",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"338","Cryptomys kafuensis","Bathyergidae",0,0,0,0,0,0,0,0,0,100,"Ref_2","D1","G","A","",1,1,1,"Ref_2","D1",125.41,"Ref_2, Ref_3",0,"Cryptomys kafuensis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"339","Cryptomys darlingi","Bathyergidae",0,0,0,0,0,0,0,0,0,100,"Ref_2","D1","G","A","",1,1,1,"Ref_1","ABC",65.58,"Ref_58",1,"Cryptomys darlingi",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"340","Cryptomys damarensis","Bathyergidae",0,0,0,0,0,0,0,0,0,100,"Ref_1","ABC","G","A","",1,1,1,"Ref_1","ABC",153.25,"Ref_117",1,"Cryptomys damarensis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"341","Cryptomys bocagei","Bathyergidae",0,0,0,0,0,0,0,0,0,100,"Ref_1","ABC","G","A","",1,1,1,"Ref_1","ABC",94,"Ref_117",1,"Cryptomys bocagei",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"342","Cryptomys foxi","Bathyergidae",0,0,0,0,0,0,0,0,0,100,"Ref_1","ABC","G","A","",1,1,1,"Ref_1","ABC",183.14,"Ref_178",2,"Cryptomys foxi",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"343","Cryptomys amatus","Bathyergidae",0,0,0,0,0,0,0,0,0,100,"Ref_2","D1","G","A","",1,1,1,"Ref_2","D1",76.74,"Ref_58",1,"Cryptomys amatus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"344","Cryptomys anselli","Bathyergidae",0,0,0,0,0,0,0,0,0,100,"Ref_2","D1","G","A","",1,1,1,"Ref_2","D1",85.59,"Ref_58",1,"Cryptomys anselli",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"345","Ctenomys budini","Ctenomyidae",0,0,0,0,0,0,0,0,0,100,"Ref_2","D1","G","A","",0,1,1,"Ref_2","D1",259.74,"Ref_2, Ref_3",0,"Ctenomys budini",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"346","Ctenomys sylvanus","Ctenomyidae",0,0,0,0,0,0,0,0,0,100,"Ref_2","D1","G","A","",0,1,1,"Ref_2","D1",259.74,"Ref_2, Ref_3",0,"Ctenomys sylvanus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"347","Diplomys rufodorsalis","Echimyidae",0,0,0,0,0,0,50,0,50,0,"Ref_1","ABC","S","A","",1,0,0,"Ref_1","ABC",144.8,"Ref_117",1,"Diplomys rufodorsalis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"348","Echimys semivillosus","Echimyidae",0,0,0,0,0,0,80,0,0,20,"Ref_1","ABC","Ar","A","",1,0,0,"Ref_1","ABC",200,"Ref_117",1,"Echimys semivillosus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"349","Makalata grandis","Echimyidae",0,0,0,0,0,0,80,0,0,20,"Ref_2","D1","S","A","",1,0,0,"Ref_1","ABC",584,"Ref_58",1,"Makalata grandis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"350","Makalata rhipidura","Echimyidae",0,0,0,0,0,0,80,0,0,20,"Ref_1","ABC","S","A","",1,0,0,"Ref_1","ABC",315,"Ref_58",1,"Makalata rhipidura",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"351","Makalata occasius","Echimyidae",0,0,0,0,0,0,80,0,0,20,"Ref_2","D1","S","A","",1,0,0,"Ref_1","ABC",322.29,"Ref_2, Ref_3",0,"Makalata occasius",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"352","Clyomys bishopi","Echimyidae",0,0,0,0,0,0,30,0,20,50,"Ref_3","D2","G","A","",1,0,0,"Ref_1","ABC",30,"Ref_117",1,"Clyomys bishopi",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"353","Proechimys trinitatus","Echimyidae",0,0,0,0,0,0,20,0,10,70,"Ref_1","ABC","G","A","",1,0,0,"Ref_1","ABC",296.15,"Ref_178",2,"Proechimys trinitatus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"354","Proechimys urichi","Echimyidae",0,0,0,0,0,0,20,0,10,70,"Ref_1","ABC","G","A","",1,0,0,"Ref_1","ABC",285,"Ref_117",1,"Proechimys urichi",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"355","Proechimys poliopus","Echimyidae",0,0,0,0,0,0,20,0,10,70,"Ref_1","ABC","G","A","",1,0,0,"Ref_1","ABC",285,"Ref_117",1,"Proechimys poliopus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"356","Proechimys magdalenae","Echimyidae",0,0,0,0,0,0,20,0,10,70,"Ref_1","ABC","G","A","",1,0,0,"Ref_1","ABC",285,"Ref_117",1,"Proechimys magdalenae",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"357","Trinomys myosuros","Echimyidae",0,0,0,0,0,0,20,0,10,70,"Ref_1","ABC","G","A","",1,0,0,"Ref_1","ABC",284.99,"Ref_58",1,"Trinomys myosuros",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"358","Brotomys contractus","Echimyidae",0,0,0,0,0,0,30,0,20,50,"Ref_3","D2","G","A","",1,0,0,"Ref_1","ABC",272.28,"Ref_2, Ref_3",0,"Brotomys contractus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"359","Heteropsomys antillensis","Echimyidae",0,0,0,0,0,0,30,0,20,50,"Ref_3","D2","G","A","",1,0,0,"Ref_1","ABC",272.28,"Ref_2, Ref_3",0,"Heteropsomys antillensis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"360","Coendou rothschildi","Erethizontidae",0,0,0,0,0,0,30,0,0,70,"Ref_1","ABC","Ar","A","",1,0,0,"Ref_1","ABC",2000,"Ref_117",1,"Coendou rothschildi",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"361","Echinoprocta rufescens","Erethizontidae",0,0,0,0,0,0,30,0,0,70,"Ref_3","D2","Ar","A","",1,0,0,"Ref_2","D1",831.8,"Ref_117",1,"Echinoprocta rufescens",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"362","Sphiggurus insidiosus","Erethizontidae",0,0,0,0,0,0,30,0,0,70,"Ref_1","ABC","Ar","A","",1,0,0,"Ref_1","ABC",1000,"Ref_117",1,"Sphiggurus insidiosus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"363","Sphiggurus villosus","Erethizontidae",0,0,0,0,0,0,30,0,0,70,"Ref_1","ABC","Ar","A","",1,0,0,"Ref_1","ABC",1750.01,"Ref_117",1,"Sphiggurus villosus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"364","Sphiggurus vestitus","Erethizontidae",0,0,0,0,0,0,30,0,0,70,"Ref_1","ABC","Ar","A","",1,0,0,"Ref_1","ABC",736,"Ref_117",1,"Sphiggurus vestitus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"365","Sphiggurus melanurus","Erethizontidae",0,0,0,0,0,0,30,0,0,70,"Ref_2","D1","Ar","A","",1,0,0,"Ref_2","D1",1900,"Ref_58",1,"Sphiggurus melanurus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"366","Sphiggurus roosmalenorum","Erethizontidae",0,0,0,0,0,0,30,0,0,70,"Ref_2","D1","Ar","A","",1,0,0,"Ref_2","D1",1242.24,"Ref_2, Ref_3",0,"Sphiggurus roosmalenorum",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"367","Sphiggurus mexicanus","Erethizontidae",0,0,0,0,0,0,30,0,0,70,"Ref_1","ABC","Ar","A","",1,0,0,"Ref_1","ABC",2000,"Ref_117",1,"Sphiggurus mexicanus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"368","Sphiggurus pruinosus","Erethizontidae",0,0,0,0,0,0,30,0,0,70,"Ref_2","D1","Ar","A","",1,0,0,"Ref_2","D1",1242.24,"Ref_2, Ref_3",0,"Sphiggurus pruinosus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"369","Sphiggurus ichillus","Erethizontidae",0,0,0,0,0,0,30,0,0,70,"Ref_2","D1","Ar","A","",1,0,0,"Ref_2","D1",1242.24,"Ref_2, Ref_3",0,"Sphiggurus ichillus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"370","Sphiggurus spinosus","Erethizontidae",0,0,0,0,0,0,30,0,0,70,"Ref_1","ABC","Ar","A","",1,0,0,"Ref_1","ABC",750.79,"Ref_117",1,"Sphiggurus spinosus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"371","Lagidium peruanum","Chinchillidae",0,0,0,0,0,0,0,0,0,100,"Ref_1","ABC","G","A","",0,1,0,"Ref_1","ABC",1220,"Ref_117",1,"Lagidium peruanum",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"372","Cavia porcellus","Caviidae",0,0,0,0,0,0,0,0,0,100,"Ref_1","ABC","G","A","",0,1,0,"Ref_1","ABC",728,"Ref_117",1,"Cavia porcellus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"373","Dasyprocta cristata","Dasyproctidae",10,0,0,0,0,0,40,0,0,50,"Ref_1","ABC","G","A","",0,1,1,"Ref_1","ABC",2650.03,"Ref_117",1,"Dasyprocta cristata",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"374","Pipanacoctomys aureus","Octodontidae",0,0,0,0,0,0,30,0,0,70,"Ref_3","D2","G","A","",0,0,1,"Ref_3","D2",136.62,"Ref_2, Ref_3",0,"Pipanacoctomys aureus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"375","Salinoctomys loschalchalerosorum","Octodontidae",0,0,0,0,0,0,30,0,0,70,"Ref_3","D2","G","A","",0,0,1,"Ref_3","D2",136.62,"Ref_2, Ref_3",0,"Salinoctomys loschalchalerosorum",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"376","Capromys gundlachianus","Capromyidae",0,0,0,0,0,0,30,0,0,70,"Ref_3","D2","G","A","",1,0,0,"Ref_3","D2",5650,"Ref_2, Ref_3",0,"Capromys gundlachianus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"377","Mesocapromys melanurus","Capromyidae",0,0,0,0,0,0,30,0,0,70,"Ref_3","D2","G","A","",0,0,1,"Ref_1","ABC",883.14,"Ref_178",2,"Mesocapromys melanurus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"378","Mysateles meridionalis","Capromyidae",0,0,0,0,0,0,30,0,0,70,"Ref_3","D2","Ar","A","",1,0,0,"Ref_1","ABC",884.61,"Ref_178",2,"Mysateles meridionalis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"379","Mysateles garridoi","Capromyidae",0,0,0,0,0,0,30,0,0,70,"Ref_3","D2","Ar","A","",1,0,0,"Ref_1","ABC",929.09,"Ref_178",2,"Mysateles garridoi",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"380","Plagiodontia araeum","Capromyidae",0,0,0,0,0,0,30,0,0,70,"Ref_2","D1","G","A","",1,0,0,"Ref_1","ABC",1267,"Ref_2, Ref_3",0,"Plagiodontia araeum",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"381","Rhizoplagiodontia lemkei","Capromyidae",0,0,0,0,0,0,30,0,0,70,"Ref_3","D2","G","A","",1,0,0,"Ref_3","D2",1350.1,"Ref_2, Ref_3",0,"Rhizoplagiodontia lemkei",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"382","Ochotona huangensis","Ochotonidae",0,0,0,0,0,0,0,0,0,100,"Ref_2","D1","G","A","",1,1,1,"Ref_2","D1",105.33,"Ref_58",1,"Ochotona huangensis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"383","Ochotona pallasi","Ochotonidae",0,0,0,0,0,0,0,0,0,100,"Ref_1","ABC","G","A","",1,1,1,"Ref_1","ABC",149.62,"Ref_178",2,"Ochotona pallasi",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"384","Ochotona gaoligongensis","Ochotonidae",0,0,0,0,0,0,0,0,0,100,"Ref_1","ABC","G","A","",1,1,1,"Ref_1","ABC",111.61,"Ref_178",2,"Ochotona gaoligongensis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"385","Ochotona muliensis","Ochotonidae",0,0,0,0,0,0,0,0,0,100,"Ref_1","ABC","G","A","",1,1,1,"Ref_1","ABC",182,"Ref_178",2,"Ochotona muliensis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"386","Ochotona nigritia","Ochotonidae",0,0,0,0,0,0,0,0,0,100,"Ref_2","D1","G","A","",1,1,1,"Ref_2","D1",142.15,"Ref_2, Ref_3",0,"Ochotona nigritia",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"387","Ochotona himalayana","Ochotonidae",0,0,0,0,0,0,0,0,0,100,"Ref_1","ABC","G","A","",1,1,1,"Ref_1","ABC",189.31,"Ref_178",2,"Ochotona himalayana",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"388","Lepus microtis","Leporidae",0,0,0,0,0,0,0,0,0,100,"Ref_1","ABC","G","A","",1,0,0,"Ref_1","ABC",1763.61,"Ref_58",1,"Lepus microtis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"389","Solenodon cubanus","Solenodontidae",30,10,20,0,0,0,20,0,0,20,"Ref_1","ABC","G","A","",1,0,0,"Ref_1","ABC",650,"Ref_117",1,"Solenodon cubanus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"390","Solenodon arredondoi","Solenodontidae",20,10,20,0,0,0,20,0,0,30,"Ref_2","D1","G","A","",1,0,0,"Ref_1","ABC",764.85,"Ref_2, Ref_3",0,"Solenodon arredondoi",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"391","Crocidura ichnusae","Soricidae",50,0,10,0,0,40,0,0,0,0,"Ref_1","ABC","G","A","",1,0,0,"Ref_1","ABC",10.35,"Ref_178",2,"Crocidura ichnusae",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"392","Suncus madagascariensis","Soricidae",80,0,0,0,10,10,0,0,0,0,"Ref_1","ABC","G","A","",1,0,0,"Ref_1","ABC",3.5,"Ref_117",1,"Suncus madagascariensis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"393","Sorex arunchi","Soricidae",70,0,0,0,0,30,0,0,0,0,"Ref_2","D1","G","A","",1,0,0,"Ref_1","ABC",6.05,"Ref_2, Ref_3",0,"Sorex arunchi",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"394","Sorex averini","Soricidae",70,0,0,0,0,30,0,0,0,0,"Ref_2","D1","G","A","",1,0,0,"Ref_1","ABC",6.05,"Ref_2, Ref_3",0,"Sorex averini",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"395","Sorex gaspensis","Soricidae",70,0,0,0,0,30,0,0,0,0,"Ref_1","ABC","G","A","",1,1,1,"Ref_1","ABC",2.89,"Ref_117",1,"Sorex gaspensis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"396","Blarina peninsulae","Soricidae",40,0,0,0,30,0,0,0,0,30,"Ref_2","D1","G","A","",1,1,1,"Ref_1","ABC",17.63,"Ref_2, Ref_3",0,"Blarina peninsulae",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"397","Cryptotis mera","Soricidae",40,0,30,0,0,30,0,0,0,0,"Ref_2","D1","G","A","",0,0,1,"Ref_1","ABC",7.72,"Ref_2, Ref_3",0,"Cryptotis mera",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"398","Nesiotites hidalgo","Soricidae",70,0,10,0,0,20,0,0,0,0,"Ref_3","D2","G","A","",1,0,0,"Ref_1","ABC",9.05,"Ref_2, Ref_3",0,"Nesiotites hidalgo",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"399","Nesiotites similis","Soricidae",70,0,10,0,0,20,0,0,0,0,"Ref_3","D2","G","A","",1,0,0,"Ref_1","ABC",9.05,"Ref_2, Ref_3",0,"Nesiotites similis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"400","Dobsonia magna","Pteropodidae",0,0,0,0,0,0,100,0,0,0,"Ref_2","D1","Ar","A","",1,0,0,"Ref_1","ABC",465,"Ref_58",1,"Dobsonia magna",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"401","Pteropus insularis","Pteropodidae",0,0,0,0,0,0,100,0,0,0,"Ref_1","ABC","Ar","A","",1,0,0,"Ref_1","ABC",282.86,"Ref_178",2,"Pteropus insularis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"402","Pteropus banakrisi","Pteropodidae",0,0,0,0,0,0,100,0,0,0,"Ref_2","D1","Ar","A","",1,0,0,"Ref_1","ABC",225,"Ref_140",1,"Pteropus banakrisi",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"403","Pteropus pelewensis","Pteropodidae",0,0,0,0,0,0,100,0,0,0,"Ref_2","D1","Ar","A","",1,0,0,"Ref_1","ABC",361.25,"Ref_2, Ref_3",0,"Pteropus pelewensis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"404","Pteropus yapensis","Pteropodidae",0,0,0,0,0,0,100,0,0,0,"Ref_2","D1","Ar","A","",1,0,0,"Ref_1","ABC",361.25,"Ref_2, Ref_3",0,"Pteropus yapensis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"405","Pteralopex acrodonta","Pteropodidae",0,0,0,0,0,0,40,40,20,0,"Ref_1","ABC","Ar","A","",1,0,0,"Ref_1","ABC",250.5,"Ref_117",1,"Pteralopex acrodonta",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"406","Rhinolophus monoceros","Rhinolophidae",100,0,0,0,0,0,0,0,0,0,"Ref_1","ABC","A","B","and gleaners",1,0,0,"Ref_1","ABC",10.62,"Ref_2, Ref_3",0,"Rhinolophus monoceros",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"407","Rhinolophus imaizumii","Rhinolophidae",100,0,0,0,0,0,0,0,0,0,"Ref_1","ABC","A","B","and gleaners",1,0,0,"Ref_1","ABC",10.62,"Ref_2, Ref_3",0,"Rhinolophus imaizumii",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"408","Rhinolophus cornutus","Rhinolophidae",100,0,0,0,0,0,0,0,0,0,"Ref_1","ABC","A","B","and gleaners",1,0,0,"Ref_1","ABC",7.2,"Ref_117",1,"Rhinolophus cornutus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"409","Paracoelops megalotis","Hipposideridae",100,0,0,0,0,0,0,0,0,0,"Ref_3","D2","S","B","judging from large ears, known from only one specimen",1,0,0,"Ref_1","ABC",5.67,"Ref_117",1,"Paracoelops megalotis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"410","Triaenops auritus","Hipposideridae",100,0,0,0,0,0,0,0,0,0,"Ref_2","D1","A","B","",1,1,0,"Ref_1","ABC",8.6,"Ref_2, Ref_3",0,"Triaenops auritus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"411","Triaenops furculus","Hipposideridae",100,0,0,0,0,0,0,0,0,0,"Ref_1","ABC","A","B","",1,1,0,"Ref_1","ABC",5.56,"Ref_58",1,"Triaenops furculus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"412","Micronycteris homezi","Phyllostomidae",80,0,0,0,0,0,20,0,0,0,"Ref_2","D1","S","B","surface vs. scansorial unknown",1,0,0,"Ref_1","ABC",6.8,"Ref_160",1,"Micronycteris homezi",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"413","Mimon crenulatum","Phyllostomidae",50,0,0,0,0,0,50,0,0,0,"Ref_1","ABC","S","B","surface vs. scansorial unknown",1,0,0,"Ref_1","ABC",13.75,"Ref_117",1,"Mimon crenulatum",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"414","Mimon koepckeae","Phyllostomidae",60,10,0,0,0,0,30,0,0,0,"Ref_2","D1","S","B","surface vs. scansorial unknown",1,0,0,"Ref_1","ABC",18.61,"Ref_2, Ref_3",0,"Mimon koepckeae",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"415","Artibeus phaeotis","Phyllostomidae",10,0,0,0,0,0,80,10,0,0,"Ref_1","ABC","Ar","A","",1,0,0,"Ref_1","ABC",11.59,"Ref_117",1,"Artibeus phaeotis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"416","Artibeus cinereus","Phyllostomidae",10,0,0,0,0,0,80,10,0,0,"Ref_1","ABC","Ar","A","",1,0,0,"Ref_1","ABC",12.63,"Ref_117",1,"Artibeus cinereus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"417","Artibeus glaucus","Phyllostomidae",10,0,0,0,0,0,80,10,0,0,"Ref_1","ABC","Ar","A","",1,0,0,"Ref_1","ABC",11.06,"Ref_117",1,"Artibeus glaucus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"418","Artibeus gnomus","Phyllostomidae",10,0,0,0,0,0,80,10,0,0,"Ref_2","D1","Ar","A","",1,0,0,"Ref_1","ABC",10.06,"Ref_58",1,"Artibeus gnomus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"419","Artibeus incomitatus","Phyllostomidae",10,0,0,0,0,0,80,10,0,0,"Ref_2","D1","Ar","A","",1,0,0,"Ref_1","ABC",26.52,"Ref_2, Ref_3",0,"Artibeus incomitatus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"420","Artibeus aztecus","Phyllostomidae",10,0,0,0,0,0,80,10,0,0,"Ref_1","ABC","Ar","A","",1,0,0,"Ref_1","ABC",20.38,"Ref_117",1,"Artibeus aztecus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"421","Artibeus toltecus","Phyllostomidae",10,0,0,0,0,0,80,10,0,0,"Ref_1","ABC","Ar","A","",1,0,0,"Ref_1","ABC",15.4,"Ref_117",1,"Artibeus toltecus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"422","Artibeus watsoni","Phyllostomidae",10,0,0,0,0,0,80,10,0,0,"Ref_2","D1","Ar","A","",1,0,0,"Ref_1","ABC",11.2,"Ref_58",1,"Artibeus watsoni",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"423","Artibeus anderseni","Phyllostomidae",10,0,0,0,0,0,80,10,0,0,"Ref_1","ABC","Ar","A","",1,0,0,"Ref_1","ABC",138,"Ref_117",1,"Artibeus anderseni",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"424","Vampyressa brocki","Phyllostomidae",0,0,0,0,0,0,100,0,0,0,"Ref_1","ABC","Ar","A","",1,0,0,"Ref_1","ABC",10,"Ref_117",1,"Vampyressa brocki",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"425","Vampyressa nymphaea","Phyllostomidae",0,0,0,0,0,0,100,0,0,0,"Ref_1","ABC","Ar","A","",1,0,0,"Ref_1","ABC",11.8,"Ref_117",1,"Vampyressa nymphaea",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"426","Vampyressa bidens","Phyllostomidae",0,0,0,0,0,0,100,0,0,0,"Ref_1","ABC","Ar","A","",1,0,0,"Ref_1","ABC",11.6,"Ref_117",1,"Vampyressa bidens",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"427","Sturnira thomasi","Phyllostomidae",0,0,0,0,0,0,100,0,0,0,"Ref_1","ABC","Ar","A","",1,0,0,"Ref_1","ABC",21.66,"Ref_178",2,"Sturnira thomasi",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"428","Phyllonycteris major","Phyllostomidae",30,0,0,0,0,0,40,30,0,0,"Ref_2","D1","Ar","A","",1,0,0,"Ref_1","ABC",14.15,"Ref_2, Ref_3",0,"Phyllonycteris major",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"429","Carollia colombiana","Phyllostomidae",0,0,0,0,0,0,100,0,0,0,"Ref_2","D1","Ar","A","",1,0,0,"Ref_1","ABC",15.47,"Ref_2, Ref_3",0,"Carollia colombiana",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"430","Diclidurus isabellus","Emballonuridae",100,0,0,0,0,0,0,0,0,0,"Ref_1","ABC","A","A","",1,0,0,"Ref_1","ABC",14,"Ref_117",1,"Diclidurus isabellus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"431","Emballonura atrata","Emballonuridae",90,0,0,0,0,0,10,0,0,0,"Ref_1","ABC","A","A","",0,1,1,"Ref_1","ABC",4.55,"Ref_58",1,"Emballonura atrata",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"432","Chaerephon leucogaster","Molossidae",100,0,0,0,0,0,0,0,0,0,"Ref_2","D1","A","A","",1,0,0,"Ref_1","ABC",12.5,"Ref_129",1,"Chaerephon leucogaster",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"433","Chaerephon shortridgei","Molossidae",100,0,0,0,0,0,0,0,0,0,"Ref_2","D1","A","A","",1,0,0,"Ref_1","ABC",14.53,"Ref_2, Ref_3",0,"Chaerephon shortridgei",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"434","Molossus barnesi","Molossidae",100,0,0,0,0,0,0,0,0,0,"Ref_1","ABC","A","A","",1,0,0,"Ref_1","ABC",14.8,"Ref_160",1,"Molossus barnesi",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"435","Mormopterus loriae","Molossidae",100,0,0,0,0,0,0,0,0,0,"Ref_2","D1","A","A","",1,0,0,"Ref_1","ABC",7,"Ref_58",1,"Mormopterus loriae",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"436","Tadarida kuboriensis","Molossidae",100,0,0,0,0,0,0,0,0,0,"Ref_2","D1","A","A","",1,0,0,"Ref_1","ABC",26.8,"Ref_58",1,"Tadarida kuboriensis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"437","Tadarida australis","Molossidae",100,0,0,0,0,0,0,0,0,0,"Ref_1","ABC","A","A","",1,0,0,"Ref_1","ABC",31.8,"Ref_117",1,"Tadarida australis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"438","Eptesicus matroka","Vespertilionidae",100,0,0,0,0,0,0,0,0,0,"Ref_2","D1","A","A","",1,0,0,"Ref_1","ABC",6.57,"Ref_58",1,"Eptesicus matroka",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"439","Eptesicus nasutus","Vespertilionidae",100,0,0,0,0,0,0,0,0,0,"Ref_1","ABC","A","A","",1,0,0,"Ref_1","ABC",7.91,"Ref_117",1,"Eptesicus nasutus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"440","Rhogeessa gracilis","Vespertilionidae",100,0,0,0,0,0,0,0,0,0,"Ref_1","ABC","A","A","",1,0,0,"Ref_1","ABC",4.88,"Ref_178",2,"Rhogeessa gracilis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"441","Rhogeessa alleni","Vespertilionidae",100,0,0,0,0,0,0,0,0,0,"Ref_1","ABC","A","A","",1,0,0,"Ref_1","ABC",5.47,"Ref_178",2,"Rhogeessa alleni",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"442","Scotoecus hindei","Vespertilionidae",100,0,0,0,0,0,0,0,0,0,"Ref_1","ABC","A","B","",1,0,0,"Ref_1","ABC",10.41,"Ref_58",1,"Scotoecus hindei",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"443","Scotoecus albigula","Vespertilionidae",100,0,0,0,0,0,0,0,0,0,"Ref_1","ABC","A","B","",1,0,0,"Ref_1","ABC",10.08,"Ref_58",1,"Scotoecus albigula",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"444","Nyctophilus timoriensis","Vespertilionidae",100,0,0,0,0,0,0,0,0,0,"Ref_1","ABC","A","B","and gleaners",1,0,0,"Ref_1","ABC",11.73,"Ref_117",1,"Nyctophilus timoriensis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"445","Pipistrellus hesperus","Vespertilionidae",100,0,0,0,0,0,0,0,0,0,"Ref_1","ABC","A","A","",1,0,0,"Ref_1","ABC",3.7,"Ref_117",1,"Pipistrellus hesperus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"446","Pipistrellus deserti","Vespertilionidae",100,0,0,0,0,0,0,0,0,0,"Ref_1","ABC","A","A","",1,0,0,"Ref_1","ABC",6.2,"Ref_178",2,"Pipistrellus deserti",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"447","Pipistrellus subflavus","Vespertilionidae",100,0,0,0,0,0,0,0,0,0,"Ref_1","ABC","A","A","",1,0,0,"Ref_1","ABC",5.76,"Ref_117",1,"Pipistrellus subflavus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"448","Plecotus alpinus","Vespertilionidae",100,0,0,0,0,0,0,0,0,0,"Ref_2","D1","S","A","",1,0,0,"Ref_1","ABC",7.56,"Ref_2, Ref_3",0,"Plecotus alpinus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"449","Neoromicia somalicus","Vespertilionidae",100,0,0,0,0,0,0,0,0,0,"Ref_1","ABC","A","A","",1,0,0,"Ref_1","ABC",3.53,"Ref_58",1,"Neoromicia somalicus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"450","Neoromicia nanus","Vespertilionidae",100,0,0,0,0,0,0,0,0,0,"Ref_1","ABC","A","A","",1,0,0,"Ref_1","ABC",3.88,"Ref_58",1,"Neoromicia nanus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"451","Neoromicia brunneus","Vespertilionidae",100,0,0,0,0,0,0,0,0,0,"Ref_1","ABC","A","A","",1,0,0,"Ref_1","ABC",9.56,"Ref_178",2,"Neoromicia brunneus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"452","Falsistrellus affinis","Vespertilionidae",100,0,0,0,0,0,0,0,0,0,"Ref_1","ABC","A","A","",1,0,0,"Ref_1","ABC",10.23,"Ref_178",2,"Falsistrellus affinis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"453","Hypsugo bodenheimeri","Vespertilionidae",100,0,0,0,0,0,0,0,0,0,"Ref_1","ABC","A","A","",1,0,0,"Ref_1","ABC",2.73,"Ref_58",1,"Hypsugo bodenheimeri",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"454","Hypsugo pulveratus","Vespertilionidae",100,0,0,0,0,0,0,0,0,0,"Ref_1","ABC","A","A","",1,0,0,"Ref_1","ABC",5.53,"Ref_58",1,"Hypsugo pulveratus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"455","Hypsugo musciculus","Vespertilionidae",100,0,0,0,0,0,0,0,0,0,"Ref_1","ABC","A","A","",1,0,0,"Ref_1","ABC",5.12,"Ref_2, Ref_3",0,"Hypsugo musciculus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"456","Hypsugo imbricatus","Vespertilionidae",100,0,0,0,0,0,0,0,0,0,"Ref_1","ABC","A","A","",1,0,0,"Ref_1","ABC",6.29,"Ref_58",1,"Hypsugo imbricatus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"457","Hypsugo ariel","Vespertilionidae",100,0,0,0,0,0,0,0,0,0,"Ref_1","ABC","A","A","",1,0,0,"Ref_1","ABC",5.12,"Ref_2, Ref_3",0,"Hypsugo ariel",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"458","Hypsugo anchietae","Vespertilionidae",100,0,0,0,0,0,0,0,0,0,"Ref_1","ABC","A","A","",1,0,0,"Ref_1","ABC",9.56,"Ref_178",2,"Hypsugo anchietae",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"459","Hypsugo crassulus","Vespertilionidae",100,0,0,0,0,0,0,0,0,0,"Ref_1","ABC","A","A","",1,0,0,"Ref_1","ABC",6.09,"Ref_58",1,"Hypsugo crassulus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"460","Myotis hosonoi","Vespertilionidae",100,0,0,0,0,0,0,0,0,0,"Ref_1","ABC","A","A","",1,0,0,"Ref_1","ABC",7.74,"Ref_2, Ref_3",0,"Myotis hosonoi",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"461","Myotis ozensis","Vespertilionidae",100,0,0,0,0,0,0,0,0,0,"Ref_1","ABC","A","A","",1,0,0,"Ref_1","ABC",7.74,"Ref_2, Ref_3",0,"Myotis ozensis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"462","Myotis oxygnathus","Vespertilionidae",100,0,0,0,0,0,0,0,0,0,"Ref_2","D1","A","A","",1,0,0,"Ref_1","ABC",21.23,"Ref_58",1,"Myotis oxygnathus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"463","Myotis ricketti","Vespertilionidae",100,0,0,0,0,0,0,0,0,0,"Ref_1","ABC","A","A","",1,0,0,"Ref_1","ABC",7.74,"Ref_2, Ref_3",0,"Myotis ricketti",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"464","Myotis yesoensis","Vespertilionidae",100,0,0,0,0,0,0,0,0,0,"Ref_1","ABC","A","A","",1,0,0,"Ref_1","ABC",7.74,"Ref_2, Ref_3",0,"Myotis yesoensis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"465","Myotis abei","Vespertilionidae",100,0,0,0,0,0,0,0,0,0,"Ref_1","ABC","A","A","",1,0,0,"Ref_1","ABC",7.74,"Ref_2, Ref_3",0,"Myotis abei",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"466","Minopterus macrocneme","Vespertilionidae",100,0,0,0,0,0,0,0,0,0,"Ref_3","D2","A","A","",1,0,0,"Ref_1","ABC",9.83,"Ref_2, Ref_3",0,"Minopterus macrocneme",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"467","Harpiocephalus mordax","Vespertilionidae",100,0,0,0,0,0,0,0,0,0,"Ref_2","D1","A","A","",1,0,0,"Ref_1","ABC",16.31,"Ref_2, Ref_3",0,"Harpiocephalus mordax",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"468","Murina silvatica","Vespertilionidae",100,0,0,0,0,0,0,0,0,0,"Ref_1","ABC","A","A","",1,0,0,"Ref_1","ABC",5.92,"Ref_2, Ref_3",0,"Murina silvatica",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"469","Murina grisea","Vespertilionidae",100,0,0,0,0,0,0,0,0,0,"Ref_1","ABC","A","A","",1,0,0,"Ref_1","ABC",6.58,"Ref_178",2,"Murina grisea",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"470","Mormoops magna","Mormoopidae",100,0,0,0,0,0,0,0,0,0,"Ref_2","D1","A","A","",1,0,0,"Ref_1","ABC",11.72,"Ref_2, Ref_3",0,"Mormoops magna",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"471","Pteronotus pristinus","Mormoopidae",100,0,0,0,0,0,0,0,0,0,"Ref_2","D1","A","A","",1,0,0,"Ref_1","ABC",9.25,"Ref_2, Ref_3",0,"Pteronotus pristinus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"472","Manis temminckii","Manidae",100,0,0,0,0,0,0,0,0,0,"Ref_1","ABC","G","A","",1,0,0,"Ref_1","ABC",7179.93,"Ref_117",1,"Manis temminckii",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"473","Manis gigantea","Manidae",100,0,0,0,0,0,0,0,0,0,"Ref_1","ABC","G","A","",1,0,0,"Ref_1","ABC",32999.7,"Ref_117",1,"Manis gigantea",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"474","Manis tetradactyla","Manidae",100,0,0,0,0,0,0,0,0,0,"Ref_1","ABC","Ar","A","",1,0,0,"Ref_1","ABC",2749.98,"Ref_117",1,"Manis tetradactyla",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"475","Manis tricuspis","Manidae",100,0,0,0,0,0,0,0,0,0,"Ref_1","ABC","S","A","",1,0,0,"Ref_1","ABC",2066.67,"Ref_117",1,"Manis tricuspis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"476","Felis catus","Felidae",0,100,0,0,0,0,0,0,0,0,"Ref_112","ABC","G","A","",1,1,1,"Ref_1","ABC",2884.8,"Ref_58",1,"Felis catus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"477","Felis manul","Felidae",0,100,0,0,0,0,0,0,0,0,"Ref_1","ABC","G","A","",1,1,1,"Ref_1","ABC",3050,"Ref_58",1,"Felis manul",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"478","Leopardus braccatus","Felidae",0,100,0,0,0,0,0,0,0,0,"Ref_110","ABC","G","A","",1,1,1,"Ref_2","D1",5157.94,"Ref_2, Ref_3",0,"Leopardus braccatus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"479","Leopardus pajeros","Felidae",0,100,0,0,0,0,0,0,0,0,"Ref_110","ABC","G","A","",1,0,0,"Ref_1","ABC",5157.94,"Ref_2, Ref_3",0,"Leopardus pajeros",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"480","Leopardus jacobitus","Felidae",0,100,0,0,0,0,0,0,0,0,"Ref_1","ABC","G","A","",1,1,1,"Ref_1","ABC",8133.78,"Ref_58",1,"Leopardus jacobitus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"481","Prionailurus iriomotensis","Felidae",0,90,10,0,0,0,0,0,0,0,"Ref_110","ABC","S","A","",1,1,0,"Ref_1","ABC",3700,"Ref_123",1,"Prionailurus iriomotensis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"482","Profelis aurata","Felidae",0,100,0,0,0,0,0,0,0,0,"Ref_1","ABC","S","A","",1,1,1,"Ref_1","ABC",10650.01,"Ref_117",1,"Profelis aurata",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"483","Puma yagouaroundi","Felidae",10,80,0,0,0,0,10,0,0,0,"Ref_110","ABC","G","A","",0,1,1,"Ref_1","ABC",6875,"Ref_58",1,"Puma yagouaroundi",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"484","Uncia uncia","Felidae",0,100,0,0,0,0,0,0,0,0,"Ref_1","ABC","G","A","",0,1,1,"Ref_1","ABC",44167,"Ref_117",1,"Uncia uncia",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"485","Galerella sanguinea","Herpestidae",70,0,0,0,20,0,0,0,0,10,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",550,"Ref_117",1,"Galerella sanguinea",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"486","Galerella pulverulenta","Herpestidae",70,0,0,0,20,0,0,0,0,10,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",797,"Ref_117",1,"Galerella pulverulenta",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"487","Galerella flavescens","Herpestidae",70,0,0,0,20,0,0,0,0,10,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",750,"Ref_117",1,"Galerella flavescens",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"488","Galerella ochracea","Herpestidae",70,0,0,0,20,0,0,0,0,10,"Ref_2","D1","G","A","",0,0,1,"Ref_1","ABC",690.18,"Ref_2, Ref_3",0,"Galerella ochracea",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"489","Herpestes edwardsi","Herpestidae",20,30,30,0,10,0,10,0,0,0,"Ref_110","ABC","G","A","",1,1,1,"Ref_1","ABC",1304.67,"Ref_58",1,"Herpestes edwardsi",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"490","Hyaena brunnea","Hyaenidae",10,10,0,0,0,70,10,0,0,0,"Ref_1","ABC","G","A","",1,1,0,"Ref_1","ABC",42977.93,"Ref_58",1,"Hyaena brunnea",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"491","Monachus tropicalis","Phocidae",40,0,0,60,0,0,0,0,0,0,"Ref_20","ABC","M","A","",0,1,1,"Ref_2","D1",2e+05,"Ref_117",1,"Monachus tropicalis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"492","Monachus schauinslandi","Phocidae",30,0,0,70,0,0,0,0,0,0,"Ref_3","D2","M","A","",1,0,0,"Ref_1","ABC",223000,"Ref_117",1,"Monachus schauinslandi",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"493","Ictonyx libyca","Mustelidae",40,40,10,0,10,0,0,0,0,0,"Ref_1","ABC","G","A","",1,0,0,"Ref_1","ABC",2062.5,"Ref_117",1,"Ictonyx libyca",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"494","Aonyx cinerea","Mustelidae",80,0,10,10,0,0,0,0,0,0,"Ref_110","ABC","G","A","",1,0,0,"Ref_1","ABC",3527.59,"Ref_58",1,"Aonyx cinerea",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"495","Lutra nippon","Mustelidae",30,10,30,30,0,0,0,0,0,0,"Ref_1","ABC","G","A","aquatic",1,1,1,"Ref_1","ABC",6951.14,"Ref_2, Ref_3",0,"Lutra nippon",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"496","Otaria flavescens","Otariidae",40,0,0,60,0,0,0,0,0,0,"Ref_3","D2","M","A","",1,1,0,"Ref_115","ABC",193670.53,"Ref_58",1,"Otaria flavescens",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"497","Spilogale aquaticus","Mephitidae",40,40,0,0,0,0,0,0,0,20,"Ref_2","D1","G","A","",1,0,0,"Ref_2","D1",283.08,"Ref_2, Ref_3",0,"Spilogale aquaticus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"498","Bassaricyon beddardi","Procyonidae",20,10,0,0,0,0,70,0,0,0,"Ref_1","ABC","Ar","A","",1,1,0,"Ref_1","ABC",1235.01,"Ref_117",1,"Bassaricyon beddardi",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"499","Bassaricyon lasius","Procyonidae",20,10,0,0,0,0,70,0,0,0,"Ref_1","ABC","Ar","A","",1,1,0,"Ref_1","ABC",1200,"Ref_117",1,"Bassaricyon lasius",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"500","Bassaricyon pauli","Procyonidae",20,10,0,0,0,0,70,0,0,0,"Ref_1","ABC","Ar","A","",1,1,0,"Ref_1","ABC",1200,"Ref_117",1,"Bassaricyon pauli",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"501","Equus burchellii","Equidae",0,0,0,0,0,0,0,0,0,100,"Ref_1","ABC","G","A","",1,1,1,"Ref_1","ABC",276000,"Ref_117",1,"Equus burchellii",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"502","Equus caballus","Equidae",0,0,0,0,0,0,0,0,0,100,"Ref_1","ABC","G","A","",1,1,1,"Ref_1","ABC",250000,"Ref_117",1,"Equus caballus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"503","Equus asinus","Equidae",0,0,0,0,0,0,0,0,0,100,"Ref_1","ABC","G","A","",1,1,1,"Ref_1","ABC",244999.25,"Ref_117",1,"Equus asinus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"504","Sus salvanius","Suidae",10,0,0,0,10,10,0,0,10,60,"Ref_1","ABC","G","A","",1,1,0,"Ref_1","ABC",7718,"Ref_117",1,"Sus salvanius",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"505","Babyrousa bolabatuensis","Suidae",10,0,0,0,10,0,20,0,0,60,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",1e+05,"Ref_2, Ref_3",0,"Babyrousa bolabatuensis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"506","Hexaprotodon liberiensis","Hippopotamidae",0,0,0,0,0,0,10,0,0,90,"Ref_1","ABC","G","A","",1,1,0,"Ref_1","ABC",235001.16,"Ref_117",1,"Hexaprotodon liberiensis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"507","Camelus bactrianus","Camelidae",0,0,0,0,0,0,0,0,0,100,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",690000,"Ref_117",1,"Camelus bactrianus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"508","Camelus dromedarius","Camelidae",0,0,0,0,0,0,0,0,0,100,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",601000,"Ref_117",1,"Camelus dromedarius",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"509","Lama glama","Camelidae",0,0,0,0,0,0,0,0,0,100,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",142500,"Ref_117",1,"Lama glama",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"510","Neotragus moschatus","Bovidae",0,0,0,0,0,0,20,0,0,80,"Ref_1","ABC","G","A","",1,1,0,"Ref_1","ABC",6499.95,"Ref_117",1,"Neotragus moschatus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"511","Eudorcas rufina","Bovidae",0,0,0,0,0,0,0,0,20,80,"Ref_2","D1","G","A","",0,1,1,"Ref_1","ABC",40000,"Ref_117",1,"Eudorcas rufina",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"512","Gazella erlangeri","Bovidae",0,0,0,0,0,0,0,0,0,100,"Ref_1","ABC","G","A","",0,1,1,"Ref_1","ABC",20360.12,"Ref_2, Ref_3",0,"Gazella erlangeri",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"513","Saiga borealis","Bovidae",0,0,0,0,0,0,0,0,0,100,"Ref_1","ABC","G","A","",0,1,1,"Ref_1","ABC",29000,"Ref_2, Ref_3",0,"Saiga borealis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"514","Taurotragus oryx","Bovidae",0,0,0,0,0,0,30,0,0,70,"Ref_1","ABC","G","A","",0,1,1,"Ref_1","ABC",569993.63,"Ref_117",1,"Taurotragus oryx",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"515","Taurotragus derbianus","Bovidae",0,0,0,0,0,0,30,0,0,70,"Ref_1","ABC","G","A","",0,1,1,"Ref_1","ABC",680000,"Ref_117",1,"Taurotragus derbianus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"516","Bos frontalis","Bovidae",0,0,0,0,0,0,0,0,0,100,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",8e+05,"Ref_117",1,"Bos frontalis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"517","Bos grunniens","Bovidae",0,0,0,0,0,0,0,0,0,100,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",416500,"Ref_117",1,"Bos grunniens",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"518","Bos taurus","Bovidae",0,0,0,0,0,0,0,0,0,100,"Ref_1","ABC","G","A","",0,0,1,"Ref_1","ABC",9e+05,"Ref_117",1,"Bos taurus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"519","Bubalus bubalis","Bovidae",0,0,0,0,0,0,0,0,0,100,"Ref_1","ABC","G","A","",1,1,1,"Ref_1","ABC",431250,"Ref_117",1,"Bubalus bubalis",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"520","Alcelaphus caama","Bovidae",0,0,0,0,0,0,0,0,0,100,"Ref_1","ABC","G","A","",0,1,1,"Ref_1","ABC",176115.97,"Ref_58",1,"Alcelaphus caama",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"521","Alcelaphus lichtensteinii","Bovidae",0,0,0,0,0,0,0,0,0,100,"Ref_1","ABC","G","A","",0,1,1,"Ref_1","ABC",168695.66,"Ref_58",1,"Alcelaphus lichtensteinii",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"522","Damaliscus superstes","Bovidae",0,0,0,0,0,0,0,0,0,100,"Ref_1","ABC","G","A","",0,1,1,"Ref_1","ABC",120837.92,"Ref_2, Ref_3",0,"Damaliscus superstes",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"523","Damaliscus korrigum","Bovidae",0,0,0,0,0,0,0,0,0,100,"Ref_1","ABC","G","A","",0,1,1,"Ref_1","ABC",127194.87,"Ref_58",1,"Damaliscus korrigum",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"524","Capra hircus","Bovidae",0,0,0,0,0,0,0,0,0,100,"Ref_1","ABC","G","A","",0,1,1,"Ref_1","ABC",54250,"Ref_117",1,"Capra hircus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"525","Hemitragus jayakari","Bovidae",0,0,0,0,0,0,30,0,30,40,"Ref_1","ABC","G","A","",1,1,0,"Ref_1","ABC",23000,"Ref_117",1,"Hemitragus jayakari",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"526","Hemitragus hylocrius","Bovidae",0,0,0,0,0,0,0,0,0,100,"Ref_1","ABC","G","A","",1,1,0,"Ref_1","ABC",75000,"Ref_117",1,"Hemitragus hylocrius",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"527","Ovis aries","Bovidae",0,0,0,0,0,0,0,0,0,100,"Ref_1","ABC","G","A","",1,1,1,"Ref_1","ABC",50000,"Ref_117",1,"Ovis aries",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"528","Pseudois schaeferi","Bovidae",0,0,0,0,0,0,0,0,0,100,"Ref_1","ABC","G","A","",1,1,1,"Ref_1","ABC",29250,"Ref_117",1,"Pseudois schaeferi",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"529","Cephalophus brookei","Bovidae",0,0,0,0,0,0,20,0,20,60,"Ref_61","ABC","G","A","",1,0,0,"Ref_1","ABC",20863.36,"Ref_2, Ref_3",0,"Cephalophus brookei",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"530","Alces americanus","Cervidae",0,0,0,0,0,0,0,0,0,100,"Ref_1","ABC","G","A","",1,1,0,"Ref_2","D1",541460.44,"Ref_58",1,"Alces americanus",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"531","Przewalskium albirostris","Cervidae",0,0,0,0,0,0,0,0,0,100,"Ref_1","ABC","G","A","",1,1,1,"Ref_3","D2",161681.9,"Ref_58",1,"Przewalskium albirostris",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"532","Cephalorhynchus eutropia ","Delphinidae",20,0,0,80,0,0,0,0,0,0,"Ref_1","ABC","M","A","",0,0,1,"Ref_2","D1",45000,"Ref_117",1,"Cephalorhynchus eutropia ",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"533","Physeter catodon","Physeteridae",100,0,0,0,0,0,0,0,0,0,"Ref_1","ABC","M","A","",1,1,1,"Ref_3","D2",14025000,"Ref_117",1,"Physeter catodon",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"534","Platanista minor","Platanistidae",50,0,0,50,0,0,0,0,0,0,"Ref_77","ABC","M","A","Freshwater",1,1,1,"Ref_3","D2",83914.59,"Ref_117",1,"Platanista minor",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"535","","",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,"","","","","",NA,NA,NA,"","",NA,"",NA,"",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"536","","",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,"","","","","",NA,NA,NA,"","",NA,"",NA,"",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"537","","",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,"","","","","",NA,NA,NA,"","",NA,"",NA,"",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
