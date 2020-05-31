@@ -1,6 +1,6 @@
 ---
 title: "STAT434 Project Data Exploration"
-author: "Emma Barton"
+author: "Emma Barton and Ryan Vosbigian"
 date: "5/21/2020"
 output: html_document
 ---
@@ -31,11 +31,64 @@ pathway = "/Users/emmabarton/Desktop/spring_2020/STAT434/project/"
 ```{r load data}
 
 mammal_df = read.csv("cleaned_mammal_df.csv")
-bird_df = read.csv("cleaned_bird_df.csv")
+bird_df = read.csv("cleaned_bird_df_updated_5_29.csv")
+
 
 ```
 
+
 # Data Exploration
+
+```{r}
+#investigating mammals
+table(mammal_df$redlistCategory)
+
+table(mammal_df$redlistCategory,mammal_df$populationTrend)
+
+
+prop.table(table(mammal_df$redlistCategory,mammal_df$ForStrat.Value),2)*100 #makes a nice looking table with % by column
+#M - marine, G - ground level, including aquatic foraging (see ForStrat-Comment), S- scansorial, Ar - arboreal, A- aerial. 
+
+prop.table(table(mammal_df$redlistCategory,mammal_df$Diet.Inv),2)*100
+
+prop.table(table(mammal_df$redlistCategory,mammal_df$Diet.Scav),2)*100
+
+prop.table(table(mammal_df$redlistCategory,mammal_df$Diet.Nect),2)*100
+
+prop.table(table(mammal_df$redlistCategory,mammal_df$Diet.Seed),2)*100
+
+# investigating birds
+
+prop.table(table(bird_df$redlistCategory))*100
+
+
+prop.table(table(bird_df$redlistCategory,bird_df$populationTrend),2)*100
+
+
+prop.table(table(bird_df$redlistCategory,bird_df$Diet.Inv),2)*100
+
+
+prop.table(table(bird_df$redlistCategory,bird_df$Diet.Nect),2)*100
+
+
+prop.table(table(bird_df$redlistCategory,bird_df$Nocturnal),2)*100
+
+
+prop.table(table(bird_df$redlistCategory,bird_df$ForStrat.aerial),2)*100
+
+
+prop.table(table(bird_df$redlistCategory,bird_df$PelagicSpecialist),2)*100
+
+prop.table(table(bird_df$redlistCategory,bird_df$ForStrat.ground),2)*100
+
+
+prop.table(table(bird_df$redlistCategory,bird_df$ForStrat.midhigh),2)*100
+
+sapply(split(bird_df$BodyMass.Value,bird_df$redlistCategory),mean)
+sapply(split(bird_df$BodyMass.Value,bird_df$redlistCategory),length)
+
+
+```
 
 
 # Descriptive Statistics
