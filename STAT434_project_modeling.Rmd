@@ -13,7 +13,7 @@ Types of models to use:
 
 Classification models only (could conver classes to numeric 1 thru 4, but makes our prediction undesirable, plus not equal jumps between classes)
 
-  1. Logistic Regression (pairwise and one-versus-all)
+  1. Logistic Regression (pairwise/one-versus-one and one-versus-all)
   2. Linear Discriminant Analysis
   3. Quadratic Discriminant Analysis
   4. K-Nearest Neighbor
