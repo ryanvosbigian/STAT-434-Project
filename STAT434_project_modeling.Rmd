@@ -23,7 +23,13 @@ Classification models only (could conver classes to numeric 1 thru 4, but makes 
   8. Boosted Forests
   9. Neural Networks
   10. Support Vector Machines
-  11. Clustering??
+  
+Additional Considerations for Modeling
+
+  1. PCA of all diet and foraging variables
+    a. All diet variables are highly correlated, because they each sum up to 100. Thus, using PCA could really simplify the models considerably
+    b. Additionally, if PCA is performed on diet variables then the diet variables should not be scaled because they already are by nature of the data
+  2. 
   
 # Set Up
 
@@ -44,6 +50,8 @@ pathway = "/Users/emmabarton/Desktop/spring_2020/STAT434/project/"
 
 
 ```
+
+Loading data and combining exctinct species and critically endangered species. 
 
 ```{r load data}
 
