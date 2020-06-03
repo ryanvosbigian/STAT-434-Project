@@ -13,7 +13,7 @@ Types of models to use:
 
 Classification models only (could conver classes to numeric 1 thru 4, but makes our prediction undesirable, plus not equal jumps between classes)
 
-  1. Logistic Regression (pairwise/one-versus-one and one-versus-all)
+  1. Logistic Regression (pairwise/one-versus-one and one-versus-all)?
   2. Linear Discriminant Analysis
   3. Quadratic Discriminant Analysis
   4. K-Nearest Neighbor
@@ -58,13 +58,18 @@ Loading data and combining exctinct species and critically endangered species.
 mammal_df = read.csv("cleaned_mammal_df.csv")
 bird_df = read.csv("cleaned_bird_df_updated_5_29.csv")
 
-#combine "Extinct" & "Extinct in the Wild" into "Critically Endangered"
-mammal_df$redlistCategory = car::recode(mammal_df$redlistCategory,recodes = "'Extinct'='Critically Endangered';'Extinct in the Wild'='Critically Endangered'")
+#combine "Extinct" & "Extinct in the Wild" & "Critically Endangered" into "Endangered"
+mammal_df$redlistCategory = as.character(car::recode(mammal_df$redlistCategory,recodes = "'Extinct'='Endangered';'Extinct in the Wild'='Endangered';'Critically Endangered'='Endangered'"))
 
-bird_df$redlistCategory = car::recode(bird_df$redlistCategory,recodes = "'Extinct'='Critically Endangered';'Extinct in the Wild'='Critically Endangered'")
+bird_df$redlistCategory = as.character(car::recode(bird_df$redlistCategory,recodes = "'Extinct'='Endangered';'Extinct in the Wild'='Endangered';'Critically Endangered'='Endangered'"))
 
+#converting to as.factor
 
+mammal_df$Activity.Nocturnal = as.factor(mammal_df$Activity.Nocturnal)
+mammal_df$Activity.Crepuscular = as.factor(mammal_df$Activity.Crepuscular)
+mammal_df$Activity.Diurnal = as.factor(mammal_df$Activity.Diurnal)
 
+bird_df$Nocturnal = as.factor(bird_df$Nocturnal)
 ```
 
 # Preparing Data
@@ -95,12 +100,154 @@ mammal.test.df = mammal_df[-train_mammal,]
 bird.train.df = bird_df[train_bird,]
 bird.test.df = bird_df[-train_bird,]
 
+table(bird.train.df$redlistCategory)
+
+```
+
+
+## Testing PCA
+
+Creating data frames with Principle Components as columns
+
+```{r}
+
+
+pcbirddiet = prcomp(bird_df[,c(12:21)],scale=FALSE)
+
+pcbirdforage = prcomp(bird_df[,c(26:32)],scale=FALSE)
+
+pcmammal = prcomp(mammal_df[,c(4:13)],scale = FALSE)
+
+pcbird = prcomp(bird_df[,c(12:21,26:32)],scale=FALSE)
+
+summary(pcmammal)
+
+
+plot(cumsum(pcbirddiet$sdev^2/sum(pcbirddiet$sdev^2)), xlab="Principal  Component", ylab="Cumulative  Proportion  of Variance  Explained", ylim=c(0,1),type="b",main = "Bird Diet")
+
+plot(cumsum(pcmammal$sdev^2/sum(pcmammal$sdev^2)), xlab="Principal  Component", ylab="Cumulative  Proportion  of Variance  Explained", ylim=c(0,1),type="b",main = "Mammal Diet")
+
+
+plot(cumsum(pcbirdforage$sdev^2/sum(pcbirdforage$sdev^2)), xlab="Principal  Component", ylab="Cumulative  Proportion  of Variance  Explained", ylim=c(0,1),type="b",main = "Bird Foraging")
+
+plot(cumsum(pcbird$sdev^2/sum(pcbird$sdev^2)), xlab="Principal  Component", ylab="Cumulative  Proportion  of Variance  Explained", ylim=c(0,1),type="b",main = "Bird Foraging and Diet")
+
+
+colnames(pcbirddiet$x) = paste("Diet",colnames(pcbirddiet$x),sep = "")
+
+colnames(pcmammal$x) = paste("Diet",colnames(pcmammal$x),sep = "")
+
+colnames(pcbirdforage$x) = paste("For",colnames(pcbirdforage$x),sep = "")
+
+colnames(pcbird$x) = paste("DietFor",colnames(pcbird$x),sep = "")
+
+pc_bird_df = cbind(bird_df,
+                   cbind(pcbirddiet$x,
+                         cbind(pcbirdforage$x,pcbird$x)))
+
+pc_mammal_df = cbind(mammal_df,pcmammal$x)
+
+
+pc.mammal.train.df = pc_mammal_df[train_mammal,]
+pc.mammal.test.df = pc_mammal_df[-train_mammal,]
+
+pc.bird.train.df = pc_bird_df[train_bird,]
+pc.bird.test.df = pc_bird_df[-train_bird,]
+
 ```
 
 
 # 1: Logistic Regression
   
 # 2: Linear Discriminant Analysis
+
+Starting by using a bunch of variables and 
+
+
+```{r}
+
+library(MASS)
+
+
+bird_lda1 = lda(redlistCategory∼Diet.Inv + Diet.Vend + Diet.Vect + Diet.Vfish + Diet.Vunk + Diet.Scav + Diet.Fruit + Diet.Nect + Diet.Seed + Diet.PlantO + Diet.5Cat + ForStrat.watbelowsurf + ForStrat.wataroundsurf + ForStrat.aerial +  PelagicSpecialist + Nocturnal + BodyMass.Value,data=bird.train.df)
+
+bird_lda1_pred=predict(bird_lda1, bird.test.df)
+
+table(preds = bird_lda1_pred$class,truth = bird.test.df$redlistCategory)
+
+mean(bird_lda_pred$class!=bird.test.df$redlistCategory)
+#error rate 0.2279793
+colnames(pc.bird.train.df)
+#Using first 11 PCs for Diet and Foraging PCs, because that is where the elbow is in the graph above
+bird_lda_pca1 = lda(redlistCategory∼ DietForPC1 + DietForPC2 + DietForPC3 + DietForPC4 + DietForPC5 + DietForPC6 + DietForPC7 + DietForPC8 + DietForPC9 + DietForPC10 +DietForPC11 + Diet.5Cat +  PelagicSpecialist + Nocturnal + scale(BodyMass.Value),data=pc.bird.train.df)
+
+bird_lda_pca1_pred=predict(bird_lda_pca1, pc.bird.test.df)
+
+table(preds = bird_lda_pca1_pred$class,truth = bird.test.df$redlistCategory)
+
+mean(bird_lda_pca1_pred$class!=bird.test.df$redlistCategory)
+#error rate 0.2232124
+
+```
+# 3: Quadratic Discriminant Analysis
+
+Getting errors because I have way to many predictors in model.
+
+```{r}
+bird_qda1 = qda(redlistCategory∼Diet.Inv + Diet.Vend + Diet.Vect + Diet.Vfish + Diet.Vunk + Diet.Scav + Diet.Fruit + Diet.Nect + Diet.Seed + Diet.PlantO + ForStrat.watbelowsurf + ForStrat.wataroundsurf + ForStrat.aerial +  PelagicSpecialist + Nocturnal + scale(BodyMass.Value),data=bird.train.df)
+
+bird_qda1_pred=predict(bird_qda1, bird.test.df)
+
+table(preds = bird_qda1_pred$class,truth = bird.test.df$redlistCategory)
+
+mean(bird_qda_pred$class!=bird.test.df$redlistCategory)
+
+
+bird_qda_pca1 = qda(redlistCategory∼ DietForPC1 + DietForPC2 + DietForPC3 + DietForPC4 + DietForPC5 + DietForPC6 + DietForPC7 + DietForPC8 + DietForPC9 + DietForPC10 +DietForPC11 +  PelagicSpecialist + Nocturnal + scale(BodyMass.Value),data=pc.bird.train.df)
+
+bird_qda_pca1_pred=predict(bird_qda_pca1, pc.bird.test.df)
+
+table(preds = bird_qda_pca1_pred$class,truth = bird.test.df$redlistCategory)
+
+mean(bird_qda_pca1_pred$class!=bird.test.df$redlistCategory)
+#test error: 0.2945078
+
+
+
+```
+
+# 4: K-Nearest Neighbor
+
+```{r}
+
+
+
+```
+
+
+
+# 5: Classification Tree
+
+
+
+# 6: Bagged Trees
+
+# 7: Random Forests
+
+# 8: Boosted Forests
+
+# 9: Neural Networks
+
+# 10: Support Vector Machines
+
+
+
+
+
+```{r}
+
+```
+
 
 
 

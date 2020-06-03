@@ -74,15 +74,31 @@ prop.table(table(bird_df$redlistCategory,bird_df$Diet.Nect),2)*100
 prop.table(table(bird_df$redlistCategory,bird_df$Nocturnal),2)*100
 
 
-prop.table(table(bird_df$redlistCategory,bird_df$ForStrat.aerial),2)*100
 
 
 prop.table(table(bird_df$redlistCategory,bird_df$PelagicSpecialist),2)*100
 
-prop.table(table(bird_df$redlistCategory,bird_df$ForStrat.ground),2)*100
 
 
-prop.table(table(bird_df$redlistCategory,bird_df$ForStrat.midhigh),2)*100
+
+#Deciding which ones to include based on whether different redlistcategories have different percentages in each percentage of variable 
+
+prop.table(table(bird_df$redlistCategory,bird_df$ForStrat.watbelowsurf),2)*100 #include in model
+
+prop.table(table(bird_df$redlistCategory,bird_df$ForStrat.wataroundsurf),2)*100 # include in model
+ 
+prop.table(table(bird_df$redlistCategory,bird_df$ForStrat.ground),2)*100 #even across all categories so not including in model
+
+prop.table(table(bird_df$redlistCategory,bird_df$ForStrat.understory),2)*100 #pretty even across categories, not including
+
+prop.table(table(bird_df$redlistCategory,bird_df$ForStrat.midhigh),2)*100 #pretty even across categories, not including
+
+prop.table(table(bird_df$redlistCategory,bird_df$ForStrat.canopy),2)*100 # moderately even
+
+prop.table(table(bird_df$redlistCategory,bird_df$ForStrat.aerial),2)*100 #very high proportion in least concern, including
+
+
+
 
 sapply(split(bird_df$BodyMass.Value,bird_df$redlistCategory),mean)
 sapply(split(bird_df$BodyMass.Value,bird_df$redlistCategory),length)
