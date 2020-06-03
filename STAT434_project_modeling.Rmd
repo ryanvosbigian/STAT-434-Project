@@ -29,7 +29,8 @@ Additional Considerations for Modeling
   1. PCA of all diet and foraging variables
     a. All diet variables are highly correlated, because they each sum up to 100. Thus, using PCA could really simplify the models considerably
     b. Additionally, if PCA is performed on diet variables then the diet variables should not be scaled because they already are by nature of the data
-  2. 
+  2. Changing sensitivity of classifications so it is harder to be classified as Least Concern
+    a. ROC Curves for each model
   
 # Set Up
 
