@@ -6,14 +6,18 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
+
 knitr::opts_chunk$set(echo = TRUE)
+
 ```
 
 # Set Up
 
 ```{r load packages}
+
 library(tidyverse)
 library(Hmisc)
+
 ```
 
 ```{r set pathway}
@@ -25,48 +29,6 @@ pathway = "/Users/emmabarton/Desktop/spring_2020/STAT434/project/"
 
 # Ryan
 #pathway = "~/GitHub/"
-
-```
-
-## Old Code
-
-Old Code to match species
-```{r format species name}
-
-# fulldata_df=NULL
-# redlist_df$MSW05_Binomial = redlist_df$scientificName
-# amniote_df$MSW05_Binomial = paste(amniote_df$genus,amniote_df$species,sep = " ")
-# pantheria93_df$MSW05_Binomial = as.character(pantheria93_df$MSW05_Binomial)
-# 
-# redlist_df$MSW05_Binomial = as.character(gsub("^([^\\s]*\\s[^\\s]*)\\s.*$", "\\1",redlist_df$scientificName)) 
-# #https://stackoverflow.com/questions/7449564/regex-return-all-before-the-second-occurrence
-# #returns everything before the second space, so that we get the binomial
-# redlist_df$MSW05_Binomial[40:50]
-# 
-# fulldata_df = left_join(x = redlist_df,amniote_df,by="MSW05_Binomial")
-# 
-# fulldata_df = left_join(x = fulldata_df,pantheria93_df,by="MSW05_Binomial")
-# 
-# write.csv(fulldata_df,"fulldataset2.csv")
-
-```
-
-```{r check nas}
-
-# fulldata_df = read.csv("fulldataset.csv",header = TRUE)
-# 
-# 
-# # for (i in 1:ncol(fulldata_df)) {
-# #   fulldata_df[,i][fulldata_df[,i]== "-999" | fulldata_df[,i]=="NA"] = NA
-# # }
-# 
-# 
-# for (i in 1:ncol(fulldata_df)) {
-#   print(colnames(fulldata_df)[i])
-#   print(table(is.na(fulldata_df[,i])))
-# }
-# 
-# 
 
 ```
 
@@ -119,7 +81,7 @@ bird_df = read.csv("uncleaned_bird_df.csv")
 
 ## Data Cleaning
 
-```{r}
+```{r data dimensions}
 
 dim(mammal_df)
 dim(bird_df)
@@ -198,11 +160,10 @@ write.csv(bird_pred_df, "bird_pred_df.csv")
 
 ```
 
-
-
 Not having much luck matching these 500 mammal taxons. maybe just drop them??
+```{r matching extra mammal species}
 
-```{r matching MAMMAL species that didnt have a perfect match between the IUCN and EltonTraits databases}
+# matching MAMMAL species that didnt have a perfect match between the IUCN and EltonTraits databases
 mammal_pred_df = read.csv("mammal_pred_df.csv")
 
 syn_df = read.csv("asm-species-2020-05-27_containssynonymsfromeltontraits.csv")
@@ -258,8 +219,10 @@ Legend at bottom of table
 Taxon removed. This color indicates that the taxonomic concept is only present in the first checklist. The species was either removed entirely from the list, or may have been replaced by another taxon concept (eg, following a species split or a species lump).
  	Taxon added. This color indicates that the taxonomic concept is only present in the second checklist. The species was either entirely new to the checklist, or it may replace another concept (eg, following a species split or a species lump).
  	Name changed. This color indicates that the taxonomic concept is the same between the 2 versions (ie, that the names refers to the same population), but that the scientific, common or family name has been modified. 
+ 	
+```{r matching extra bird species}
 
-```{r matching BIRDS that didnt have a perfect match between the IUCN and EltonTraits databases}
+# matching BIRDS that didnt have a perfect match between the IUCN and EltonTraits databases
 mammal_pred_df = read.csv("mammal_pred_df.csv")
 
 bird_pred_df = read.csv("bird_pred_df.csv")
@@ -336,5 +299,47 @@ new_bird_df = new_bird_df %>%
 new_clean_bird_df = rbind(clean_bird_df,new_bird_df)
 
 write.csv(new_clean_bird_df,"cleaned_bird_df_updated_5_29.csv")
+
 ```
 
+## Old Code
+
+Old Code to match species
+```{r format species name}
+
+# fulldata_df=NULL
+# redlist_df$MSW05_Binomial = redlist_df$scientificName
+# amniote_df$MSW05_Binomial = paste(amniote_df$genus,amniote_df$species,sep = " ")
+# pantheria93_df$MSW05_Binomial = as.character(pantheria93_df$MSW05_Binomial)
+# 
+# redlist_df$MSW05_Binomial = as.character(gsub("^([^\\s]*\\s[^\\s]*)\\s.*$", "\\1",redlist_df$scientificName)) 
+# #https://stackoverflow.com/questions/7449564/regex-return-all-before-the-second-occurrence
+# #returns everything before the second space, so that we get the binomial
+# redlist_df$MSW05_Binomial[40:50]
+# 
+# fulldata_df = left_join(x = redlist_df,amniote_df,by="MSW05_Binomial")
+# 
+# fulldata_df = left_join(x = fulldata_df,pantheria93_df,by="MSW05_Binomial")
+# 
+# write.csv(fulldata_df,"fulldataset2.csv")
+
+```
+
+```{r check nas}
+
+# fulldata_df = read.csv("fulldataset.csv",header = TRUE)
+# 
+# 
+# # for (i in 1:ncol(fulldata_df)) {
+# #   fulldata_df[,i][fulldata_df[,i]== "-999" | fulldata_df[,i]=="NA"] = NA
+# # }
+# 
+# 
+# for (i in 1:ncol(fulldata_df)) {
+#   print(colnames(fulldata_df)[i])
+#   print(table(is.na(fulldata_df[,i])))
+# }
+# 
+# 
+
+```

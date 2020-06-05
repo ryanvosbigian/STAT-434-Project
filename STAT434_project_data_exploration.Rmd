@@ -33,7 +33,6 @@ pathway = "/Users/emmabarton/Desktop/spring_2020/STAT434/project/"
 mammal_df = read.csv("cleaned_mammal_df.csv")
 bird_df = read.csv("cleaned_bird_df_updated_5_29.csv")
 
-
 ```
 
 
@@ -97,12 +96,8 @@ prop.table(table(bird_df$redlistCategory,bird_df$ForStrat.canopy),2)*100 # moder
 
 prop.table(table(bird_df$redlistCategory,bird_df$ForStrat.aerial),2)*100 #very high proportion in least concern, including
 
-
-
-
 sapply(split(bird_df$BodyMass.Value,bird_df$redlistCategory),mean)
 sapply(split(bird_df$BodyMass.Value,bird_df$redlistCategory),length)
-
 
 ```
 

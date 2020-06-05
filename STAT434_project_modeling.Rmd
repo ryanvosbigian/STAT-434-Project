@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Types of models to use:
 
-Classification models only (could conver classes to numeric 1 thru 4, but makes our prediction undesirable, plus not equal jumps between classes)
+Classification models only (could convert classes to numeric 1 thru 4, but makes our prediction undesirable, plus not equal jumps between classes)
 
   1. Logistic Regression (pairwise/one-versus-one and one-versus-all)?
   2. Linear Discriminant Analysis
@@ -35,6 +35,7 @@ Additional Considerations for Modeling
 # Set Up
 
 ```{r load packages}
+
 library(tidyverse)
 
 ```
@@ -52,8 +53,7 @@ pathway = "/Users/emmabarton/Desktop/spring_2020/STAT434/project/"
 
 ```
 
-Loading data and combining exctinct species and critically endangered species. 
-
+Loading data and combining exctinct species and critically endangered species.
 ```{r load data}
 
 mammal_df = read.csv("cleaned_mammal_df.csv")
@@ -76,6 +76,7 @@ bird_df$Nocturnal = as.factor(bird_df$Nocturnal)
 # Preparing Data
 
 ```{r}
+
 #moving data deficient mammals to different data set
 data_deficient_mammals_df = mammal_df[mammal_df$redlistCategory == "Data Deficient",]
 #removing data deficient mammals
@@ -105,13 +106,10 @@ table(bird.train.df$redlistCategory)
 
 ```
 
-
 ## Testing PCA
 
 Creating data frames with Principle Components as columns
-
 ```{r}
-
 
 pcbirddiet = prcomp(bird_df[,c(12:21)],scale=FALSE)
 
@@ -157,18 +155,15 @@ pc.bird.test.df = pc_bird_df[-train_bird,]
 
 ```
 
-
 # 1: Logistic Regression
   
 # 2: Linear Discriminant Analysis
 
 Starting by using a bunch of variables and 
 
-
 ```{r}
 
 library(MASS)
-
 
 bird_lda1 = lda(redlistCategory∼Diet.Inv + Diet.Vend + Diet.Vect + Diet.Vfish + Diet.Vunk + Diet.Scav + Diet.Fruit + Diet.Nect + Diet.Seed + Diet.PlantO + Diet.5Cat + ForStrat.watbelowsurf + ForStrat.wataroundsurf + ForStrat.aerial +  PelagicSpecialist + Nocturnal + BodyMass.Value,data=bird.train.df)
 
@@ -190,11 +185,12 @@ mean(bird_lda_pca1_pred$class!=bird.test.df$redlistCategory)
 #error rate 0.2232124
 
 ```
+
 # 3: Quadratic Discriminant Analysis
 
 Getting errors because I have way to many predictors in model.
-
 ```{r}
+
 bird_qda1 = qda(redlistCategory∼Diet.Inv + Diet.Vend + Diet.Vect + Diet.Vfish + Diet.Vunk + Diet.Scav + Diet.Fruit + Diet.Nect + Diet.Seed + Diet.PlantO + ForStrat.watbelowsurf + ForStrat.wataroundsurf + ForStrat.aerial +  PelagicSpecialist + Nocturnal + scale(BodyMass.Value),data=bird.train.df)
 
 bird_qda1_pred=predict(bird_qda1, bird.test.df)
@@ -213,8 +209,6 @@ table(preds = bird_qda_pca1_pred$class,truth = bird.test.df$redlistCategory)
 mean(bird_qda_pca1_pred$class!=bird.test.df$redlistCategory)
 #test error: 0.2945078
 
-
-
 ```
 
 # 4: K-Nearest Neighbor
@@ -225,11 +219,7 @@ mean(bird_qda_pca1_pred$class!=bird.test.df$redlistCategory)
 
 ```
 
-
-
 # 5: Classification Tree
-
-
 
 # 6: Bagged Trees
 
