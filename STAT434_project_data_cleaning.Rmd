@@ -171,9 +171,6 @@ syn_df = read.csv("asm-species-2020-05-27_containssynonymsfromeltontraits.csv")
 #removing the empty columns from the missing IUCN join
 mammal_pred_df = mammal_pred_df[,1:27]
 
-
-
-
 #reformatting the deprecated.scientific name column from: {"herpestes javanica":":$2009"}
 
 #chopping off the first two characters
@@ -183,8 +180,6 @@ syn_df$Deprecated.Scientific = gsub('^."([^"]*[^"]*)".*$', "\\1",syn_df$Deprecat
 #capitalizing
 syn_df$Deprecated.Scientific = capitalize(syn_df$Deprecated.Scientific)
 
-View(syn_df)
-
 mammal_pred_df %>% 
   filter(!(scientificName %in% syn_df$Deprecated.Scientific)) %>% 
   unique()
@@ -192,7 +187,6 @@ mammal_pred_df %>%
 mammal_pred_df$scientificName = as.character(mammal_pred_df$scientificName)
 syn_df$Deprecated.Scientific = as.character(syn_df$Deprecated.Scientific)
 syn_df$Canonical.Sciname = as.character(syn_df$Canonical.Sciname)
-
 
 for (i in 1:nrow(mammal_pred_df)){
   sci_index = match(mammal_pred_df$scientificName[i],syn_df$Deprecated.Scientific)
@@ -203,17 +197,15 @@ for (i in 1:nrow(mammal_pred_df)){
   }
 }
 
-
 ```
 
 TaxonomicChanges_BirdLife_Avibase.csv was scrapped from avibase.bs-eoc.org
 https://avibase.bsc-eoc.org/compare.jsp?source1=birdlife&version1=BIRDLIFE03&source2=birdlife&version2=BIRDLIFE12&continent=&reg_type=9
 
-it is a table with that matches the Birdlife checklist version 3 (EltonTraits uses) with the HBW Birdlife Taxonomic Checklist v4 (which IUCN uses). Using this table to change names to the new taxonomic system to change the taxonomic system used in EltonTraits to the more updated v4. 
+It is a table with that matches the Birdlife checklist version 3 (EltonTraits uses) with the HBW Birdlife Taxonomic Checklist v4 (which IUCN uses). Using this table to change names to the new taxonomic system to change the taxonomic system used in EltonTraits to the more updated v4. 
 
 http://datazone.birdlife.org/species/taxonomy
 ^birdlife taxonomy
-
 
 Legend at bottom of table
 Taxon removed. This color indicates that the taxonomic concept is only present in the first checklist. The species was either removed entirely from the list, or may have been replaced by another taxon concept (eg, following a species split or a species lump).
@@ -242,9 +234,6 @@ bird_pred_df %>%
   filter((!scientificName %in% avibase_df$Scientific.name)) %>% 
   filter((!scientificName %in% avibase_ioc_df$Scientific.name)) %>%
   unique()
-
-
-  
 
 #changing to character to avoid errors
 bird_pred_df$scientificName = as.character(bird_pred_df$scientificName)
