@@ -5,6 +5,9 @@ date: "5/21/2020"
 output: html_document
 ---
 
+# Questions for Ryan
+How do we want to group the redlist categories - specifically should we group endangered with extinct, extinct in the wild, and critically endangered?
+
 ```{r setup, include=FALSE}
 
 knitr::opts_chunk$set(echo = TRUE)
@@ -42,7 +45,7 @@ bird_df = read.csv("cleaned_bird_df_updated_5_29.csv")
 
 Elton traits: diet, foraging strata, foraging time, and body size. 
 
-# Mammals
+## Mammals
 
 ```{r variables}
 
@@ -63,7 +66,7 @@ Redlist Category: Critically Endangered, Data Deficient, Endangered, Extinct, Ex
 
 ### Single Variable Distributions
 
-```{r mammal tables}
+```{r mammal single variable tables}
 
 # Response: Redlist Category
 table(mammal_df$redlistCategory)
@@ -87,57 +90,162 @@ The majority of species in our dataset are of least concern, followed by data de
 
 The majority of mammals have a bodymass less than 100g followed by a bodymass between 1069. There are some mammals with a bodymass orders of magnitude greater than 100,000g. 
 
-```{r mammal graphs}
+```{r mammal single variable graphs}
 
 # Body Mass Histogram
 ggplot(mammal_df, aes(BodyMass.Value)) + 
   geom_histogram(binwidth = 25000000) + 
   theme_classic()
 
+# Log Transformed Body Mass Histogram
+ggplot(mammal_df, aes(BodyMass.Value)) + 
+  geom_histogram() + 
+  scale_x_continuous(trans = "log") +
+  theme_classic()
 
 ```
 Because of the large disparity between large mammals with a much greater body mass than 100,000 and the majority of mammals, the distribution of bodymass is very skewed right. 
 
 ### Pairwise Relationships
 
-```{r mammal tables 2}
+```{r mammal explanatory vs response tables}
 
+# Redlist Category vs Population Trend
 table(mammal_df$redlistCategory, mammal_df$populationTrend)
 
+# Redlist Category vs Foraging Stratum 
 prop.table(table(mammal_df$redlistCategory,mammal_df$ForStrat.Value),2)*100 #makes a nice looking table with % by column
 
 ```
 
-```{r mammal graphs 2}
+```{r mammal explanatory vs response graphs}
 
-# Diet Graph
+# 1
+# Population Trend and Redlist Category Bar Plot
+mammal_df %>% 
+  mutate(
+    redlistCat2 = case_when(
+      redlistCategory == "Critically Endangered" ~ "Endangered or Extinct",
+      redlistCategory == "Endangered" ~ "Endangered or Extinct",
+      redlistCategory == "Extinct" ~ "Endangered or Extinct",
+      redlistCategory == "Extinct in the Wild" ~ "Endangered or Extinct",
+      TRUE ~ as.character(redlistCategory)
+    )
+  ) %>% 
+  ggplot(aes(populationTrend)) +
+    geom_bar(col = "black") +
+    facet_wrap(~redlistCat2) +
+    coord_flip() +
+    theme_classic()
+
+# 2
+# Redlist Category vs Body Mass Value Box Plot
+mammal_df %>% 
+  mutate(
+    redlistCat2 = case_when(
+      redlistCategory == "Critically Endangered" ~ "Endangered or Extinct",
+      redlistCategory == "Endangered" ~ "Endangered or Extinct",
+      redlistCategory == "Extinct" ~ "Endangered or Extinct",
+      redlistCategory == "Extinct in the Wild" ~ "Endangered or Extinct",
+      TRUE ~ as.character(redlistCategory)
+    )
+  ) %>% 
+  ggplot(aes(redlistCat2, BodyMass.Value)) +
+    geom_boxplot() +
+    coord_flip() +
+    scale_y_continuous(trans = "log") +
+    theme_classic()
+
+# 3 
+# Average Diet Percent Use vs Redlist Category Barplots
+mammal_df %>% 
+  mutate(
+    redlistCat2 = case_when(
+      redlistCategory == "Critically Endangered" ~ "Endangered or Extinct",
+      redlistCategory == "Endangered" ~ "Endangered or Extinct",
+      redlistCategory == "Extinct" ~ "Endangered or Extinct",
+      redlistCategory == "Extinct in the Wild" ~ "Endangered or Extinct",
+      TRUE ~ as.character(redlistCategory)
+    )
+  ) %>% 
+  gather(key = "diet_type", value = "percentage", Diet.Inv, Diet.Vend, 
+         Diet.Vect, Diet.Vfish, Diet.Vunk, Diet.Scav, Diet.Fruit, Diet.Nect,
+         Diet.Seed, Diet.PlantO) %>% 
+  ggplot(aes(diet_type, percentage)) +
+    stat_summary(geom = "bar", fun = mean, position = position_dodge(), 
+                 colour = "black", fill = "white",
+                 width = 0.7) +
+    stat_summary(geom = "errorbar", fun.data = mean_se, 
+                 position = position_dodge(0.7),
+                 width = 0.25) +
+    facet_wrap(~redlistCat2) +
+    coord_flip() +
+    theme_classic()
+
+# 4
+# Foraging Stratum and Redlist Category Bar Plot
+mammal_df %>% 
+  mutate(
+    redlistCat2 = case_when(
+      redlistCategory == "Critically Endangered" ~ "Endangered or Extinct",
+      redlistCategory == "Endangered" ~ "Endangered or Extinct",
+      redlistCategory == "Extinct" ~ "Endangered or Extinct",
+      redlistCategory == "Extinct in the Wild" ~ "Endangered or Extinct",
+      TRUE ~ as.character(redlistCategory)
+    )
+  ) %>% 
+  ggplot(aes(ForStrat.Value)) +
+    geom_bar(col = "black") +
+    facet_wrap(~redlistCat2) +
+    theme_classic()
+
+```
+1) The majority of endangered or extinct mammals (critically endangered, endangered, extinct, and extinct in the wild grouped into one category) have a decreasing population trend. The majority of vulnerable and near threatened mammals also have a decreasing population trend. The majority of least concern mammals have either a stable population trend or an unknown population trend. 
+
+It is very likely that the redlist category of a mammal is designated based on population trend knowledge. Many of the mammals in the least concern category may actually be more threatened than believed becasue their population trend is unknown.  
+
+2) Natural log transformed body mass value (g) vs redlist category. There are visually no major differences in body mass distributions between categories other than mammals categorized as least concern and data deficient seem to have more outliers with large body mass values. 
+
+3) Average percent use of each diet category for each redlist category. Averages appear similar across redlist categories. 
+
+4) Distribution of foraging stratum divided by redlist category. Mammals that are of least concern have a higher proportion of ground foragers. Other than this there are appear to be no major differences between the categories.      
+
+```{r mammal explanatory vs explanatory graphs}
+
+# 5
+# Average Percent Use of Each Diet Type
 mammal_df %>% 
   gather(key = "diet_type", value = "percentage", Diet.Inv, Diet.Vend, 
          Diet.Vect, Diet.Vfish, Diet.Vunk, Diet.Scav, Diet.Fruit, Diet.Nect,
          Diet.Seed, Diet.PlantO) %>% 
   ggplot(aes(diet_type, percentage)) + 
     stat_summary(geom = "bar", fun = mean, position = position_dodge(), 
-                 colour = "black", 
+                 colour = "black", fill = "white",
                  width = 0.7) +
-   stat_summary(geom = "errorbar", fun.data = mean_se, 
+    stat_summary(geom = "errorbar", fun.data = mean_se, 
                  position = position_dodge(0.7),
                  width = 0.25) +
     coord_flip() + 
     theme_classic()
 
-
-mammal_df %>% 
-  gather(key = "diet_type", value = "percentage", Diet.Inv, Diet.Vend, 
-         Diet.Vect, Diet.Vfish, Diet.Vunk, Diet.Scav, Diet.Fruit, Diet.Nect,
-         Diet.Seed, Diet.PlantO) %>% 
-  ggplot(aes(percentage)) + 
-    geom_bar() + 
-    facet_wrap(~diet_type, scales = "free_y") +
+# 6 
+# Activity vs Body Mass Boxplot
+mammal_df %>%
+  gather(key = "activity_type", value = "value", Activity.Nocturnal, 
+         Activity.Crepuscular, Activity.Diurnal) %>% 
+  filter(value == 1) %>% 
+  ggplot(aes(activity_type, BodyMass.Value)) +
+    geom_boxplot() +
+    scale_y_continuous(trans = "log") +
+    coord_flip() +
     theme_classic()
 
 ```
+5) Invertebrates were the diet component with the highest average percent use, followed by other plant parts and fruit.
 
-# Birds 
+6) Average body mass value for each activity type. Diurnal and Crepuscular have slightly larger median bodymass values. 
+
+## Birds 
 
 ```{r variables}
 
@@ -206,7 +314,4 @@ sapply(split(bird_df$BodyMass.Value,bird_df$redlistCategory),length)
 
 ```
 
-
 # Descriptive Statistics
-
-# Data Visualization 

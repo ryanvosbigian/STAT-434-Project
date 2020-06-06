@@ -53,56 +53,79 @@ pathway = "/Users/emmabarton/Desktop/spring_2020/STAT434/project/"
 
 ```
 
-Loading data and combining exctinct species and critically endangered species.
 ```{r load data}
 
 mammal_df = read.csv("cleaned_mammal_df.csv")
 bird_df = read.csv("cleaned_bird_df_updated_5_29.csv")
 
-#combine "Extinct" & "Extinct in the Wild" & "Critically Endangered" into "Endangered"
-mammal_df$redlistCategory = as.character(car::recode(mammal_df$redlistCategory,recodes = "'Extinct'='Endangered';'Extinct in the Wild'='Endangered';'Critically Endangered'='Endangered'"))
-
-bird_df$redlistCategory = as.character(car::recode(bird_df$redlistCategory,recodes = "'Extinct'='Endangered';'Extinct in the Wild'='Endangered';'Critically Endangered'='Endangered'"))
-
-#converting to as.factor
-
-mammal_df$Activity.Nocturnal = as.factor(mammal_df$Activity.Nocturnal)
-mammal_df$Activity.Crepuscular = as.factor(mammal_df$Activity.Crepuscular)
-mammal_df$Activity.Diurnal = as.factor(mammal_df$Activity.Diurnal)
-
-bird_df$Nocturnal = as.factor(bird_df$Nocturnal)
 ```
 
 # Preparing Data
 
-```{r}
+## Transforming Variables
 
-#moving data deficient mammals to different data set
+```{r changing variable types}
+
+# Converting mammal activity variables to factors 
+mammal_df$Activity.Nocturnal = as.factor(mammal_df$Activity.Nocturnal)
+mammal_df$Activity.Crepuscular = as.factor(mammal_df$Activity.Crepuscular)
+mammal_df$Activity.Diurnal = as.factor(mammal_df$Activity.Diurnal)
+
+# Converting bird activity variables to factors 
+bird_df$Nocturnal = as.factor(bird_df$Nocturnal)
+
+```
+
+```{r response variable transformations}
+
+# Combine "Extinct" & "Extinct in the Wild" & "Critically Endangered" into "Endangered"
+mammal_df$redlistCategory = as.character(car::recode(mammal_df$redlistCategory,recodes = "'Extinct'='Endangered';'Extinct in the Wild'='Endangered';'Critically Endangered'='Endangered'"))
+
+bird_df$redlistCategory = as.character(car::recode(bird_df$redlistCategory,recodes = "'Extinct'='Endangered';'Extinct in the Wild'='Endangered';'Critically Endangered'='Endangered'"))
+
+```
+
+```{r explanatory variable transformations}
+
+# Mammal Explanatory Variable Transformations
+mammal_df = mammal_df %>% 
+  mutate(
+    log_bodymass = log(BodyMass.Value)
+  )
+
+# Bird Explanatory Variable Transformations 
+
+```
+
+## Making Training and Test Datasets
+
+```{r separating data deficient observations}
+
+# Moving data deficient mammals to different data set
 data_deficient_mammals_df = mammal_df[mammal_df$redlistCategory == "Data Deficient",]
-#removing data deficient mammals
+# Removing data deficient mammals
 mammal_df = mammal_df[mammal_df$redlistCategory != "Data Deficient",]
 
-#moving data def birds to different dataset
+# Moving data def birds to different dataset
 data_deficient_birds_df = bird_df[bird_df$redlistCategory == "Data Deficient",]
-#removing data deficient birds
+# Removing data deficient birds
 bird_df = bird_df[bird_df$redlistCategory != "Data Deficient",]
 
-#creating indices for training sets
+```
 
+```{r creating test and training datasets}
+
+# Creating indices for training sets
 set.seed(10)
-
 train_mammal = sample(1:nrow(mammal_df),size = round(nrow(mammal_df)/2))
 train_bird = sample(1:nrow(bird_df),size = round(nrow(bird_df)/2))
 
-# creating training and test sets
-
+# Creating training and test sets
 mammal.train.df = mammal_df[train_mammal,]
 mammal.test.df = mammal_df[-train_mammal,]
 
 bird.train.df = bird_df[train_bird,]
 bird.test.df = bird_df[-train_bird,]
-
-table(bird.train.df$redlistCategory)
 
 ```
 
@@ -160,12 +183,11 @@ pc.bird.test.df = pc_bird_df[-train_bird,]
 # 2: Linear Discriminant Analysis
 
 Starting by using a bunch of variables and 
-
 ```{r}
 
 library(MASS)
 
-bird_lda1 = lda(redlistCategory∼Diet.Inv + Diet.Vend + Diet.Vect + Diet.Vfish + Diet.Vunk + Diet.Scav + Diet.Fruit + Diet.Nect + Diet.Seed + Diet.PlantO + Diet.5Cat + ForStrat.watbelowsurf + ForStrat.wataroundsurf + ForStrat.aerial +  PelagicSpecialist + Nocturnal + BodyMass.Value,data=bird.train.df)
+bird_lda1 = lda(redlistCategory ~ Diet.Inv + Diet.Vend + Diet.Vect + Diet.Vfish + Diet.Vunk + Diet.Scav + Diet.Fruit + Diet.Nect + Diet.Seed + Diet.PlantO + Diet.5Cat + ForStrat.watbelowsurf + ForStrat.wataroundsurf + ForStrat.aerial +  PelagicSpecialist + Nocturnal + BodyMass.Value,data=bird.train.df)
 
 bird_lda1_pred=predict(bird_lda1, bird.test.df)
 
@@ -175,7 +197,7 @@ mean(bird_lda_pred$class!=bird.test.df$redlistCategory)
 #error rate 0.2279793
 colnames(pc.bird.train.df)
 #Using first 11 PCs for Diet and Foraging PCs, because that is where the elbow is in the graph above
-bird_lda_pca1 = lda(redlistCategory∼ DietForPC1 + DietForPC2 + DietForPC3 + DietForPC4 + DietForPC5 + DietForPC6 + DietForPC7 + DietForPC8 + DietForPC9 + DietForPC10 +DietForPC11 + Diet.5Cat +  PelagicSpecialist + Nocturnal + scale(BodyMass.Value),data=pc.bird.train.df)
+bird_lda_pca1 = lda(redlistCategory ~ DietForPC1 + DietForPC2 + DietForPC3 + DietForPC4 + DietForPC5 + DietForPC6 + DietForPC7 + DietForPC8 + DietForPC9 + DietForPC10 +DietForPC11 + Diet.5Cat +  PelagicSpecialist + Nocturnal + scale(BodyMass.Value),data=pc.bird.train.df)
 
 bird_lda_pca1_pred=predict(bird_lda_pca1, pc.bird.test.df)
 
@@ -191,7 +213,7 @@ mean(bird_lda_pca1_pred$class!=bird.test.df$redlistCategory)
 Getting errors because I have way to many predictors in model.
 ```{r}
 
-bird_qda1 = qda(redlistCategory∼Diet.Inv + Diet.Vend + Diet.Vect + Diet.Vfish + Diet.Vunk + Diet.Scav + Diet.Fruit + Diet.Nect + Diet.Seed + Diet.PlantO + ForStrat.watbelowsurf + ForStrat.wataroundsurf + ForStrat.aerial +  PelagicSpecialist + Nocturnal + scale(BodyMass.Value),data=bird.train.df)
+bird_qda1 = qda(redlistCategory ~ Diet.Inv + Diet.Vend + Diet.Vect + Diet.Vfish + Diet.Vunk + Diet.Scav + Diet.Fruit + Diet.Nect + Diet.Seed + Diet.PlantO + ForStrat.watbelowsurf + ForStrat.wataroundsurf + ForStrat.aerial +  PelagicSpecialist + Nocturnal + scale(BodyMass.Value),data=bird.train.df)
 
 bird_qda1_pred=predict(bird_qda1, bird.test.df)
 
@@ -200,7 +222,7 @@ table(preds = bird_qda1_pred$class,truth = bird.test.df$redlistCategory)
 mean(bird_qda_pred$class!=bird.test.df$redlistCategory)
 
 
-bird_qda_pca1 = qda(redlistCategory∼ DietForPC1 + DietForPC2 + DietForPC3 + DietForPC4 + DietForPC5 + DietForPC6 + DietForPC7 + DietForPC8 + DietForPC9 + DietForPC10 +DietForPC11 +  PelagicSpecialist + Nocturnal + scale(BodyMass.Value),data=pc.bird.train.df)
+bird_qda_pca1 = qda(redlistCategory ~ DietForPC1 + DietForPC2 + DietForPC3 + DietForPC4 + DietForPC5 + DietForPC6 + DietForPC7 + DietForPC8 + DietForPC9 + DietForPC10 +DietForPC11 +  PelagicSpecialist + Nocturnal + scale(BodyMass.Value),data=pc.bird.train.df)
 
 bird_qda_pca1_pred=predict(bird_qda_pca1, pc.bird.test.df)
 
@@ -213,11 +235,9 @@ mean(bird_qda_pca1_pred$class!=bird.test.df$redlistCategory)
 
 # 4: K-Nearest Neighbor
 
-```{r}
+## Mammal K-Nearest Neighbor
 
-
-
-```
+## Bird K-Nearest Neighbor
 
 # 5: Classification Tree
 
@@ -234,10 +254,6 @@ mean(bird_qda_pca1_pred$class!=bird.test.df$redlistCategory)
 
 
 
-
-```{r}
-
-```
 
 
 

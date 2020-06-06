@@ -150,6 +150,18 @@ bird_df = bird_df %>%
 
 ```
 
+```{r change factor levels}
+
+mammal_df = mammal_df %>% 
+  mutate(
+    populationTrend = case_when(
+      populationTrend == "" ~ "Unknown",
+      TRUE ~ as.character(populationTrend)
+    )
+  )
+
+```
+
 ```{r write cleaned data}
 
 write.csv(mammal_df, "cleaned_mammal_df.csv")
