@@ -284,7 +284,6 @@ new_bird_df = new_bird_df %>%
   dplyr::select(-infraType, -infraName, -infraAuthority, 
          -redlistCriteria, -criteriaVersion)
 
-
 new_clean_bird_df = rbind(clean_bird_df,new_bird_df)
 
 write.csv(new_clean_bird_df,"cleaned_bird_df_updated_5_29.csv")

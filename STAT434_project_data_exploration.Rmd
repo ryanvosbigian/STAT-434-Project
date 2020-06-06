@@ -6,13 +6,17 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
+
 knitr::opts_chunk$set(echo = TRUE)
+
 ```
 
 # Set Up
 
 ```{r load packages}
+
 library(tidyverse)
+
 ```
 
 ```{r set pathway}
@@ -25,7 +29,6 @@ pathway = "/Users/emmabarton/Desktop/spring_2020/STAT434/project/"
 # Ryan
 #pathway = "~/GitHub/STAT-434---not-the-dodo-/"
 
-
 ```
 
 ```{r load data}
@@ -35,50 +38,152 @@ bird_df = read.csv("cleaned_bird_df_updated_5_29.csv")
 
 ```
 
-
 # Data Exploration
 
-```{r}
-#investigating mammals
+Elton traits: diet, foraging strata, foraging time, and body size. 
+
+# Mammals
+
+```{r variables}
+
+names(mammal_df)
+
+```
+Diet variables are the estimated percent use of Inv: invertebrates Vend: mammals and birds, Vect: reptiles, snakes, amphibians, salamanders, Vfish: fish, Vunk: general vertebrates or unknown, Scav: scavenge, garbage, offal, carcasses, trawlers, carrion, Fruit: fruit and drupes, Nect: nector, pollen, plant exudates, gums, Seed: seed, maize, nuts, spores, wheat, grains, Plant: other plant material. All diet categories should add to 100%.
+
+Diet source is a reference ID and diet certainty is the estimated reliability of the diet sources (see metadata for rankings).
+
+ForStrat.Value: One of five foraging stratum categories (marine, ground, scansorial, arboreal, aerial).
+
+Activity variables are binary 0:no, 1:yes. Nocturnal: night, Crepuscular: twilight, Diurnal: day. 
+
+Bodymass.Value: average adult body mass (g)
+
+Redlist Category: Critically Endangered, Data Deficient, Endangered, Extinct, Extinct in the Wild, Least Concern, Near Threatened, Vulnerable
+
+### Single Variable Distributions
+
+```{r mammal tables}
+
+# Response: Redlist Category
 table(mammal_df$redlistCategory)
 
-table(mammal_df$redlistCategory,mammal_df$populationTrend)
+# Body Mass distribution
+mammal_df %>% 
+  mutate(
+    bodymass_bin = case_when(
+      BodyMass.Value >= 100000 ~ ">=100,000",
+      BodyMass.Value < 100000 & BodyMass.Value >= 10000 ~ "10,000 - 100,000",
+      BodyMass.Value < 10000 & BodyMass.Value >= 1000 ~ "10,000 - 1,000",
+      BodyMass.Value < 1000 & BodyMass.Value >= 100 ~ "1,000 - 100",
+      BodyMass.Value < 100 ~ "<100"
+     )
+  ) %>% 
+  group_by(bodymass_bin) %>% 
+  dplyr::summarize(n = n())
 
+```
+The majority of species in our dataset are of least concern, followed by data deficient and vulnurable. However, combining critically endangered, endangered, extinct, and extinct in the wild results in 626 species.
+
+The majority of mammals have a bodymass less than 100g followed by a bodymass between 1069. There are some mammals with a bodymass orders of magnitude greater than 100,000g. 
+
+```{r mammal graphs}
+
+# Body Mass Histogram
+ggplot(mammal_df, aes(BodyMass.Value)) + 
+  geom_histogram(binwidth = 25000000) + 
+  theme_classic()
+
+
+```
+Because of the large disparity between large mammals with a much greater body mass than 100,000 and the majority of mammals, the distribution of bodymass is very skewed right. 
+
+### Pairwise Relationships
+
+```{r mammal tables 2}
+
+table(mammal_df$redlistCategory, mammal_df$populationTrend)
 
 prop.table(table(mammal_df$redlistCategory,mammal_df$ForStrat.Value),2)*100 #makes a nice looking table with % by column
-#M - marine, G - ground level, including aquatic foraging (see ForStrat-Comment), S- scansorial, Ar - arboreal, A- aerial. 
 
-prop.table(table(mammal_df$redlistCategory,mammal_df$Diet.Inv),2)*100
+```
 
-prop.table(table(mammal_df$redlistCategory,mammal_df$Diet.Scav),2)*100
+```{r mammal graphs 2}
 
-prop.table(table(mammal_df$redlistCategory,mammal_df$Diet.Nect),2)*100
+# Diet Graph
+mammal_df %>% 
+  gather(key = "diet_type", value = "percentage", Diet.Inv, Diet.Vend, 
+         Diet.Vect, Diet.Vfish, Diet.Vunk, Diet.Scav, Diet.Fruit, Diet.Nect,
+         Diet.Seed, Diet.PlantO) %>% 
+  ggplot(aes(diet_type, percentage)) + 
+    stat_summary(geom = "bar", fun = mean, position = position_dodge(), 
+                 colour = "black", 
+                 width = 0.7) +
+   stat_summary(geom = "errorbar", fun.data = mean_se, 
+                 position = position_dodge(0.7),
+                 width = 0.25) +
+    coord_flip() + 
+    theme_classic()
 
-prop.table(table(mammal_df$redlistCategory,mammal_df$Diet.Seed),2)*100
 
-# investigating birds
+mammal_df %>% 
+  gather(key = "diet_type", value = "percentage", Diet.Inv, Diet.Vend, 
+         Diet.Vect, Diet.Vfish, Diet.Vunk, Diet.Scav, Diet.Fruit, Diet.Nect,
+         Diet.Seed, Diet.PlantO) %>% 
+  ggplot(aes(percentage)) + 
+    geom_bar() + 
+    facet_wrap(~diet_type, scales = "free_y") +
+    theme_classic()
+
+```
+
+# Birds 
+
+```{r variables}
+
+names(bird_df)
+
+```
+Diet variables are the estimated percent use of Inv: invertebrates Vend: mammals and birds, Vect: reptiles, snakes, amphibians, salamanders, Vfish: fish, Vunk: general vertebrates or unknown, Scav: scavenge, garbage, offal, carcasses, trawlers, carrion, Fruit: fruit and drupes, Nect: nector, pollen, plant exudates, gums, Seed: seed, maize, nuts, spores, wheat, grains, Plant: other plant material. All diet categories should add to 100%.
+
+Diet.5Cat: assignment to one of five diet categories (PlantSeed, FruiNect, Invertebrate, VertFishScav, Omnivore)
+
+Foraging stratum variables are the estimated percent use of watbelowsurf: below water surface, wataroundsurf: on water surface, ground: ground, understory: below 2m in understory, midhigh: higher than 2m but below canopy, canopy: canopy, aerial: well above tree structures. All foraging stratum categories should add to 100%. 
+
+PelagicSpecialist: binary variable for foraging being mostly pelagic.
+
+Nocturnal: binary variable for night foraging
+
+Bodymass.Value: average adult body mass (g)
+
+Redlist Category: Critically Endangered, Data Deficient, Endangered, Extinct, Extinct in the Wild, Least Concern, Near Threatened, Vulnerable
+
+### Single Variable Distributions
+
+```{r}
+
+```
+
+### Pairwise Relationships
+
+```{r}
+
+```
+
+
+```{r investigate birds}
 
 prop.table(table(bird_df$redlistCategory))*100
 
-
 prop.table(table(bird_df$redlistCategory,bird_df$populationTrend),2)*100
-
 
 prop.table(table(bird_df$redlistCategory,bird_df$Diet.Inv),2)*100
 
-
 prop.table(table(bird_df$redlistCategory,bird_df$Diet.Nect),2)*100
-
 
 prop.table(table(bird_df$redlistCategory,bird_df$Nocturnal),2)*100
 
-
-
-
 prop.table(table(bird_df$redlistCategory,bird_df$PelagicSpecialist),2)*100
-
-
-
 
 #Deciding which ones to include based on whether different redlistcategories have different percentages in each percentage of variable 
 
