@@ -6,7 +6,9 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
+
 knitr::opts_chunk$set(echo = TRUE)
+
 ```
 
 Types of models to use:
@@ -37,6 +39,7 @@ Additional Considerations for Modeling
 ```{r load packages}
 
 library(tidyverse)
+library(class)
 
 ```
 
@@ -236,6 +239,7 @@ mean(bird_qda_pca1_pred$class!=bird.test.df$redlistCategory)
 # 4: K-Nearest Neighbor
 
 ## Mammal K-Nearest Neighbor
+
 
 ## Bird K-Nearest Neighbor
 
