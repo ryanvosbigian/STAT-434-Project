@@ -120,15 +120,15 @@ bird_df = bird_df[bird_df$redlistCategory != "Data Deficient",]
 
 # Creating indices for training sets
 set.seed(10)
-train_mammal = sample(1:nrow(mammal_df),size = round(nrow(mammal_df)/2))
-train_bird = sample(1:nrow(bird_df),size = round(nrow(bird_df)/2))
+train_mammal = sample(1:nrow(mammal_df), size = round(nrow(mammal_df)/2))
+train_bird = sample(1:nrow(bird_df), size = round(nrow(bird_df)/2))
 
 # Creating training and test sets
-mammal.train.df = mammal_df[train_mammal,]
-mammal.test.df = mammal_df[-train_mammal,]
+mammal_train_df = mammal_df[train_mammal,]
+mammal_test_df = mammal_df[-train_mammal,]
 
-bird.train.df = bird_df[train_bird,]
-bird.test.df = bird_df[-train_bird,]
+bird_train_df = bird_df[train_bird,]
+bird_test_df = bird_df[-train_bird,]
 
 ```
 
@@ -173,11 +173,11 @@ pc_bird_df = cbind(bird_df,
 pc_mammal_df = cbind(mammal_df,pcmammal$x)
 
 
-pc.mammal.train.df = pc_mammal_df[train_mammal,]
-pc.mammal.test.df = pc_mammal_df[-train_mammal,]
+pc_mammal_train_df = pc_mammal_df[train_mammal,]
+pc_mammal_test_df = pc_mammal_df[-train_mammal,]
 
-pc.bird.train.df = pc_bird_df[train_bird,]
-pc.bird.test.df = pc_bird_df[-train_bird,]
+pc_bird_train_df = pc_bird_df[train_bird,]
+pc_bird_test_df = pc_bird_df[-train_bird,]
 
 ```
 
@@ -190,23 +190,23 @@ Starting by using a bunch of variables and
 
 library(MASS)
 
-bird_lda1 = lda(redlistCategory ~ Diet.Inv + Diet.Vend + Diet.Vect + Diet.Vfish + Diet.Vunk + Diet.Scav + Diet.Fruit + Diet.Nect + Diet.Seed + Diet.PlantO + Diet.5Cat + ForStrat.watbelowsurf + ForStrat.wataroundsurf + ForStrat.aerial +  PelagicSpecialist + Nocturnal + BodyMass.Value,data=bird.train.df)
+bird_lda1 = lda(redlistCategory ~ Diet.Inv + Diet.Vend + Diet.Vect + Diet.Vfish + Diet.Vunk + Diet.Scav + Diet.Fruit + Diet.Nect + Diet.Seed + Diet.PlantO + Diet.5Cat + ForStrat.watbelowsurf + ForStrat.wataroundsurf + ForStrat.aerial +  PelagicSpecialist + Nocturnal + BodyMass.Value, data=bird_train_df)
 
-bird_lda1_pred=predict(bird_lda1, bird.test.df)
+bird_lda1_pred=predict(bird_lda1, bird_test_df)
 
-table(preds = bird_lda1_pred$class,truth = bird.test.df$redlistCategory)
+table(preds = bird_lda1_pred$class, truth = bird_test_df$redlistCategory)
 
-mean(bird_lda_pred$class!=bird.test.df$redlistCategory)
+mean(bird_lda_pred$class!=bird_test_df$redlistCategory)
 #error rate 0.2279793
-colnames(pc.bird.train.df)
+colnames(pc_bird_train_df)
 #Using first 11 PCs for Diet and Foraging PCs, because that is where the elbow is in the graph above
-bird_lda_pca1 = lda(redlistCategory ~ DietForPC1 + DietForPC2 + DietForPC3 + DietForPC4 + DietForPC5 + DietForPC6 + DietForPC7 + DietForPC8 + DietForPC9 + DietForPC10 +DietForPC11 + Diet.5Cat +  PelagicSpecialist + Nocturnal + scale(BodyMass.Value),data=pc.bird.train.df)
+bird_lda_pca1 = lda(redlistCategory ~ DietForPC1 + DietForPC2 + DietForPC3 + DietForPC4 + DietForPC5 + DietForPC6 + DietForPC7 + DietForPC8 + DietForPC9 + DietForPC10 +DietForPC11 + Diet.5Cat +  PelagicSpecialist + Nocturnal + scale(BodyMass.Value),data=pc_bird_train_df)
 
-bird_lda_pca1_pred=predict(bird_lda_pca1, pc.bird.test.df)
+bird_lda_pca1_pred=predict(bird_lda_pca1, pc_bird_test_df)
 
-table(preds = bird_lda_pca1_pred$class,truth = bird.test.df$redlistCategory)
+table(preds = bird_lda_pca1_pred$class, truth = bird_test_df$redlistCategory)
 
-mean(bird_lda_pca1_pred$class!=bird.test.df$redlistCategory)
+mean(bird_lda_pca1_pred$class != bird_test_df$redlistCategory)
 #error rate 0.2232124
 
 ```
@@ -216,22 +216,22 @@ mean(bird_lda_pca1_pred$class!=bird.test.df$redlistCategory)
 Getting errors because I have way to many predictors in model.
 ```{r}
 
-bird_qda1 = qda(redlistCategory ~ Diet.Inv + Diet.Vend + Diet.Vect + Diet.Vfish + Diet.Vunk + Diet.Scav + Diet.Fruit + Diet.Nect + Diet.Seed + Diet.PlantO + ForStrat.watbelowsurf + ForStrat.wataroundsurf + ForStrat.aerial +  PelagicSpecialist + Nocturnal + scale(BodyMass.Value),data=bird.train.df)
+bird_qda1 = qda(redlistCategory ~ Diet.Inv + Diet.Vend + Diet.Vect + Diet.Vfish + Diet.Vunk + Diet.Scav + Diet.Fruit + Diet.Nect + Diet.Seed + Diet.PlantO + ForStrat.watbelowsurf + ForStrat.wataroundsurf + ForStrat.aerial +  PelagicSpecialist + Nocturnal + scale(BodyMass.Value), data=bird_train_df)
 
-bird_qda1_pred=predict(bird_qda1, bird.test.df)
+bird_qda1_pred = predict(bird_qda1, bird_test_df)
 
-table(preds = bird_qda1_pred$class,truth = bird.test.df$redlistCategory)
+table(preds = bird_qda1_pred$class,truth = bird_test_df$redlistCategory)
 
-mean(bird_qda_pred$class!=bird.test.df$redlistCategory)
+mean(bird_qda_pred$class != bird.test.df$redlistCategory)
 
 
-bird_qda_pca1 = qda(redlistCategory ~ DietForPC1 + DietForPC2 + DietForPC3 + DietForPC4 + DietForPC5 + DietForPC6 + DietForPC7 + DietForPC8 + DietForPC9 + DietForPC10 +DietForPC11 +  PelagicSpecialist + Nocturnal + scale(BodyMass.Value),data=pc.bird.train.df)
+bird_qda_pca1 = qda(redlistCategory ~ DietForPC1 + DietForPC2 + DietForPC3 + DietForPC4 + DietForPC5 + DietForPC6 + DietForPC7 + DietForPC8 + DietForPC9 + DietForPC10 +DietForPC11 +  PelagicSpecialist + Nocturnal + scale(BodyMass.Value),data=pc_bird_train_df)
 
-bird_qda_pca1_pred=predict(bird_qda_pca1, pc.bird.test.df)
+bird_qda_pca1_pred = predict(bird_qda_pca1, pc_bird_test_df)
 
-table(preds = bird_qda_pca1_pred$class,truth = bird.test.df$redlistCategory)
+table(preds = bird_qda_pca1_pred$class, truth = bird_test_df$redlistCategory)
 
-mean(bird_qda_pca1_pred$class!=bird.test.df$redlistCategory)
+mean(bird_qda_pca1_pred$class != bird_test_df$redlistCategory)
 #test error: 0.2945078
 
 ```
@@ -240,6 +240,9 @@ mean(bird_qda_pca1_pred$class!=bird.test.df$redlistCategory)
 
 ## Mammal K-Nearest Neighbor
 
+```{r}
+
+```
 
 ## Bird K-Nearest Neighbor
 

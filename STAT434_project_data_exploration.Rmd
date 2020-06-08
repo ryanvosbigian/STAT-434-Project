@@ -6,7 +6,9 @@ output: html_document
 ---
 
 # Questions for Ryan
-How do we want to group the redlist categories - specifically should we group endangered with extinct, extinct in the wild, and critically endangered?
+How do we want to group the redlist categories - specifically should we group endangered with extinct, extinct in the wild, and critically endangered? Should we put near threatened and vulnerable in the same group?
+
+We might want to start the model building process with a higher proportion of training to test data.
 
 ```{r setup, include=FALSE}
 
