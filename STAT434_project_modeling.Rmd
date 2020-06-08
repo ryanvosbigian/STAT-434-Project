@@ -300,15 +300,28 @@ mammal_knn_test_df = mammal_knn_test_df %>%
 ```
 
 ### Variable Selection
-Explanatory Variables: Diet, Foraging Stratum, Activity, Body Mass, Population Trend
+Explanatory Variables: Diet, Foraging Stratum, Activity, Body Mass, Population Trend. It appears that you cannot make single explanatory variable KNN models.
 ```{r mammal knn variable selection}
 
-# KNN with all explanatory variables except foraging stratum
-mammal_knn = knn(mammal_knn_train_df[,c(4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 
-                                        20, 21, 41, 42, 43)],
-                 mammal_knn_test_df[,c(4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 
-                                       20, 21, 41, 42, 43)],
+mammal_knn_variables = list(c(4, 5, 6, 7, 8, 9, 10, 11, 12, 13), 
+                            c(41, 43),
+                            c(41, 42, 43),
+                            c(19, 20, 21, 41, 42, 43),
+                            c(4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 20, 21),
+                            c(4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 41, 42, 43),
+                            c(41, 42, 43, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 20, 21)) 
+test_errors = rep(0, length(mammal_knn_variables))
+
+for(i in 1:length(mammal_knn_variables)){
+  var = mammal_knn_variables[[i]]
+  mammal_knn = knn(mammal_knn_train_df[,var],
+                 mammal_knn_test_df[,var],
                  mammal_knn_train_df[,38], k=14)
+  test_errors[i] = mean(mammal_knn != mammal_knn_test_df$redlistCategory)
+}
+
+which.min(test_errors)
+mammal_knn_variables[[which.min(test_errors)]]
 
 ```
 
@@ -327,10 +340,8 @@ table(preds = mammal_knn, truth = mammal_knn_test_df$redlistCategory)
 
 test_errors = rep(0, 25)
 for(i in 1:25){
-  mammal_knn = knn(mammal_knn_train_df[,c(4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 
-                                          19, 20, 21, 41, 42, 43)],
-                 mammal_knn_test_df[,c(4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 
-                                       20, 21, 41, 42, 43)],
+  mammal_knn = knn(mammal_knn_train_df[,c(4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 41, 42, 43)],
+                 mammal_knn_test_df[,c(4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 41, 42, 43)],
                  mammal_knn_train_df[,38], k=i)
   test_errors[i] = mean(mammal_knn != mammal_knn_test_df$redlistCategory)
 }
@@ -339,10 +350,21 @@ which.min(test_errors)
 
 ```
 
+### Best Model
+
+```{r mammal best knn model}
+
+mammal_knn = knn(mammal_knn_train_df[,c(4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 41, 42, 43)],
+                 mammal_knn_test_df[,c(4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 41, 42, 43)],
+                 mammal_knn_train_df[,38], k=14)
+mean(mammal_knn != mammal_knn_test_df$redlistCategory)
+
+```
 
 ## Bird K-Nearest Neighbor
 
 ### Format Variables
+
 ```{r bird change factors to numeric}
 
 bird_knn_train_df = bird_train_df
@@ -353,6 +375,8 @@ bird_knn_test_df = bird_test_df
 ### Variable Selection
 
 ### Hyperparameter Tuning
+
+### Best Model
 
 # 5: Classification Tree
 
