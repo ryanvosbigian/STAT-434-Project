@@ -240,11 +240,119 @@ mean(bird_qda_pca1_pred$class != bird_test_df$redlistCategory)
 
 ## Mammal K-Nearest Neighbor
 
-```{r}
+### Format Variables
+For some reason the knn function cannot deal with explanatory variables as factors so we'll have to recode categorical variables such as ForStrat.Value
+```{r mammal change factors to numeric}
+
+# Create separate dataframes for KNN
+mammal_knn_train_df = mammal_train_df
+mammal_knn_test_df = mammal_test_df
+
+# Change factor variables to numeric
+mammal_knn_train_df = mammal_knn_train_df %>% 
+  mutate(
+    Activity.Diurnal = as.numeric(Activity.Diurnal),
+    Activity.Crepuscular = as.numeric(Activity.Crepuscular),
+    Activity.Nocturnal = as.numeric(Activity.Nocturnal),
+    
+    for_strat_num = case_when(
+      ForStrat.Value == "A" ~ 1,
+      ForStrat.Value == "Ar" ~ 2,
+      ForStrat.Value == "G" ~ 3,
+      ForStrat.Value == "M" ~ 4,
+      ForStrat.Value == "S" ~ 5
+      ),
+    for_strat_num = as.numeric(for_strat_num),
+    
+    pop_trend_num = case_when(
+      populationTrend == "Decreasing" ~ 1,
+      populationTrend == "Increasing" ~ 2,
+      populationTrend == "Stable" ~ 3,
+      populationTrend == "Unknown" ~ 4   
+      ),
+    pop_trend_num = as.numeric(pop_trend_num)
+  )
+
+mammal_knn_test_df = mammal_knn_test_df %>% 
+  mutate(
+    Activity.Diurnal = as.numeric(Activity.Diurnal),
+    Activity.Crepuscular = as.numeric(Activity.Crepuscular),
+    Activity.Nocturnal = as.numeric(Activity.Nocturnal),
+    
+    for_strat_num = case_when(
+      ForStrat.Value == "A" ~ 1,
+      ForStrat.Value == "Ar" ~ 2,
+      ForStrat.Value == "G" ~ 3,
+      ForStrat.Value == "M" ~ 4,
+      ForStrat.Value == "S" ~ 5
+      ),
+    for_strat_num = as.numeric(for_strat_num),
+    
+    pop_trend_num = case_when(
+      populationTrend == "Decreasing" ~ 1,
+      populationTrend == "Increasing" ~ 2,
+      populationTrend == "Stable" ~ 3,
+      populationTrend == "Unknown" ~ 4   
+      ),
+    pop_trend_num = as.numeric(pop_trend_num)
+  )
 
 ```
 
+### Variable Selection
+Explanatory Variables: Diet, Foraging Stratum, Activity, Body Mass, Population Trend
+```{r mammal knn variable selection}
+
+# KNN with all explanatory variables except foraging stratum
+mammal_knn = knn(mammal_knn_train_df[,c(4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 
+                                        20, 21, 41, 42, 43)],
+                 mammal_knn_test_df[,c(4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 
+                                       20, 21, 41, 42, 43)],
+                 mammal_knn_train_df[,38], k=14)
+
+```
+
+```{r mammal prediction and error rate}
+
+# Error Rate
+mean(mammal_knn != mammal_knn_test_df$redlistCategory)
+
+table(preds = mammal_knn, truth = mammal_knn_test_df$redlistCategory)
+
+```
+
+### Hyperparameter Tuning
+
+```{r mammal k value selection}
+
+test_errors = rep(0, 25)
+for(i in 1:25){
+  mammal_knn = knn(mammal_knn_train_df[,c(4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 
+                                          19, 20, 21, 41, 42, 43)],
+                 mammal_knn_test_df[,c(4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 
+                                       20, 21, 41, 42, 43)],
+                 mammal_knn_train_df[,38], k=i)
+  test_errors[i] = mean(mammal_knn != mammal_knn_test_df$redlistCategory)
+}
+
+which.min(test_errors)
+
+```
+
+
 ## Bird K-Nearest Neighbor
+
+### Format Variables
+```{r bird change factors to numeric}
+
+bird_knn_train_df = bird_train_df
+bird_knn_test_df = bird_test_df
+
+```
+
+### Variable Selection
+
+### Hyperparameter Tuning
 
 # 5: Classification Tree
 
