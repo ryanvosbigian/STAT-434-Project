@@ -40,6 +40,7 @@ Additional Considerations for Modeling
 
 library(tidyverse)
 library(class)
+library(tree)
 
 ```
 
@@ -73,9 +74,11 @@ bird_df = read.csv("cleaned_bird_df_updated_5_29.csv")
 mammal_df$Activity.Nocturnal = as.factor(mammal_df$Activity.Nocturnal)
 mammal_df$Activity.Crepuscular = as.factor(mammal_df$Activity.Crepuscular)
 mammal_df$Activity.Diurnal = as.factor(mammal_df$Activity.Diurnal)
+mammal_df$redlistCategory = as.factor(mammal_df$redlistCategory)
 
 # Converting bird activity variables to factors 
 bird_df$Nocturnal = as.factor(bird_df$Nocturnal)
+bird_df$redlistCategory = as.factor(bird_df$redlistCategory)
 
 ```
 
@@ -379,6 +382,35 @@ bird_knn_test_df = bird_test_df
 ### Best Model
 
 # 5: Classification Tree
+
+## Mammal Classification Tree
+
+```{r mammal change variable types}
+
+mammal_train_df$redlistCategory = as.factor(mammal_train_df$redlistCategory)
+mammal_test_df$redlistCategory = as.factor(mammal_test_df$redlistCategory)
+
+```
+
+```{r mammal class tree}
+
+mammal_tree = tree(redlistCategory ~ log_bodymass + populationTrend + ForStrat.Value + 
+                   Activity.Crepuscular + Activity.Diurnal + Activity.Nocturnal + 
+                   Diet.Inv + Diet.Vend + Diet.Vect + Diet.Vfish + Diet.Vunk + 
+                   Diet.Scav + Diet.Fruit + Diet.PlantO, 
+                   mammal_train_df)
+
+```
+
+```{r mammal tree assessment}
+
+summary(mammal_tree)
+
+plot(mammal_tree)
+text(mammal_tree, pretty = 0)
+
+```
+
 
 # 6: Bagged Trees
 
