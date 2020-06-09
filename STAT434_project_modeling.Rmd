@@ -64,6 +64,15 @@ bird_df = read.csv("cleaned_bird_df_updated_5_29.csv")
 
 ```
 
+```{r chopping off extra rows}
+
+nrow(bird_df)
+
+bird_df = bird_df[1:9640,]
+
+```
+
+
 # Preparing Data
 
 ## Transforming Variables
@@ -199,7 +208,7 @@ bird_lda1_pred=predict(bird_lda1, bird_test_df)
 
 table(preds = bird_lda1_pred$class, truth = bird_test_df$redlistCategory)
 
-mean(bird_lda_pred$class!=bird_test_df$redlistCategory)
+mean(bird_lda1_pred$class!=bird_test_df$redlistCategory)
 #error rate 0.2279793
 colnames(pc_bird_train_df)
 #Using first 11 PCs for Diet and Foraging PCs, because that is where the elbow is in the graph above
@@ -299,7 +308,7 @@ mammal_knn_test_df = mammal_knn_test_df %>%
       ),
     pop_trend_num = as.numeric(pop_trend_num)
   )
-
+#colnames(mammal_knn_train_df)
 ```
 
 ### Variable Selection
