@@ -41,6 +41,8 @@ Additional Considerations for Modeling
 library(tidyverse)
 library(class)
 library(tree)
+library(randomForest)
+library(MASS)
 
 ```
 
@@ -108,7 +110,56 @@ mammal_df = mammal_df %>%
     log_bodymass = log(BodyMass.Value)
   )
 
+
 # Bird Explanatory Variable Transformations 
+
+bird_df = bird_df %>% 
+  mutate(
+    log_bodymass = log(BodyMass.Value)
+  )
+```
+
+## Adding PCA of Diet and Foraging
+
+Creating data frames with Principle Components as columns
+```{r}
+
+pcbirddiet = prcomp(bird_df[,c(12:21)],scale=FALSE)
+
+pcbirdforage = prcomp(bird_df[,c(26:32)],scale=FALSE)
+
+pcmammal = prcomp(mammal_df[,c(4:13)],scale = FALSE)
+
+pcbird = prcomp(bird_df[,c(12:21,26:32)],scale=FALSE)
+
+summary(pcmammal)
+
+
+plot(cumsum(pcbirddiet$sdev^2/sum(pcbirddiet$sdev^2)), xlab="Principal  Component", ylab="Cumulative  Proportion  of Variance  Explained", ylim=c(0,1),type="b",main = "Bird Diet")
+
+plot(cumsum(pcmammal$sdev^2/sum(pcmammal$sdev^2)), xlab="Principal  Component", ylab="Cumulative  Proportion  of Variance  Explained", ylim=c(0,1),type="b",main = "Mammal Diet")
+
+
+plot(cumsum(pcbirdforage$sdev^2/sum(pcbirdforage$sdev^2)), xlab="Principal  Component", ylab="Cumulative  Proportion  of Variance  Explained", ylim=c(0,1),type="b",main = "Bird Foraging")
+
+plot(cumsum(pcbird$sdev^2/sum(pcbird$sdev^2)), xlab="Principal  Component", ylab="Cumulative  Proportion  of Variance  Explained", ylim=c(0,1),type="b",main = "Bird Foraging and Diet")
+
+
+colnames(pcbirddiet$x) = paste("Diet",colnames(pcbirddiet$x),sep = "")
+
+colnames(pcmammal$x) = paste("Diet",colnames(pcmammal$x),sep = "")
+
+colnames(pcbirdforage$x) = paste("For",colnames(pcbirdforage$x),sep = "")
+
+colnames(pcbird$x) = paste("DietFor",colnames(pcbird$x),sep = "")
+
+bird_df = cbind(bird_df,
+                   cbind(pcbirddiet$x,
+                         cbind(pcbirdforage$x,pcbird$x)))
+
+mammal_df = cbind(mammal_df,pcmammal$x)
+
+remove(pcbird,pcbirddiet,pcbirdforage,pcmammal)
 
 ```
 
@@ -144,88 +195,132 @@ bird_test_df = bird_df[-train_bird,]
 
 ```
 
-## Testing PCA
-
-Creating data frames with Principle Components as columns
-```{r}
-
-pcbirddiet = prcomp(bird_df[,c(12:21)],scale=FALSE)
-
-pcbirdforage = prcomp(bird_df[,c(26:32)],scale=FALSE)
-
-pcmammal = prcomp(mammal_df[,c(4:13)],scale = FALSE)
-
-pcbird = prcomp(bird_df[,c(12:21,26:32)],scale=FALSE)
-
-summary(pcmammal)
-
-
-plot(cumsum(pcbirddiet$sdev^2/sum(pcbirddiet$sdev^2)), xlab="Principal  Component", ylab="Cumulative  Proportion  of Variance  Explained", ylim=c(0,1),type="b",main = "Bird Diet")
-
-plot(cumsum(pcmammal$sdev^2/sum(pcmammal$sdev^2)), xlab="Principal  Component", ylab="Cumulative  Proportion  of Variance  Explained", ylim=c(0,1),type="b",main = "Mammal Diet")
-
-
-plot(cumsum(pcbirdforage$sdev^2/sum(pcbirdforage$sdev^2)), xlab="Principal  Component", ylab="Cumulative  Proportion  of Variance  Explained", ylim=c(0,1),type="b",main = "Bird Foraging")
-
-plot(cumsum(pcbird$sdev^2/sum(pcbird$sdev^2)), xlab="Principal  Component", ylab="Cumulative  Proportion  of Variance  Explained", ylim=c(0,1),type="b",main = "Bird Foraging and Diet")
-
-
-colnames(pcbirddiet$x) = paste("Diet",colnames(pcbirddiet$x),sep = "")
-
-colnames(pcmammal$x) = paste("Diet",colnames(pcmammal$x),sep = "")
-
-colnames(pcbirdforage$x) = paste("For",colnames(pcbirdforage$x),sep = "")
-
-colnames(pcbird$x) = paste("DietFor",colnames(pcbird$x),sep = "")
-
-pc_bird_df = cbind(bird_df,
-                   cbind(pcbirddiet$x,
-                         cbind(pcbirdforage$x,pcbird$x)))
-
-pc_mammal_df = cbind(mammal_df,pcmammal$x)
-
-
-pc_mammal_train_df = pc_mammal_df[train_mammal,]
-pc_mammal_test_df = pc_mammal_df[-train_mammal,]
-
-pc_bird_train_df = pc_bird_df[train_bird,]
-pc_bird_test_df = pc_bird_df[-train_bird,]
-
-```
-
 # 1: Logistic Regression
   
 # 2: Linear Discriminant Analysis
 
-Starting by using a bunch of variables and 
+## Mammals
+
 ```{r}
 
 library(MASS)
 
-bird_lda1 = lda(redlistCategory ~ Diet.Inv + Diet.Vend + Diet.Vect + Diet.Vfish + Diet.Vunk + Diet.Scav + Diet.Fruit + Diet.Nect + Diet.Seed + Diet.PlantO + Diet.5Cat + ForStrat.watbelowsurf + ForStrat.wataroundsurf + ForStrat.aerial +  PelagicSpecialist + Nocturnal + BodyMass.Value, data=bird_train_df)
+
+
+mam_lda1 = lda(redlistCategory ~ Diet.Vfish + Diet.Vend + Diet.Scav + Diet.Seed + Diet.Inv + Diet.Fruit + Diet.Nect +  + Diet.PlantO + ForStrat.Value + Activity.Nocturnal + Activity.Crepuscular +  Activity.Diurnal + log_bodymass, data=mammal_train_df)
+
+mam_lda1_pred=predict(mam_lda1, mammal_test_df)
+
+table(preds = mam_lda1_pred$class, truth = mammal_test_df$redlistCategory)
+
+mean(mam_lda1_pred$class!=mammal_test_df$redlistCategory)
+#error rate 0.3080149
+
+
+#Using first 11 PCs for Diet and Foraging PCs, because that is where the elbow is in the graph above
+mammal_lda_pca1 = lda(redlistCategory ~ DietPC1 + DietPC2 + DietPC3 + DietPC4 + DietPC5 + DietPC6 + DietPC7 + ForStrat.Value + Activity.Nocturnal + Activity.Crepuscular +  Activity.Diurnal + log_bodymass,data=mammal_train_df)
+
+mammal_lda_pca1=predict(mammal_lda_pca1, mammal_test_df)
+
+table(preds = mammal_lda_pca1$class, truth = mammal_test_df$redlistCategory)
+
+mean(mammal_lda_pca1$class != mammal_test_df$redlistCategory)
+#error rate 0.3089469
+
+```
+
+## Birds
+
+```{r}
+
+library(MASS)
+library(pROC)
+
+bird_lda1 = lda(redlistCategory ~ Diet.Inv + Diet.Vend + Diet.Vect + Diet.Vfish + Diet.Vunk + Diet.Scav + Diet.Fruit + Diet.Nect + Diet.Seed + Diet.PlantO + ForStrat.watbelowsurf + ForStrat.wataroundsurf + ForStrat.aerial +  PelagicSpecialist + Nocturnal + BodyMass.Value, data=bird_train_df)
 
 bird_lda1_pred=predict(bird_lda1, bird_test_df)
 
 table(preds = bird_lda1_pred$class, truth = bird_test_df$redlistCategory)
 
 mean(bird_lda1_pred$class!=bird_test_df$redlistCategory)
-#error rate 0.2279793
-colnames(pc_bird_train_df)
-#Using first 11 PCs for Diet and Foraging PCs, because that is where the elbow is in the graph above
-bird_lda_pca1 = lda(redlistCategory ~ DietForPC1 + DietForPC2 + DietForPC3 + DietForPC4 + DietForPC5 + DietForPC6 + DietForPC7 + DietForPC8 + DietForPC9 + DietForPC10 +DietForPC11 + Diet.5Cat +  PelagicSpecialist + Nocturnal + scale(BodyMass.Value),data=pc_bird_train_df)
+#error rate 0.2315066
 
-bird_lda_pca1_pred=predict(bird_lda_pca1, pc_bird_test_df)
+
+#Using first 11 PCs for Diet and Foraging PCs, because that is where the elbow is in the graph above
+bird_lda_pca1 = lda(redlistCategory ~ DietForPC1 + DietForPC2 + DietForPC3 + DietForPC4 + DietForPC5 + DietForPC6 + DietForPC7 + DietForPC8 + DietForPC9 + DietForPC10 +DietForPC11 +  PelagicSpecialist + Nocturnal + scale(BodyMass.Value),data=bird_train_df)
+
+bird_lda_pca1_pred=predict(bird_lda_pca1, bird_test_df)
 
 table(preds = bird_lda_pca1_pred$class, truth = bird_test_df$redlistCategory)
 
 mean(bird_lda_pca1_pred$class != bird_test_df$redlistCategory)
-#error rate 0.2232124
+#error rate 0.2287977
 
 ```
 
+
+
 # 3: Quadratic Discriminant Analysis
 
-Getting errors because I have way to many predictors in model.
+## Mammals
+
+```{r}
+
+#Starting with full model
+mam_qda1 = qda(redlistCategory ~ Diet.Vfish + Diet.Vend + Diet.Scav + Diet.Seed + Diet.Inv + Diet.Fruit + Diet.Nect +  + Diet.PlantO + ForStrat.Value + Activity.Nocturnal + Activity.Crepuscular +  Activity.Diurnal + log_bodymass, data=mammal_train_df)
+
+mam_qda1_pred=predict(mam_qda1, mammal_test_df)
+
+table(preds = mam_qda1_pred$class, truth = mammal_test_df$redlistCategory)
+
+mean(mam_qda1_pred$class!=mammal_test_df$redlistCategory)
+#error rate 0.4128611
+
+
+
+
+```
+### Using PCA 
+
+```{r}
+
+#Using first 7 PCs for Diet PCs, because that is where the elbow is in the graph above
+mammal_qda_pca1 = lda(redlistCategory ~ DietPC1 + DietPC2 + DietPC3 + DietPC4 + DietPC5 + DietPC6 + DietPC7 + ForStrat.Value + Activity.Nocturnal + Activity.Crepuscular +  Activity.Diurnal + log_bodymass,data=mammal_train_df)
+
+mammal_qda_pca1=predict(mammal_qda_pca1, mammal_test_df)
+
+table(preds = mammal_qda_pca1$class, truth = mammal_test_df$redlistCategory)
+
+mean(mammal_qda_pca1$class != mammal_test_df$redlistCategory)
+#error rate 0.3089469
+
+#Removing one PC
+
+mammal_qda_pca2 = lda(redlistCategory ~ DietPC1 + DietPC2 + DietPC3 + DietPC4 + DietPC5 + DietPC6 + ForStrat.Value + Activity.Nocturnal + Activity.Crepuscular +  Activity.Diurnal + log_bodymass,data=mammal_train_df)
+
+mammal_qda_pca2 =predict(mammal_qda_pca2, mammal_test_df)
+
+table(preds = mammal_qda_pca2$class, truth = mammal_test_df$redlistCategory)
+
+mean(mammal_qda_pca2$class != mammal_test_df$redlistCategory)
+#error rate 0.3094129
+
+
+#Only removing once activity variable
+
+mammal_qda_pca3 = lda(redlistCategory ~ DietPC1 + DietPC2 + DietPC3 + DietPC4 + DietPC5 + DietPC6+ DietPC7 + ForStrat.Value + Activity.Nocturnal + Activity.Diurnal + log_bodymass,data=mammal_train_df)
+
+mammal_qda_pca3 =predict(mammal_qda_pca3, mammal_test_df)
+
+table(preds = mammal_qda_pca3$class, truth = mammal_test_df$redlistCategory)
+
+mean(mammal_qda_pca3$class != mammal_test_df$redlistCategory)
+#error rate 0.3084809
+
+```
+
+
+## Birds
 ```{r}
 
 bird_qda1 = qda(redlistCategory ~ Diet.Inv + Diet.Vend + Diet.Vect + Diet.Vfish + Diet.Vunk + Diet.Scav + Diet.Fruit + Diet.Nect + Diet.Seed + Diet.PlantO + ForStrat.watbelowsurf + ForStrat.wataroundsurf + ForStrat.aerial +  PelagicSpecialist + Nocturnal + scale(BodyMass.Value), data=bird_train_df)
@@ -237,9 +332,9 @@ table(preds = bird_qda1_pred$class,truth = bird_test_df$redlistCategory)
 mean(bird_qda_pred$class != bird.test.df$redlistCategory)
 
 
-bird_qda_pca1 = qda(redlistCategory ~ DietForPC1 + DietForPC2 + DietForPC3 + DietForPC4 + DietForPC5 + DietForPC6 + DietForPC7 + DietForPC8 + DietForPC9 + DietForPC10 +DietForPC11 +  PelagicSpecialist + Nocturnal + scale(BodyMass.Value),data=pc_bird_train_df)
+bird_qda_pca1 = qda(redlistCategory ~ DietForPC1 + DietForPC2 + DietForPC3 + DietForPC4 + DietForPC5 + DietForPC6 + DietForPC7 + DietForPC8 + DietForPC9 + DietForPC10 +DietForPC11 +  PelagicSpecialist + Nocturnal + scale(BodyMass.Value),data=bird_train_df)
 
-bird_qda_pca1_pred = predict(bird_qda_pca1, pc_bird_test_df)
+bird_qda_pca1_pred = predict(bird_qda_pca1, bird_test_df)
 
 table(preds = bird_qda_pca1_pred$class, truth = bird_test_df$redlistCategory)
 
@@ -371,6 +466,7 @@ mammal_knn = knn(mammal_knn_train_df[,c(4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 41, 42
                  mammal_knn_train_df[,38], k=14)
 mean(mammal_knn != mammal_knn_test_df$redlistCategory)
 
+#error rate 0.3000932
 ```
 
 ## Bird K-Nearest Neighbor
@@ -423,9 +519,203 @@ text(mammal_tree, pretty = 0)
 
 # 6: Bagged Trees
 
+## Mammal Bagged Trees
+
+### Variable Selection
+
+```{r}
+set.seed(10)
+bag.mam1 = randomForest(as.factor(redlistCategory) ~ Diet.Vfish + Diet.Vend + Diet.Scav + Diet.Seed + Diet.Inv + 
+                          Diet.Fruit + Diet.Nect +  + Diet.PlantO + ForStrat.Value + Activity.Nocturnal +
+                          Activity.Crepuscular +  Activity.Diurnal + log_bodymass,
+                        data=mammal_train_df,
+                        mtry=13,
+                        importance=TRUE)
+
+bag.mam1
+
+yhat.bag = predict(bag.mam1 ,newdata=mammal_test_df)
+
+table(yhat.bag,mammal_knn_test_df$redlistCategory)
+
+mean(yhat.bag!=mammal_knn_test_df$redlistCategory)
+#test error 0.3657968
+
+bag.mam1$importance
+
+```
+
+Dropping leaset important variable, based on Gini index: Diet.Vfish
+
+```{r}
+set.seed(10)
+bag.mam2 = randomForest(as.factor(redlistCategory) ~ Diet.Vend + Diet.Scav + Diet.Seed + Diet.Inv + 
+                          Diet.Fruit + Diet.Nect +  + Diet.PlantO + ForStrat.Value + Activity.Nocturnal +
+                          Activity.Crepuscular +  Activity.Diurnal + log_bodymass,
+                        data=mammal_train_df,
+                        mtry=12,
+                        importance=TRUE)
+
+bag.mam2
+
+yhat.bag = predict(bag.mam2 ,newdata=mammal_test_df)
+
+table(yhat.bag,mammal_knn_test_df$redlistCategory)
+
+mean(yhat.bag!=mammal_knn_test_df$redlistCategory)
+#test error 0.3648649
+
+bag.mam2$importance
+```
+# Now dropping: Diet.Scav
+
+```{r}
+set.seed(10)
+bag.mam3 = randomForest(as.factor(redlistCategory) ~ Diet.Vend + Diet.Seed + Diet.Inv + 
+                          Diet.Fruit + Diet.Nect +  + Diet.PlantO + ForStrat.Value + Activity.Nocturnal +
+                          Activity.Crepuscular +  Activity.Diurnal + log_bodymass,
+                        data=mammal_train_df,
+                        mtry=11,
+                        importance=TRUE)
+
+bag.mam3
+
+yhat.bag = predict(bag.mam3 ,newdata=mammal_test_df)
+
+table(yhat.bag,mammal_knn_test_df$redlistCategory)
+
+mean(yhat.bag!=mammal_knn_test_df$redlistCategory)
+#test error 0.3667288
+
+bag.mam3$importance
+```
+
+
+#### Using PCA
+
+```{r}
+
+set.seed(10)
+bag.mam.pca1 = randomForest(as.factor(redlistCategory) ~ DietPC1 + DietPC2 + DietPC3 + DietPC4 + DietPC5 + 
+                          DietPC6 + DietPC7 + ForStrat.Value + Activity.Nocturnal +
+                          Activity.Crepuscular +  Activity.Diurnal + log_bodymass,
+                        data=mammal_train_df,
+                        mtry=12,
+                        importance=TRUE)
+
+bag.mam.pca1
+
+yhat.bag = predict(bag.mam.pca1 ,newdata=mammal_test_df)
+
+table(yhat.bag,mammal_test_df$redlistCategory)
+
+mean(yhat.bag!=mammal_test_df$redlistCategory)
+# test error 0.3699907
+
+bag.mam.pca1$importance
+```
+
+### Best Model
+
+```{r}
+set.seed(10)
+bag.mam1 = randomForest(as.factor(redlistCategory) ~ Diet.Vfish + Diet.Vend + Diet.Scav + Diet.Seed + Diet.Inv + 
+                          Diet.Fruit + Diet.Nect +  + Diet.PlantO + ForStrat.Value + Activity.Nocturnal +
+                          Activity.Crepuscular +  Activity.Diurnal + log_bodymass,
+                        data=mammal_train_df,
+                        mtry=13,
+                        importance=TRUE)
+
+bag.mam1
+
+yhat.bag = predict(bag.mam1 ,newdata=mammal_test_df)
+
+table(yhat.bag,mammal_knn_test_df$redlistCategory)
+
+mean(yhat.bag!=mammal_knn_test_df$redlistCategory)
+#test error 0.3657968
+
+```
+
+
+## Bird Bagged Trees
+
+### Variable Selection
+
+```{r}
+set.seed(10)
+bag.bird1 = randomForest(as.factor(redlistCategory) ~ Diet.Inv + Diet.Vend + Diet.Vect + Diet.Vfish + Diet.Vunk + 
+                          Diet.Scav + Diet.Fruit + Diet.Nect + Diet.Seed + Diet.PlantO +  
+                          ForStrat.watbelowsurf + ForStrat.wataroundsurf + ForStrat.aerial +  
+                          PelagicSpecialist + Nocturnal + log_bodymass,
+                        data=bird_train_df,
+                        mtry=16,
+                        importance=TRUE)
+
+bag.bird1
+
+yhat.bag = predict(bag.bird1 ,newdata=bird_test_df)
+
+table(yhat.bag,bird_test_df$redlistCategory)
+
+mean(yhat.bag!=bird_test_df$redlistCategory)
+#test error 0.2821421
+
+bag.bird1$importance
+
+```
+#### Using Principle Components
+
+```{r}
+set.seed(10)
+bag.bird2 = randomForest(as.factor(redlistCategory) ~ DietForPC1 + DietForPC2 + DietForPC3 + DietForPC4 + 
+                           DietForPC5 + DietForPC6 + DietForPC7 + DietForPC8 + DietForPC9 + DietForPC10 +DietForPC11 +  
+                          Nocturnal + log_bodymass,
+                        data=bird_train_df,
+                        mtry=13,
+                        importance=TRUE)
+
+bag.bird2
+
+yhat.bag = predict(bag.bird2 ,newdata=bird_test_df)
+
+table(yhat.bag,bird_test_df$redlistCategory)
+
+mean(yhat.bag!=bird_test_df$redlistCategory)
+#test error 0.2783913
+
+bag.bird2$importance
+```
+
+
+### Best Model
+
+```{r}
+set.seed(10)
+bag.bird2 = randomForest(as.factor(redlistCategory) ~ DietForPC1 + DietForPC2 + DietForPC3 + DietForPC4 + 
+                           DietForPC5 + DietForPC6 + DietForPC7 + DietForPC8 + DietForPC9 + DietForPC10 +DietForPC11 +  
+                          Nocturnal + log_bodymass,
+                        data=bird_train_df,
+                        mtry=13,
+                        importance=TRUE)
+
+bag.bird2
+
+yhat.bag = predict(bag.bird2 ,newdata=bird_test_df)
+
+table(yhat.bag,bird_test_df$redlistCategory)
+
+mean(yhat.bag!=bird_test_df$redlistCategory)
+#test error 0.2783913
+
+```
+
+
 # 7: Random Forests
 
 # 8: Boosted Forests
+
+
 
 # 9: Neural Networks
 
