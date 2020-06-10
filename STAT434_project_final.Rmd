@@ -2847,11 +2847,29 @@ data_deficient_birds_df$predredlistCategory = qda_pred$class
 table(qda_pred$class)
 #write.csv(data_deficient_mammals_df,"best_model_predictions_undeterminedbirds.csv")
 
-data_deficient_birds_df$scientificName[qda_pred$class==Endangered]
+data_deficient_birds_df$scientificName[qda_pred$class=="Endangered"]
 ```
 
 
 # Conclusions
+
+We used PCA to transform the diet and foraging variables, and included principle components in some of the subsets of variables we tested for each model. We used the following methods:
+
+  1. Logistic Regression (pairwise/one-versus-one and one-versus-all)?
+  2. Linear Discriminant Analysis
+  3. Quadratic Discriminant Analysis
+  4. K-Nearest Neighbor
+  5. Classification Tree
+  6. Bagged Trees
+  7. Random Forests
+  8. Boosted Forests
+  9. Neural Networks
+  10. Support Vector Machines
+  
+We found that K-Nearest Neighbor had the best predictions based on test error for mammals. For birds, we found that many methods had the same test error but many were attributing all species as least concern. Thus, we used QDA to predict for birds, because of the models that did not attribute all birds as least concern it had the lowest test error rate.
+
+Overall, we found that the models tended to overpredict the status least concern. The final prediction for mammals had only 6 of the 574 species as anything other than least concern, and the final predictions for birds had all 42 species as least concern. 
+
 
 
 # Bibliography
