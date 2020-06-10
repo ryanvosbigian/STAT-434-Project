@@ -1593,7 +1593,12 @@ mean(pred_svm != bird_test_df$redlistCategory)
 table(pred_svm, bird_test_df$redlistCategory)
 colnames(bird_train_df[var])
 
-<<<<<<< HEAD
+#test eror 0.227339
+```
+
+
+
+
 # Model Comparison
 
 ## Half Training Data and Half Test Data 
