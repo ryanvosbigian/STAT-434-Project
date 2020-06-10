@@ -1069,7 +1069,6 @@ bird_log_test_df = bird_log_test_df %>%
 
 ```{r}
 # Having trouble with bird logistic regression
-<<<<<<< HEAD
 # bird_log_variables = list(#c(54, 12:21), # all diet variables
 #                           #c(54, 37,57), # activity and body mass
 #                           #c(54, 12:21, 37), # all diet and activity variables
@@ -1101,39 +1100,38 @@ bird_log_test_df = bird_log_test_df %>%
 # 
 # which.min(test_errors)
 # bird_log_variables[[which.min(test_errors)]]
-=======
-bird_log_variables = list(#c(54, 12:21), # all diet variables
-                          #c(54, 37,57), # activity and body mass
-                          #c(54, 12:21, 37), # all diet and activity variables
-                          #c(54, 12:21, 57), # all diet and body mass
-                          #c(54, 12:21, 37, 57), # all diet and activity and body mass
-                          c(54, 26:33), # foraging variables
-                          #c(54, 26:33, 12:21), # diet and foraging
-                          #c(54, 26:33, 57), # foraging and body mass
-                          #c(54, 26:33, 12:21, 37, 57), 
-                          # foraging, body mass, activity, and diet
-                          #c(54, 75:91), # PCA for diet and foraing together
-                          c(54, 75:91, 57), 
-                          # PCA for diet and foraging together and body mass
-                          c(54, 75:91, 57, 37)
-                          # PCA for diet + foraging, activity, and body mass
-                        )
-test_errors = rep(0, length(bird_log_variables))
 
-for(i in 1:length(bird_log_variables)){
-  var = bird_log_variables[[i]]
-  print(var)
-  bird_log = glm(redlistCategory ~ .,
-                   data = bird_log_train_df[,var])
-  log_prob = predict(bird_log, newdata=bird_log_test_df[,var], type = "response")
-  log_pred = rep(0, 2146)
-  log_pred[log_prob > 0.5] = 1
-  test_errors[i] = mean(log_pred != bird_log_test_df$redlistCategory)
-}
-
-which.min(test_errors)
+# bird_log_variables = list(#c(54, 12:21), # all diet variables
+#                           #c(54, 37,57), # activity and body mass
+#                           #c(54, 12:21, 37), # all diet and activity variables
+#                           #c(54, 12:21, 57), # all diet and body mass
+#                           #c(54, 12:21, 37, 57), # all diet and activity and body mass
+#                           c(54, 26:33), # foraging variables
+#                           #c(54, 26:33, 12:21), # diet and foraging
+#                           #c(54, 26:33, 57), # foraging and body mass
+#                           #c(54, 26:33, 12:21, 37, 57), 
+#                           # foraging, body mass, activity, and diet
+#                           #c(54, 75:91), # PCA for diet and foraing together
+#                           c(54, 75:91, 57), 
+#                           # PCA for diet and foraging together and body mass
+#                           c(54, 75:91, 57, 37)
+#                           # PCA for diet + foraging, activity, and body mass
+#                         )
+# test_errors = rep(0, length(bird_log_variables))
+# 
+# for(i in 1:length(bird_log_variables)){
+#   var = bird_log_variables[[i]]
+#   print(var)
+#   bird_log = glm(redlistCategory ~ .,
+#                    data = bird_log_train_df[,var])
+#   log_prob = predict(bird_log, newdata=bird_log_test_df[,var], type = "response")
+#   log_pred = rep(0, 2146)
+#   log_pred[log_prob > 0.5] = 1
+#   test_errors[i] = mean(log_pred != bird_log_test_df$redlistCategory)
+# }
+# 
+# which.min(test_errors)
 #bird_log_variables[[which.min(test_errors)]]
->>>>>>> d6f8883c26636d511d23aaeeee2e5e461bb04c7f
 
 ```
 
@@ -2057,34 +2055,34 @@ mean(nn_pred != bird_test_df$redlistCategory)
 Boosted forests are computationally inefficient, so we are using the best half of the sets of variable identified by the random forests and using ony 500 trees.
 
 ```{r, eval=FALSE}
-#selecting variable sets to use
-#variable_sets = c(1:20)[mammal_rf_test_errors<median(mammal_rf_test_errors)]
-
-#Using variables selected for LDA
-test_errors = rep(0, length(mammal_lda_variables))
-
-
-set.seed(10)
-for(i in 1:length(mammal_lda_variables)){ #using selected variable sets
-  var = mammal_lda_variables[[i]]
-  mammal_boost = gbm(as.factor(redlistCategory) ~ .,
-                      data=mammal_train_df[,var],n.trees=500,distribution = "multinomial",
-                     interaction.depth=4,shrinkage = 0.1)
-    
-  
-  pred_tmp = predict(mammal_boost,newdata = mammal_test_df[,var],n.trees = 500)
-  tmp_max = apply(pred_tmp, 1, which.max)
-  pred_boosted=c("Endangered","Least Concern", "Near Threatened","Vulnerable")[tmp_max]
-
-  test_errors[i] = mean(pred_boosted!= mammal_test_df$redlistCategory)
-}
-
-#making any test error
-test_errors[test_errors==0]=1
-
-which.min(test_errors)
-mammal_lda_variables[[which.min(test_errors)]]
-#shrinkage
+# #selecting variable sets to use
+# #variable_sets = c(1:20)[mammal_rf_test_errors<median(mammal_rf_test_errors)]
+# 
+# #Using variables selected for LDA
+# test_errors = rep(0, length(mammal_lda_variables))
+# 
+# 
+# set.seed(10)
+# for(i in 1:length(mammal_lda_variables)){ #using selected variable sets
+#   var = mammal_lda_variables[[i]]
+#   mammal_boost = gbm(as.factor(redlistCategory) ~ .,
+#                       data=mammal_train_df[,var],n.trees=500,distribution = "multinomial",
+#                      interaction.depth=4,shrinkage = 0.1)
+#     
+#   
+#   pred_tmp = predict(mammal_boost,newdata = mammal_test_df[,var],n.trees = 500)
+#   tmp_max = apply(pred_tmp, 1, which.max)
+#   pred_boosted=c("Endangered","Least Concern", "Near Threatened","Vulnerable")[tmp_max]
+# 
+#   test_errors[i] = mean(pred_boosted!= mammal_test_df$redlistCategory)
+# }
+# 
+# #making any test error
+# test_errors[test_errors==0]=1
+# 
+# which.min(test_errors)
+# mammal_lda_variables[[which.min(test_errors)]]
+# #shrinkage
 
 ```
 
@@ -2092,29 +2090,29 @@ mammal_lda_variables[[which.min(test_errors)]]
 
 ```{r}
 
-test_errors = rep(0, 5)
-var = mammal_lda_variables[[1]] #best set from above
-for (i in 1:5){
-  mammal_boost = gbm(as.factor(redlistCategory) ~ .,
-                      data=mammal_train_df[,var],n.trees=1000,distribution = "multinomial",
-                     interaction.depth=4,shrinkage = c(1,0.1,0.01,0.001,0.0001)[i])
-  pred_tmp = predict(mammal_boost,newdata = mammal_test_df[,var],n.trees = 500)
-  tmp_max = apply(pred_tmp, 1, which.max)
-  pred_boosted=c("Endangered","Least Concern", "Near Threatened","Vulnerable")[tmp_max]
-}
-
-which.min(test_errors)
-c(1,0.1,0.01,0.001,0,0001)[which.min(test_errors)]
+# test_errors = rep(0, 5)
+# var = mammal_lda_variables[[1]] #best set from above
+# for (i in 1:5){
+#   mammal_boost = gbm(as.factor(redlistCategory) ~ .,
+#                       data=mammal_train_df[,var],n.trees=1000,distribution = "multinomial",
+#                      interaction.depth=4,shrinkage = c(1,0.1,0.01,0.001,0.0001)[i])
+#   pred_tmp = predict(mammal_boost,newdata = mammal_test_df[,var],n.trees = 500)
+#   tmp_max = apply(pred_tmp, 1, which.max)
+#   pred_boosted=c("Endangered","Least Concern", "Near Threatened","Vulnerable")[tmp_max]
+# }
+# 
+# which.min(test_errors)
+# c(1,0.1,0.01,0.001,0,0001)[which.min(test_errors)]
 ```
 
 ### Best Model
 
 ```{r}
-mammal_boost = gbm(as.factor(redlistCategory) ~ .,
-                      data=mammal_train_df[,var],n.trees=1000,distribution = "multinomial",
-                     interaction.depth=4,shrinkage = 1)
-
-colnames(mammal_train_df)[mammal_lda_variables[[10]]]
+# mammal_boost = gbm(as.factor(redlistCategory) ~ .,
+#                       data=mammal_train_df[,var],n.trees=1000,distribution = "multinomial",
+#                      interaction.depth=4,shrinkage = 1)
+# 
+# colnames(mammal_train_df)[mammal_lda_variables[[10]]]
 
 ```
 
@@ -2126,7 +2124,7 @@ colnames(mammal_train_df)[mammal_lda_variables[[10]]]
 
 #### Using a Linear Function
 
-```{r, eval=FALSE}
+```{r}
 #Using variables selected for LDA
 test_errors = rep(0, length(mammal_lda_variables))
 
@@ -2247,7 +2245,7 @@ colnames(mammal_train_df[var])
 
 #### Using a Linear Function
 
-```{r, eval=FALSE}
+```{r}
 #Using variables selected for LDA
 test_errors = rep(0, length(bird_lda_variables))
 
