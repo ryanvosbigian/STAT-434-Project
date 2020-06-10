@@ -44,6 +44,7 @@ library(tree)
 library(randomForest)
 library(MASS)
 library(e1071)
+library(gbm)
 
 ```
 
@@ -1018,6 +1019,52 @@ varImpPlot(mammal_rf)
 
 ```
 
+Based on this plot, the body mass is the most important variable.
+
+## Bird Random Forest
+
+### Variable Selection
+
+```{r}
+test_errors = rep(0, length(bird_lda_variables))
+
+set.seed(10)
+for(i in 1:length(bird_lda_variables)){
+  var = bird_lda_variables[[i]]
+  bird_rf = randomForest(as.factor(redlistCategory) ~ .,
+                   data = bird_train_df[,var],
+                   mtry = round(sqrt(length(var)))
+                   )
+  bag_pred = predict(bird_rf,newdata=bird_test_df[,var])
+  test_errors[i] = mean(bag_pred != bird_test_df$redlistCategory)
+}
+
+which.min(test_errors)
+bird_lda_variables[[which.min(test_errors)]]
+
+bird_rf_test_errors = test_errors
+```
+
+### Best Model
+
+```{r}
+set.seed(10)
+var = bird_lda_variables[[7]]
+bird_rf = randomForest(as.factor(redlistCategory) ~ .,
+                   data = bird_train_df[,var],
+                   mtry = round(sqrt(length(var)-1))
+                   )
+bag_pred = predict(bird_rf,newdata=bird_test_df[,var])
+mean(bag_pred != bird_test_df$redlistCategory)
+table(bag_pred, bird_test_df$redlistCategory)
+
+colnames(bird_train_df)[bird_lda_variables[[7]]]
+
+varImpPlot(bird_rf)
+
+```
+
+
 # 8: Boosted Forests
 
 # 9: Neural Networks
@@ -1032,54 +1079,84 @@ varImpPlot(mammal_rf)
 ## Mammal Boosted Forest
 
 ### Variable Selection
->>>>>>> 33f3e94aaa1f5140099f1a5c3543a03f2a520202
 
 Boosted forests are computationally inefficient, so we are using the best half of the sets of variable identified by the random forests and using ony 500 trees.
 
 ```{r}
 #selecting variable sets to use
-variable_sets = c(1:20)[mammal_rf_test_errors<median(mammal_rf_test_errors)]
+#variable_sets = c(1:20)[mammal_rf_test_errors<median(mammal_rf_test_errors)]
 
 #Using variables selected for LDA
-test_errors = rep(0, length(variable_sets)*5)
+test_errors = rep(0, length(mammal_lda_variables))
 
 
 set.seed(10)
-for(i in variable_sets){ #using selected variable sets
+for(i in 1:length(mammal_lda_variables)){ #using selected variable sets
   var = mammal_lda_variables[[i]]
-  
-    for (ii in 1:5) {
   mammal_boost = gbm(as.factor(redlistCategory) ~ .,
-                      data=mammal_train_df[,var],n.trees=1000,distribution = "multinomial",
-                     interaction.depth=4,shrinkage = c(0.1,0.01,0.001)[ii])
+                      data=mammal_train_df[,var],n.trees=500,distribution = "multinomial",
+                     interaction.depth=4,shrinkage = 0.1)
+    
+  
   pred_tmp = predict(mammal_boost,newdata = mammal_test_df[,var],n.trees = 500)
   tmp_max = apply(pred_tmp, 1, which.max)
   pred_boosted=c("Endangered","Least Concern", "Near Threatened","Vulnerable")[tmp_max]
 
-  iii=(i-1)*5+ii
-  
-  test_errors[iii] = mean(pred_boosted!= mammal_test_df$redlistCategory)
-}
+  test_errors[i] = mean(pred_boosted!= mammal_test_df$redlistCategory)
+
   
 }
 
 #making any test error
 test_errors[test_errors==0]=1
 
-variable_sets[]
+
 
 which.min(test_errors)
-mammal_lda_variables[[
-  variable_sets[ceiling(which.min(test_errors)/5)]
-  ]]
+mammal_lda_variables[[which.min(test_errors)]]
 #shrinkage
-c(0.1,0.01,0.001)[which.min(test_errors)%%5]
+
+
+
+
 
 
 
 ```
 
+##### Tuning Parameters
+
+```{r}
+
+test_errors = rep(0, 5)
+var = mammal_lda_variables[[1]] #best set from above
+for (i in 1:5){
+  mammal_boost = gbm(as.factor(redlistCategory) ~ .,
+                      data=mammal_train_df[,var],n.trees=1000,distribution = "multinomial",
+                     interaction.depth=4,shrinkage = c(1,0.1,0.01,0.001,0.0001)[i])
+  pred_tmp = predict(mammal_boost,newdata = mammal_test_df[,var],n.trees = 500)
+  tmp_max = apply(pred_tmp, 1, which.max)
+  pred_boosted=c("Endangered","Least Concern", "Near Threatened","Vulnerable")[tmp_max]
+}
+
+
+which.min(test_errors)
+c(1,0.1,0.01,0.001,0,0001)[which.min(test_errors)]
+```
+
+
+
 ### Best Model
+
+```{r}
+mammal_boost = gbm(as.factor(redlistCategory) ~ .,
+                      data=mammal_train_df[,var],n.trees=1000,distribution = "multinomial",
+                     interaction.depth=4,shrinkage = 1)
+
+colnames(mammal_train_df)[mammal_lda_variables[[10]]]
+
+```
+
 
 ## Bird Boosted Forest
 
