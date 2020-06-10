@@ -2450,7 +2450,8 @@ Random Forest = 0.312
 Neural Network = 0.312
 SVM = 0.315
 
-The best model to predict the redlist status of a mammal species based on its Elton traits was a Logistic Regression.  
+However, logistic regression only determines whether the species is least concern or not, which is less desirable than determining status. 
+After logistic regression, K-Nearest Neighbors provides the best error rate. Thus, we will use KNN to predict the unknown status of species.
 
 ### Best Bird Models
 
@@ -2532,7 +2533,7 @@ Random Forest = 0.225
 Neural Network = 0.222
 SVM = 0.222
 
-Neural Networks, Support Vector Machines, and K-Nearest-Neighbors were all equivalent in predicting the redlist status of a bird species. 
+Neural Networks, Support Vector Machines, and K-Nearest-Neighbors were all equivalent in predicting the redlist status of a bird species.  However, all expect for QDA and bagged trees almost everything classified as least concern. Thus, we will use QDA, which of the models that do not classify everything as least concern has the lowest test error.
 
 ## Two-Thirds Training Data and One-Third Test Data
 
