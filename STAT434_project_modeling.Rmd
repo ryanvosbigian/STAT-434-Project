@@ -44,7 +44,11 @@ library(tree)
 library(randomForest)
 library(MASS)
 library(e1071)
+<<<<<<< HEAD
 library(nnet)
+=======
+library(gbm)
+>>>>>>> e3a97ee3c26b5a0a6eb3e8aa787c90a3ff5e2b0f
 
 ```
 
@@ -287,7 +291,7 @@ log_pred = rep(0, 2146)
 log_pred[log_prob > 0.5] = 1
 mean(log_pred != mammals_log_test_df$redlistCategory)
 
-# Error rate = 0.288
+# Error rate = 0.2795899
 
 ```
 
@@ -368,31 +372,7 @@ bird_log_variables[[which.min(test_errors)]]
 
 ## Mammals
 
-```{r}
 
-mam_lda1 = lda(redlistCategory ~ Diet.Vfish + Diet.Vend + Diet.Scav + Diet.Seed + Diet.Inv + Diet.Fruit + Diet.Nect +  + Diet.PlantO + ForStrat.Value + Activity.Nocturnal + Activity.Crepuscular +  Activity.Diurnal + log_bodymass, data=mammal_train_df)
-
-mam_lda1_pred=predict(mam_lda1, mammal_test_df)
-
-table(preds = mam_lda1_pred$class, truth = mammal_test_df$redlistCategory)
-
-mean(mam_lda1_pred$class!=mammal_test_df$redlistCategory)
-#error rate 0.3080149
-mam_lda1
-
-```
-
-```{r}
-
-mam_lda1 = lda(redlistCategory ~ Diet.Vfish + Diet.Vend + Diet.Scav + Diet.Seed + Diet.Inv + Diet.Fruit + Diet.Nect +  + Diet.PlantO + ForStrat.Value + Activity.Nocturnal + Activity.Crepuscular +  Activity.Diurnal + log_bodymass, data=mammal_train_df)
-
-mam_lda1_pred=predict(mam_lda1, mammal_test_df)
-
-table(preds = mam_lda1_pred$class, truth = mammal_test_df$redlistCategory)
-
-mean(mam_lda1_pred$class!=mammal_test_df$redlistCategory)
-#error rate 0.3080149
-```
 
 
 ### Variable Selection
@@ -438,14 +418,14 @@ mammal_lda_variables[[which.min(test_errors)]]
 ```{r}
 
 mammal_lda = lda(redlistCategory ~ .,
-                   data = mammal_train_df[,mammal_lda_variables[[19]]])
-lda_pred = predict(mammal_lda,newdata=mammal_test_df[,mammal_lda_variables[[19]]])
+                   data = mammal_train_df[,mammal_lda_variables[[14]]])
+lda_pred = predict(mammal_lda,newdata=mammal_test_df[,mammal_lda_variables[[14]]])
 mean(lda_pred$class != mammal_test_df$redlistCategory)
 table(pred=lda_pred$class,truth=mammal_test_df$redlistCategory)
 
 #test error 0.3089469
 
-colnames(mammal_train_df)[mammal_lda_variables[[19]]]
+colnames(mammal_train_df)[mammal_lda_variables[[14]]]
 ```
 
 ## Birds
@@ -482,18 +462,18 @@ colnames(bird_test_df)
 ```{r}
 
 bird_lda_variables = list(c(54, 12:21), #all diet variables
-                            c(54,91),                               #log body mass
-                            c(54,37,91),                   #activity and body mass
+                            c(54,57),                               #log body mass
+                            c(54,37,57),                   #activity and body mass
                             c(54,12:21, 37), #all diet and activity variables
-                            c(54,12:21, 91),         #all diet and body mass
-                            c(54,12:21, 37, 91), #all diet and activity and body mass
+                            c(54,12:21, 57),         #all diet and body mass
+                            c(54,12:21, 37, 57), #all diet and activity and body mass
                             c(54,26:33), # foraging variables
                             c(54,26:33, 12:21), # diet and foraging
-                            c(54,26:33,91), #foraging and body mass
-                            c(54,26:33, 12:21, 37, 91), # foraging, body mass, activity, and diet
-                            c(54,109:119), # PCA for diet and foraing together
-                            c(54,109:119, 91), # PCA for diet and foraging together and body mass
-                            c(54,109:119, 91, 37) # PCA for diet + foraging, activity, and body mass
+                            c(54,26:33,57), #foraging and body mass
+                            c(54,26:33, 12:21, 37, 57), # foraging, body mass, activity, and diet
+                            c(54,75:85), # PCA for diet and foraing together
+                            c(54,75:85, 57), # PCA for diet and foraging together and body mass
+                            c(54,75:85, 57, 37) # PCA for diet + foraging, activity, and body mass
                             )
 test_errors = rep(0, length(bird_lda_variables))
 
@@ -596,18 +576,18 @@ colnames(mammal_train_df)[mammal_qda_variables[[3]]]
 ```{r}
 #removing first diet and foraging variables to avoid rank deficiency
 bird_qda_variables = list(c(54, 13:21), #all diet variables
-                            c(54,91),                               #log body mass
-                            c(54,37,91),                   #activity and body mass
+                            c(54,57),                               #log body mass
+                            c(54,37,57),                   #activity and body mass
                             c(54,13:21, 37), #all diet and activity variables
-                            c(54,13:21, 91),         #all diet and body mass
-                            c(54,13:21, 37, 91), #all diet and activity and body mass
+                            c(54,13:21, 57),         #all diet and body mass
+                            c(54,13:21, 37, 57), #all diet and activity and body mass
                             c(54,27:33), # foraging variables
                             c(54,27:33, 13:21), # diet and foraging
-                            c(54,27:33,91), #foraging and body mass
-                            c(54,27:33, 13:21, 37, 91), # foraging, body mass, activity, and diet
-                            c(54,109:119), # PCA for diet and foraing together
-                            c(54,109:119, 91), # PCA for diet and foraging together and body mass
-                            c(54,109:119, 91, 37) # PCA for diet + foraging, activity, and body mass
+                            c(54,27:33,57), #foraging and body mass
+                            c(54,27:33, 13:21, 37, 57), # foraging, body mass, activity, and diet
+                            c(54,75:85), # PCA for diet and foraing together
+                            c(54,75:85, 57), # PCA for diet and foraging together and body mass
+                            c(54,75:85, 57, 37) # PCA for diet + foraging, activity, and body mass
                             )
 test_errors = rep(0, length(bird_qda_variables))
 
@@ -1007,18 +987,18 @@ test_errors = rep(0, length(mammal_lda_variables))
 set.seed(10)
 for(i in 1:length(mammal_lda_variables)){
   var = mammal_lda_variables[[i]]
-  mammal_lda = randomForest(as.factor(redlistCategory) ~ .,
+  mammal_rf = randomForest(as.factor(redlistCategory) ~ .,
                    data = mammal_train_df[,var],
                    mtry = round(sqrt(length(var)-1))
                    )
-  bag_pred = predict(mammal_lda,newdata=mammal_test_df[,var])
+  bag_pred = predict(mammal_rf,newdata=mammal_test_df[,var])
   test_errors[i] = mean(bag_pred != mammal_test_df$redlistCategory)
 }
 
 which.min(test_errors)
 mammal_lda_variables[[which.min(test_errors)]]
 
-
+mammal_rf_test_errors = test_errors
 ```
 
 ### Best Model
@@ -1026,20 +1006,68 @@ mammal_lda_variables[[which.min(test_errors)]]
 ```{r}
 set.seed(10)
 var = mammal_lda_variables[[10]]
-mammal_lda = randomForest(as.factor(redlistCategory) ~ .,
+mammal_rf = randomForest(as.factor(redlistCategory) ~ .,
                    data = mammal_train_df[,var],
                    mtry = round(sqrt(length(var)-1))
                    )
-bag_pred = predict(mammal_lda,newdata=mammal_test_df[,var])
+bag_pred = predict(mammal_rf,newdata=mammal_test_df[,var])
 mean(bag_pred != mammal_test_df$redlistCategory)
 table(bag_pred, mammal_test_df$redlistCategory)
 
 colnames(mammal_train_df)[mammal_lda_variables[[10]]]
 
+varImpPlot(mammal_rf)
+
 #test error 0.3117428
 
-<<<<<<< HEAD
+
 ```
+
+Based on this plot, the body mass is the most important variable.
+
+## Bird Random Forest
+
+### Variable Selection
+
+```{r}
+test_errors = rep(0, length(bird_lda_variables))
+
+set.seed(10)
+for(i in 1:length(bird_lda_variables)){
+  var = bird_lda_variables[[i]]
+  bird_rf = randomForest(as.factor(redlistCategory) ~ .,
+                   data = bird_train_df[,var],
+                   mtry = round(sqrt(length(var)))
+                   )
+  bag_pred = predict(bird_rf,newdata=bird_test_df[,var])
+  test_errors[i] = mean(bag_pred != bird_test_df$redlistCategory)
+}
+
+which.min(test_errors)
+bird_lda_variables[[which.min(test_errors)]]
+
+bird_rf_test_errors = test_errors
+```
+
+### Best Model
+
+```{r}
+set.seed(10)
+var = bird_lda_variables[[7]]
+bird_rf = randomForest(as.factor(redlistCategory) ~ .,
+                   data = bird_train_df[,var],
+                   mtry = round(sqrt(length(var)-1))
+                   )
+bag_pred = predict(bird_rf,newdata=bird_test_df[,var])
+mean(bag_pred != bird_test_df$redlistCategory)
+table(bag_pred, bird_test_df$redlistCategory)
+
+colnames(bird_train_df)[bird_lda_variables[[7]]]
+
+varImpPlot(bird_rf)
+
+```
+
 
 # 8: Boosted Forests
 
@@ -1232,49 +1260,84 @@ mean(nn_pred != bird_test_df$redlistCategory)
 ## Mammal Boosted Forest
 
 ### Variable Selection
->>>>>>> 33f3e94aaa1f5140099f1a5c3543a03f2a520202
+
+Boosted forests are computationally inefficient, so we are using the best half of the sets of variable identified by the random forests and using ony 500 trees.
 
 ```{r}
+#selecting variable sets to use
+#variable_sets = c(1:20)[mammal_rf_test_errors<median(mammal_rf_test_errors)]
 
 #Using variables selected for LDA
-test_errors = rep(0, length(mammal_lda_variables)*5)
+test_errors = rep(0, length(mammal_lda_variables))
 
 
 set.seed(10)
-for(i in 1:length(mammal_lda_variables)){
+for(i in 1:length(mammal_lda_variables)){ #using selected variable sets
   var = mammal_lda_variables[[i]]
-  
-  if(i==3) next
-  
-  for (ii in 1:5) {
   mammal_boost = gbm(as.factor(redlistCategory) ~ .,
-                      data=mammal_train_df[,var],n.trees=1000,distribution = "multinomial",
-                     interaction.depth=4,shrinkage = c(0.1,0.01,0.001,0.0001)[ii])
-  pred_tmp = predict(mammal_boost,newdata = mammal_test_df[,var],n.trees = 1000)
+                      data=mammal_train_df[,var],n.trees=500,distribution = "multinomial",
+                     interaction.depth=4,shrinkage = 0.1)
+    
+  
+  pred_tmp = predict(mammal_boost,newdata = mammal_test_df[,var],n.trees = 500)
   tmp_max = apply(pred_tmp, 1, which.max)
   pred_boosted=c("Endangered","Least Concern", "Near Threatened","Vulnerable")[tmp_max]
 
-  iii=(i-1)*5+ii
-  
-  test_errors[iii] = mean(pred_boosted!= mammal_test_df$redlistCategory)
-}
+  test_errors[i] = mean(pred_boosted!= mammal_test_df$redlistCategory)
+
   
 }
 
+#making any test error
 test_errors[test_errors==0]=1
 
-which.min(test_errors)
-mammal_lda_variables[[
-  ceiling(which.min(test_errors)/5)
-  ]]
-#shrinkage
-c(0.1,0.01,0.001,0.0001,0.00001)[which.min(test_errors)%%5]
 
-mammal_lda_variables[[3]]
+
+which.min(test_errors)
+mammal_lda_variables[[which.min(test_errors)]]
+#shrinkage
+
+
+
+
+
+
 
 ```
 
+##### Tuning Parameters
+
+```{r}
+
+test_errors = rep(0, 5)
+var = mammal_lda_variables[[1]] #best set from above
+for (i in 1:5){
+  mammal_boost = gbm(as.factor(redlistCategory) ~ .,
+                      data=mammal_train_df[,var],n.trees=1000,distribution = "multinomial",
+                     interaction.depth=4,shrinkage = c(1,0.1,0.01,0.001,0.0001)[i])
+  pred_tmp = predict(mammal_boost,newdata = mammal_test_df[,var],n.trees = 500)
+  tmp_max = apply(pred_tmp, 1, which.max)
+  pred_boosted=c("Endangered","Least Concern", "Near Threatened","Vulnerable")[tmp_max]
+}
+
+
+which.min(test_errors)
+c(1,0.1,0.01,0.001,0,0001)[which.min(test_errors)]
+```
+
+
+
 ### Best Model
+
+```{r}
+mammal_boost = gbm(as.factor(redlistCategory) ~ .,
+                      data=mammal_train_df[,var],n.trees=1000,distribution = "multinomial",
+                     interaction.depth=4,shrinkage = 1)
+
+colnames(mammal_train_df)[mammal_lda_variables[[10]]]
+
+```
+
 
 ## Bird Boosted Forest
 
@@ -1294,24 +1357,23 @@ mammal_lda_variables[[3]]
 
 ```{r}
 #Using variables selected for LDA
-test_errors = rep(0, length(mammal_lda_variables)*5)
+test_errors = rep(0, length(mammal_lda_variables))
 
-best_params = data.frame(cost = rep(0, length(mammal_lda_variables)*5),
-                         gamma=rep(0, length(mammal_lda_variables)*5))
 
 set.seed(10)
 for(i in 1:length(mammal_lda_variables)){
   var = mammal_lda_variables[[i]]
   
-  if(i==3) next
-  
-  mammal_svm = tune(svm, as.factor(redlistCategory)∼., 
-                  data=mammal_train_df[,var],kernel="linear",
-                  ranges=list(cost=c(0.1,1,10),
-                  gamma=c(0.5,1,2,3,4)))
+  if(i==3) {
+    test_errors[i]=1
+    next
+  }
+  mammal_svm=svm(as.factor(redlistCategory)∼., 
+                  data=mammal_train_df[,var],kernel="linear", gamma=1,cost=1)
     
-  best_params[i] = mammal_svm$best.parameters
-  test_errors[i] = mean(dat[-train ,"y"] != predict(tune.out$best.model,newdata=dat[-train ,]))
+  pred_svm = predict(mammal_svm,newdata=mammal_test_df[,var])
+  #best_params[i,] = mammal_svm$best.parameters
+  test_errors[i] = mean(pred_svm != mammal_test_df$redlistCategory)
     
   
 
@@ -1320,34 +1382,51 @@ for(i in 1:length(mammal_lda_variables)){
 
 which.min(test_errors)
 mammal_lda_variables[[which.min(test_errors)]]
-best_params[which.min(test_errors),]
 
-
+colnames(mammal_train_df[mammal_lda_variables[[which.min(test_errors)]]])
 
 ```
+#### Tuning Parameters
+```{r}
+
+var = mammal_lda_variables[[2]]
+mammal_svm = tune(svm, as.factor(redlistCategory)∼., 
+                  data=mammal_train_df[,var],kernel="linear",
+                  ranges=list(cost=c(0.1,1,10),
+                  gamma=c(0.5,1,2,3,4)))
+
+pred_svm = predict(mammal_svm$best.model,newdata=mammal_test_df[,var])
+
+#Misclassification rate for endangered
+sum(pred_svm != mammal_test_df$redlistCategory & mammal_test_df$redlistCategory == "Endangered" )/sum(mammal_test_df$redlistCategory == "Endangered")
+
+mean(pred_svm != mammal_test_df$redlistCategory)
+table(pred_svm, mammal_test_df$redlistCategory)
+
+```
+
 
 #### Using a Polynomial Function
 
 ```{r}
 #Using variables selected for LDA
-test_errors = rep(0, length(mammal_lda_variables)*5)
+test_errors = rep(0, length(mammal_lda_variables))
 
-best_params = data.frame(cost = rep(0, length(mammal_lda_variables)*5),
-                         gamma=rep(0, length(mammal_lda_variables)*5))
 
 set.seed(10)
 for(i in 1:length(mammal_lda_variables)){
   var = mammal_lda_variables[[i]]
   
-  if(i==3) next
-  
-  mammal_svm = tune(svm, as.factor(redlistCategory)∼., 
-                  data=mammal_train_df[,var],kernel="polynomial",
-                  ranges=list(cost=c(0.1,1,10),
-                  gamma=c(0.5,1,2,3,4)))
+  if(i==3) {
+    test_errors[i]=1
+    next
+  }
+  mammal_svm=svm(as.factor(redlistCategory)∼., 
+                  data=mammal_train_df[,var],kernel="polynomial", gamma=1,cost=1)
     
-  best_params[i] = mammal_svm$best.parameters
-  test_errors[i] = mean(dat[-train ,"y"] != predict(tune.out$best.model,newdata=dat[-train ,]))
+  pred_svm = predict(mammal_svm,newdata=mammal_test_df[,var])
+  #best_params[i,] = mammal_svm$best.parameters
+  test_errors[i] = mean(pred_svm != mammal_test_df$redlistCategory)
     
   
 
@@ -1356,7 +1435,9 @@ for(i in 1:length(mammal_lda_variables)){
 
 which.min(test_errors)
 mammal_lda_variables[[which.min(test_errors)]]
-best_params[which.min(test_errors),]
+
+colnames(mammal_train_df[mammal_lda_variables[[which.min(test_errors)]]])
+
 ```
 
 
@@ -1395,7 +1476,7 @@ best_params[which.min(test_errors),]
 
 ### Best Model
 
-## Bird Boosted Forest
+## Bird Support Vector Machine
 
 
 ### Variable Selection
