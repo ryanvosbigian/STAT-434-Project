@@ -18,6 +18,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Data Cleaning
 
+
+
 ```{r load packages}
 
 library(tidyverse)
@@ -25,7 +27,7 @@ library(Hmisc)
 
 ```
 
-```{r set pathway}
+```{r set pathway, eval=FALSE}
 
 ## Local Pathways - copy/paste your local pathway to the github repository
 
@@ -39,7 +41,7 @@ pathway = "/Users/emmabarton/Desktop/spring_2020/STAT434/project/"
 
 ## Loading Datasets
 
-```{r raw data}
+```{r raw data, eval=FALSE}
 
 redlist_df = read.csv(paste0(pathway, "STAT-434---not-the-dodo-/simple_summary_IUCN_birds_mammals.csv"))
 
@@ -49,7 +51,7 @@ elton_bird_df = read.csv(paste0(pathway, "STAT-434---not-the-dodo-/EltonTraits/B
 
 ```
 
-```{r change raw data types}
+```{r change raw data types, eval=FALSE}
 
 redlist_df$scientificName = as.character(redlist_df$scientificName)
 elton_mammal_df$scientificName = as.character(elton_mammal_df$Scientific)
@@ -57,7 +59,7 @@ elton_bird_df$scientificName = as.character(elton_bird_df$Scientific)
 
 ```
 
-```{r join elton and redlist}
+```{r join elton and redlist, eval=FALSE}
 
 # Filter mammals and birds from redlist species
 redlist_mammals_df = redlist_df[redlist_df$className=="MAMMALIA",]
@@ -77,7 +79,7 @@ write.csv(bird_df, "uncleaned_bird_df.csv")
 
 ```
 
-```{r uncleaned data}
+```{r uncleaned data, eval=FALSE}
 
 mammal_df = read.csv("uncleaned_mammal_df.csv")
 bird_df = read.csv("uncleaned_bird_df.csv")
@@ -86,14 +88,14 @@ bird_df = read.csv("uncleaned_bird_df.csv")
 
 ## Data Cleaning
 
-```{r data dimensions}
+```{r data dimensions, eval=FALSE}
 
 dim(mammal_df)
 dim(bird_df)
 
 ```
 
-```{r missing redlist species}
+```{r missing redlist species, eval=FALSE}
 
 table(is.na(mammal_df$Diet.Vect))
 nrow(mammal_df)
@@ -112,7 +114,7 @@ redlist_birds_df %>%
 
 ```
 
-```{r select columns}
+```{r select columns, eval=FALSE}
 
 # Removed unnecessary or mostly empty columns
 mammal_df = mammal_df %>% 
@@ -125,7 +127,7 @@ bird_df = bird_df %>%
 
 ```
 
-```{r missing redlist status}
+```{r missing redlist status, eval=FALSE}
 
 mammal_df %>% 
   filter(is.na(redlistCategory)) %>% 
@@ -137,7 +139,7 @@ bird_df %>%
 
 ```
 
-```{r filter out missing redlist status}
+```{r filter out missing redlist status, eval=FALSE}
 
 # Create prediction/test datasets 
 mammal_pred_df = mammal_df %>% 
@@ -155,7 +157,7 @@ bird_df = bird_df %>%
 
 ```
 
-```{r change factor levels}
+```{r change factor levels, eval=FALSE}
 
 mammal_df = mammal_df %>% 
   mutate(
@@ -167,7 +169,7 @@ mammal_df = mammal_df %>%
 
 ```
 
-```{r write cleaned data}
+```{r write cleaned data, eval=FALSE}
 
 write.csv(mammal_df, "cleaned_mammal_df.csv")
 write.csv(bird_df, "cleaned_bird_df.csv")
@@ -178,7 +180,7 @@ write.csv(bird_pred_df, "bird_pred_df.csv")
 ```
 
 Not having much luck matching these 500 mammal taxons. maybe just drop them??
-```{r matching extra mammal species}
+```{r matching extra mammal species, eval=FALSE}
 
 # matching MAMMAL species that didnt have a perfect match between the IUCN and EltonTraits databases
 mammal_pred_df = read.csv("mammal_pred_df.csv")
@@ -224,12 +226,9 @@ It is a table with that matches the Birdlife checklist version 3 (EltonTraits us
 http://datazone.birdlife.org/species/taxonomy
 ^birdlife taxonomy
 
-Legend at bottom of table
-Taxon removed. This color indicates that the taxonomic concept is only present in the first checklist. The species was either removed entirely from the list, or may have been replaced by another taxon concept (eg, following a species split or a species lump).
- 	Taxon added. This color indicates that the taxonomic concept is only present in the second checklist. The species was either entirely new to the checklist, or it may replace another concept (eg, following a species split or a species lump).
- 	Name changed. This color indicates that the taxonomic concept is the same between the 2 versions (ie, that the names refers to the same population), but that the scientific, common or family name has been modified. 
+
  	
-```{r matching extra bird species}
+```{r matching extra bird species, eval=FALSE}
 
 # matching BIRDS that didnt have a perfect match between the IUCN and EltonTraits databases
 mammal_pred_df = read.csv("mammal_pred_df.csv")
@@ -307,44 +306,494 @@ write.csv(new_clean_bird_df,"cleaned_bird_df_updated_5_29.csv")
 
 ```
 
-## Old Code
+# Data Exploration
 
-Old Code to match species
-```{r format species name}
 
-# fulldata_df=NULL
-# redlist_df$MSW05_Binomial = redlist_df$scientificName
-# amniote_df$MSW05_Binomial = paste(amniote_df$genus,amniote_df$species,sep = " ")
-# pantheria93_df$MSW05_Binomial = as.character(pantheria93_df$MSW05_Binomial)
-# 
-# redlist_df$MSW05_Binomial = as.character(gsub("^([^\\s]*\\s[^\\s]*)\\s.*$", "\\1",redlist_df$scientificName)) 
-# #https://stackoverflow.com/questions/7449564/regex-return-all-before-the-second-occurrence
-# #returns everything before the second space, so that we get the binomial
-# redlist_df$MSW05_Binomial[40:50]
-# 
-# fulldata_df = left_join(x = redlist_df,amniote_df,by="MSW05_Binomial")
-# 
-# fulldata_df = left_join(x = fulldata_df,pantheria93_df,by="MSW05_Binomial")
-# 
-# write.csv(fulldata_df,"fulldataset2.csv")
+
+
+
+
+## Set Up
+
+```{r load packages}
+
+library(tidyverse)
 
 ```
 
-```{r check nas}
+```{r set pathway}
 
-# fulldata_df = read.csv("fulldataset.csv",header = TRUE)
-# 
-# 
-# # for (i in 1:ncol(fulldata_df)) {
-# #   fulldata_df[,i][fulldata_df[,i]== "-999" | fulldata_df[,i]=="NA"] = NA
-# # }
-# 
-# 
-# for (i in 1:ncol(fulldata_df)) {
-#   print(colnames(fulldata_df)[i])
-#   print(table(is.na(fulldata_df[,i])))
-# }
-# 
-# 
+## Local Pathways - copy/paste your local pathway to the github repository
+
+# Emma
+pathway = "/Users/emmabarton/Desktop/spring_2020/STAT434/project/"
+
+# Ryan
+#pathway = "~/GitHub/STAT-434---not-the-dodo-/"
 
 ```
+
+```{r load data}
+
+mammal_df = read.csv("cleaned_mammal_df.csv")
+bird_df = read.csv("cleaned_bird_df_updated_5_29.csv")
+
+```
+
+## Data Exploration
+
+Elton traits: diet, foraging strata, foraging time, and body size. 
+
+## Mammals
+
+```{r variables}
+
+names(mammal_df)
+
+```
+Diet variables are the estimated percent use of Inv: invertebrates Vend: mammals and birds, Vect: reptiles, snakes, amphibians, salamanders, Vfish: fish, Vunk: general vertebrates or unknown, Scav: scavenge, garbage, offal, carcasses, trawlers, carrion, Fruit: fruit and drupes, Nect: nector, pollen, plant exudates, gums, Seed: seed, maize, nuts, spores, wheat, grains, Plant: other plant material. All diet categories should add to 100%.
+
+Diet source is a reference ID and diet certainty is the estimated reliability of the diet sources (see metadata for rankings).
+
+ForStrat.Value: One of five foraging stratum categories (marine, ground, scansorial, arboreal, aerial).
+
+Activity variables are binary 0:no, 1:yes. Nocturnal: night, Crepuscular: twilight, Diurnal: day. 
+
+Bodymass.Value: average adult body mass (g)
+
+Redlist Category: Critically Endangered, Data Deficient, Endangered, Extinct, Extinct in the Wild, Least Concern, Near Threatened, Vulnerable
+
+### Single Variable Distributions
+
+```{r mammal single variable tables}
+
+# Response: Redlist Category
+table(mammal_df$redlistCategory)
+
+# Body Mass distribution
+mammal_df %>% 
+  mutate(
+    bodymass_bin = case_when(
+      BodyMass.Value >= 100000 ~ ">=100,000",
+      BodyMass.Value < 100000 & BodyMass.Value >= 10000 ~ "10,000 - 100,000",
+      BodyMass.Value < 10000 & BodyMass.Value >= 1000 ~ "10,000 - 1,000",
+      BodyMass.Value < 1000 & BodyMass.Value >= 100 ~ "1,000 - 100",
+      BodyMass.Value < 100 ~ "<100"
+     )
+  ) %>% 
+  group_by(bodymass_bin) %>% 
+  dplyr::summarize(n = n())
+
+```
+The majority of species in our dataset are of least concern, followed by data deficient and vulnurable. However, combining critically endangered, endangered, extinct, and extinct in the wild results in 626 species.
+
+The majority of mammals have a bodymass less than 100g followed by a bodymass between 1069. There are some mammals with a bodymass orders of magnitude greater than 100,000g. 
+
+```{r mammal single variable graphs}
+
+# Body Mass Histogram
+ggplot(mammal_df, aes(BodyMass.Value)) + 
+  geom_histogram(binwidth = 25000000) + 
+  theme_classic()
+
+# Log Transformed Body Mass Histogram
+ggplot(mammal_df, aes(BodyMass.Value)) + 
+  geom_histogram() + 
+  scale_x_continuous(trans = "log") +
+  theme_classic()
+
+```
+Because of the large disparity between large mammals with a much greater body mass than 100,000 and the majority of mammals, the distribution of bodymass is very skewed right. 
+
+### Pairwise Relationships
+
+```{r mammal explanatory vs response tables}
+
+# Redlist Category vs Population Trend
+table(mammal_df$redlistCategory, mammal_df$populationTrend)
+
+# Redlist Category vs Foraging Stratum 
+prop.table(table(mammal_df$redlistCategory,mammal_df$ForStrat.Value),2)*100 #makes a nice looking table with % by column
+
+```
+
+```{r mammal explanatory vs response graphs}
+
+# 1
+# Population Trend and Redlist Category Bar Plot
+mammal_df %>% 
+  mutate(
+    redlistCat2 = case_when(
+      redlistCategory == "Critically Endangered" ~ "Endangered or Extinct",
+      redlistCategory == "Endangered" ~ "Endangered or Extinct",
+      redlistCategory == "Extinct" ~ "Endangered or Extinct",
+      redlistCategory == "Extinct in the Wild" ~ "Endangered or Extinct",
+      TRUE ~ as.character(redlistCategory)
+    )
+  ) %>% 
+  ggplot(aes(populationTrend)) +
+    geom_bar(col = "black") +
+    facet_wrap(~redlistCat2) +
+    coord_flip() +
+    theme_classic()
+
+# 2
+# Redlist Category vs Body Mass Value Box Plot
+mammal_df %>% 
+  mutate(
+    redlistCat2 = case_when(
+      redlistCategory == "Critically Endangered" ~ "Endangered or Extinct",
+      redlistCategory == "Endangered" ~ "Endangered or Extinct",
+      redlistCategory == "Extinct" ~ "Endangered or Extinct",
+      redlistCategory == "Extinct in the Wild" ~ "Endangered or Extinct",
+      TRUE ~ as.character(redlistCategory)
+    )
+  ) %>% 
+  ggplot(aes(redlistCat2, BodyMass.Value)) +
+    geom_boxplot() +
+    coord_flip() +
+    scale_y_continuous(trans = "log") +
+    theme_classic()
+
+# 3 
+# Average Diet Percent Use vs Redlist Category Barplots
+mammal_df %>% 
+  mutate(
+    redlistCat2 = case_when(
+      redlistCategory == "Critically Endangered" ~ "Endangered or Extinct",
+      redlistCategory == "Endangered" ~ "Endangered or Extinct",
+      redlistCategory == "Extinct" ~ "Endangered or Extinct",
+      redlistCategory == "Extinct in the Wild" ~ "Endangered or Extinct",
+      TRUE ~ as.character(redlistCategory)
+    )
+  ) %>% 
+  gather(key = "diet_type", value = "percentage", Diet.Inv, Diet.Vend, 
+         Diet.Vect, Diet.Vfish, Diet.Vunk, Diet.Scav, Diet.Fruit, Diet.Nect,
+         Diet.Seed, Diet.PlantO) %>% 
+  ggplot(aes(diet_type, percentage)) +
+    stat_summary(geom = "bar", fun = mean, position = position_dodge(), 
+                 colour = "black", fill = "white",
+                 width = 0.7) +
+    stat_summary(geom = "errorbar", fun.data = mean_se, 
+                 position = position_dodge(0.7),
+                 width = 0.25) +
+    facet_wrap(~redlistCat2) +
+    coord_flip() +
+    theme_classic()
+
+# 4
+# Foraging Stratum and Redlist Category Bar Plot
+mammal_df %>% 
+  mutate(
+    redlistCat2 = case_when(
+      redlistCategory == "Critically Endangered" ~ "Endangered or Extinct",
+      redlistCategory == "Endangered" ~ "Endangered or Extinct",
+      redlistCategory == "Extinct" ~ "Endangered or Extinct",
+      redlistCategory == "Extinct in the Wild" ~ "Endangered or Extinct",
+      TRUE ~ as.character(redlistCategory)
+    )
+  ) %>% 
+  ggplot(aes(ForStrat.Value)) +
+    geom_bar(col = "black") +
+    facet_wrap(~redlistCat2) +
+    theme_classic()
+
+```
+1) The majority of endangered or extinct mammals (critically endangered, endangered, extinct, and extinct in the wild grouped into one category) have a decreasing population trend. The majority of vulnerable and near threatened mammals also have a decreasing population trend. The majority of least concern mammals have either a stable population trend or an unknown population trend. 
+
+It is very likely that the redlist category of a mammal is designated based on population trend knowledge. Many of the mammals in the least concern category may actually be more threatened than believed becasue their population trend is unknown.  
+
+2) Natural log transformed body mass value (g) vs redlist category. There are visually no major differences in body mass distributions between categories other than mammals categorized as least concern and data deficient seem to have more outliers with large body mass values. 
+
+3) Average percent use of each diet category for each redlist category. Averages appear similar across redlist categories. 
+
+4) Distribution of foraging stratum divided by redlist category. Mammals that are of least concern have a higher proportion of ground foragers. Other than this there are appear to be no major differences between the categories.      
+
+```{r mammal explanatory vs explanatory graphs}
+
+# 5
+# Average Percent Use of Each Diet Type
+mammal_df %>% 
+  gather(key = "diet_type", value = "percentage", Diet.Inv, Diet.Vend, 
+         Diet.Vect, Diet.Vfish, Diet.Vunk, Diet.Scav, Diet.Fruit, Diet.Nect,
+         Diet.Seed, Diet.PlantO) %>% 
+  ggplot(aes(diet_type, percentage)) + 
+    stat_summary(geom = "bar", fun = mean, position = position_dodge(), 
+                 colour = "black", fill = "white",
+                 width = 0.7) +
+    stat_summary(geom = "errorbar", fun.data = mean_se, 
+                 position = position_dodge(0.7),
+                 width = 0.25) +
+    coord_flip() + 
+    theme_classic()
+
+# 6 
+# Activity vs Body Mass Boxplot
+mammal_df %>%
+  gather(key = "activity_type", value = "value", Activity.Nocturnal, 
+         Activity.Crepuscular, Activity.Diurnal) %>% 
+  filter(value == 1) %>% 
+  ggplot(aes(activity_type, BodyMass.Value)) +
+    geom_boxplot() +
+    scale_y_continuous(trans = "log") +
+    coord_flip() +
+    theme_classic()
+
+```
+5) Invertebrates were the diet component with the highest average percent use, followed by other plant parts and fruit.
+
+6) Average body mass value for each activity type. Diurnal and Crepuscular have slightly larger median bodymass values. 
+
+## Birds 
+
+```{r variables}
+
+names(bird_df)
+
+```
+Diet variables are the estimated percent use of Inv: invertebrates Vend: mammals and birds, Vect: reptiles, snakes, amphibians, salamanders, Vfish: fish, Vunk: general vertebrates or unknown, Scav: scavenge, garbage, offal, carcasses, trawlers, carrion, Fruit: fruit and drupes, Nect: nector, pollen, plant exudates, gums, Seed: seed, maize, nuts, spores, wheat, grains, Plant: other plant material. All diet categories should add to 100%.
+
+Diet.5Cat: assignment to one of five diet categories (PlantSeed, FruiNect, Invertebrate, VertFishScav, Omnivore)
+
+Foraging stratum variables are the estimated percent use of watbelowsurf: below water surface, wataroundsurf: on water surface, ground: ground, understory: below 2m in understory, midhigh: higher than 2m but below canopy, canopy: canopy, aerial: well above tree structures. All foraging stratum categories should add to 100%. 
+
+PelagicSpecialist: binary variable for foraging being mostly pelagic.
+
+Nocturnal: binary variable for night foraging
+
+Bodymass.Value: average adult body mass (g)
+
+Redlist Category: Critically Endangered, Data Deficient, Endangered, Extinct, Extinct in the Wild, Least Concern, Near Threatened, Vulnerable
+
+
+### Single Variable Distributions
+
+```{r bird single variable tables}
+
+# Response: Redlist Category
+table(bird_df$redlistCategory)
+
+# Body Mass distribution
+bird_df %>% 
+  mutate(
+    bodymass_bin = case_when(
+      BodyMass.Value >= 100000 ~ ">=100,000",
+      BodyMass.Value < 100000 & BodyMass.Value >= 10000 ~ "10,000 - 100,000",
+      BodyMass.Value < 10000 & BodyMass.Value >= 1000 ~ "10,000 - 1,000",
+      BodyMass.Value < 1000 & BodyMass.Value >= 100 ~ "1,000 - 100",
+      BodyMass.Value < 100 ~ "<100"
+     )
+  ) %>% 
+  group_by(bodymass_bin) %>% 
+  dplyr::summarize(n = n())
+
+```
+The majority of species in our dataset are of least concern, followed by data deficient and vulnurable. However, combining critically endangered, endangered, extinct, and extinct in the wild results in 592 species.
+
+The majority of birds have a bodymass less than 100g followed by a bodymass between 1000 and 100 grams There afre very view with greater than 10,000 grams. 
+
+```{r bird single variable graphs}
+
+# Body Mass Histogram
+ggplot(bird_df, aes(BodyMass.Value)) + 
+  geom_histogram(binwidth = 25000000) + 
+  theme_classic()
+
+# Log Transformed Body Mass Histogram
+ggplot(bird_df, aes(BodyMass.Value)) + 
+  geom_histogram() + 
+  scale_x_continuous(trans = "log") +
+  theme_classic()
+
+```
+Because of the large disparity between large birds, such as ostriches and emus, with a much greater body mass than most birds, the distribution of bodymass is skewed right. 
+
+### Pairwise Relationships
+
+
+```{r bird explanatory vs response graphs}
+
+# 1
+# Population Trend and Redlist Category Bar Plot
+bird_df %>% 
+  mutate(
+    redlistCat2 = case_when(
+      redlistCategory == "Critically Endangered" ~ "Endangered or Extinct",
+      redlistCategory == "Endangered" ~ "Endangered or Extinct",
+      redlistCategory == "Extinct" ~ "Endangered or Extinct",
+      redlistCategory == "Extinct in the Wild" ~ "Endangered or Extinct",
+      TRUE ~ as.character(redlistCategory)
+    )
+  ) %>% 
+  ggplot(aes(populationTrend)) +
+    geom_bar(col = "black") +
+    facet_wrap(~redlistCat2) +
+    coord_flip() +
+    theme_classic()
+
+# 2
+# Redlist Category vs Body Mass Value Box Plot
+bird_df %>% 
+  mutate(
+    redlistCat2 = case_when(
+      redlistCategory == "Critically Endangered" ~ "Endangered or Extinct",
+      redlistCategory == "Endangered" ~ "Endangered or Extinct",
+      redlistCategory == "Extinct" ~ "Endangered or Extinct",
+      redlistCategory == "Extinct in the Wild" ~ "Endangered or Extinct",
+      TRUE ~ as.character(redlistCategory)
+    )
+  ) %>% 
+  ggplot(aes(redlistCat2, BodyMass.Value)) +
+    geom_boxplot() +
+    coord_flip() +
+    scale_y_continuous(trans = "log") +
+    theme_classic()
+
+# 3 
+# Average Diet Percent Use vs Redlist Category Barplots
+bird_df %>% 
+  mutate(
+    redlistCat2 = case_when(
+      redlistCategory == "Critically Endangered" ~ "Endangered or Extinct",
+      redlistCategory == "Endangered" ~ "Endangered or Extinct",
+      redlistCategory == "Extinct" ~ "Endangered or Extinct",
+      redlistCategory == "Extinct in the Wild" ~ "Endangered or Extinct",
+      TRUE ~ as.character(redlistCategory)
+    )
+  ) %>% 
+  gather(key = "diet_type", value = "percentage",Diet.Inv, Diet.Vend, 
+         Diet.Vect, Diet.Vfish, Diet.Vunk, Diet.Scav, Diet.Fruit, Diet.Nect,
+         Diet.Seed, Diet.PlantO) %>% 
+  ggplot(aes(diet_type, percentage)) +
+    stat_summary(geom = "bar", fun = mean, position = position_dodge(), 
+                 colour = "black", fill = "white",
+                 width = 0.7) +
+    stat_summary(geom = "errorbar", fun.data = mean_se, 
+                 position = position_dodge(0.7),
+                 width = 0.25) +
+    facet_wrap(~redlistCat2) +
+    coord_flip() +
+    theme_classic()
+
+# 4
+# Foraging Stratum and Redlist Category Bar Plot
+bird_df %>% 
+  mutate(
+    redlistCat2 = case_when(
+      redlistCategory == "Critically Endangered" ~ "Endangered or Extinct",
+      redlistCategory == "Endangered" ~ "Endangered or Extinct",
+      redlistCategory == "Extinct" ~ "Endangered or Extinct",
+      redlistCategory == "Extinct in the Wild" ~ "Endangered or Extinct",
+      TRUE ~ as.character(redlistCategory)
+    )
+  ) %>% 
+  gather(key = "foraging_type", value = "percentage","ForStrat.watbelowsurf" , "ForStrat.wataroundsurf" ,"ForStrat.ground",       
+ "ForStrat.understory" ,   "ForStrat.midhigh"   ,    "ForStrat.canopy"    ,    "ForStrat.aerial"     ,  
+  "PelagicSpecialist" ) %>% 
+  ggplot(aes(foraging_type, percentage)) +
+    stat_summary(geom = "bar", fun = mean, position = position_dodge(), 
+                 colour = "black", fill = "white",
+                 width = 0.7) +
+    stat_summary(geom = "errorbar", fun.data = mean_se, 
+                 position = position_dodge(0.7),
+                 width = 0.25) +
+    facet_wrap(~redlistCat2) +
+    coord_flip() +
+    theme_classic()
+
+
+
+
+```
+1) The majority of endangered or extinct birds (critically endangered, endangered, extinct, and extinct in the wild grouped into one category) have a decreasing population trend. The majority of vulnerable and near threatened birds also have a decreasing population trend. The majority of least concern birds have either a stable population trend or a decreasing population trend. 
+
+It is very likely that the redlist category of a bird is designated based on population trend knowledge. Many of the birds in the least concern category may actually be more threatened than believed becasue their population trend is unknown. Thus, we will be excluding this variable from out models.
+
+2) Natural log transformed body mass value (g) vs redlist category. On average, the endangered or extinct birds have higher body mass than least concern, and endangered and extinct and vulnerable have similar body mass.
+
+3) Average percent use of each diet category for each redlist category. Averages appear pretty similar across redlist categories, but least concern species tend to have higher percentages of invertebrates in their diet than other cateogires most scavenging birds have higher status (endangered being considered a higher status than vulnerable than near threatened and finally least concern). 
+
+4) Distribution of foraging strageties divided by redlist category. There appears to be a some variation. For instance, aerial foraging birds tend to be lower status.       
+
+```{r bird explanatory vs explanatory graphs}
+
+# 5
+# Average Percent Use of Each Diet Type
+bird_df %>% 
+  gather(key = "diet_type", value = "percentage", Diet.Inv, Diet.Vend, 
+         Diet.Vect, Diet.Vfish, Diet.Vunk, Diet.Scav, Diet.Fruit, Diet.Nect,
+         Diet.Seed, Diet.PlantO) %>% 
+  ggplot(aes(diet_type, percentage)) + 
+    stat_summary(geom = "bar", fun = mean, position = position_dodge(), 
+                 colour = "black", fill = "white",
+                 width = 0.7) +
+    stat_summary(geom = "errorbar", fun.data = mean_se, 
+                 position = position_dodge(0.7),
+                 width = 0.25) +
+    coord_flip() + 
+    theme_classic()
+
+
+```
+5) Invertebrates were the diet component with the highest average percent use, followed by other plant parts and fruit.
+
+
+```{r investigate birds}
+
+prop.table(table(bird_df$redlistCategory))*100
+
+prop.table(table(bird_df$redlistCategory,bird_df$populationTrend),2)*100
+
+prop.table(table(bird_df$redlistCategory,bird_df$Diet.Inv),2)*100
+
+prop.table(table(bird_df$redlistCategory,bird_df$Diet.Nect),2)*100
+
+prop.table(table(bird_df$redlistCategory,bird_df$Nocturnal),2)*100
+
+prop.table(table(bird_df$redlistCategory,bird_df$PelagicSpecialist),2)*100
+
+#Deciding which ones to include based on whether different redlistcategories have different percentages in each percentage of variable 
+
+prop.table(table(bird_df$redlistCategory,bird_df$ForStrat.watbelowsurf),2)*100 #include in model
+
+prop.table(table(bird_df$redlistCategory,bird_df$ForStrat.wataroundsurf),2)*100 # include in model
+ 
+prop.table(table(bird_df$redlistCategory,bird_df$ForStrat.ground),2)*100 #even across all categories so not including in model
+
+prop.table(table(bird_df$redlistCategory,bird_df$ForStrat.understory),2)*100 #pretty even across categories, not including
+
+prop.table(table(bird_df$redlistCategory,bird_df$ForStrat.midhigh),2)*100 #pretty even across categories, not including
+
+prop.table(table(bird_df$redlistCategory,bird_df$ForStrat.canopy),2)*100 # moderately even
+
+prop.table(table(bird_df$redlistCategory,bird_df$ForStrat.aerial),2)*100 #very high proportion in least concern, including
+
+sapply(split(bird_df$BodyMass.Value,bird_df$redlistCategory),mean)
+sapply(split(bird_df$BodyMass.Value,bird_df$redlistCategory),length)
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
