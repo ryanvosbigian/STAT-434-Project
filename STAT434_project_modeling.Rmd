@@ -11,6 +11,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```
 
+
+
 Types of models to use:
 
 Classification models only (could convert classes to numeric 1 thru 4, but makes our prediction undesirable, plus not equal jumps between classes)
@@ -31,8 +33,6 @@ Additional Considerations for Modeling
   1. PCA of all diet and foraging variables
     a. All diet variables are highly correlated, because they each sum up to 100. Thus, using PCA could really simplify the models considerably
     b. Additionally, if PCA is performed on diet variables then the diet variables should not be scaled because they already are by nature of the data
-  2. Changing sensitivity of classifications so it is harder to be classified as Least Concern
-    a. ROC Curves for each model
   
 # Set Up
 
@@ -43,6 +43,7 @@ library(class)
 library(tree)
 library(randomForest)
 library(MASS)
+library(e1071)
 
 ```
 
@@ -396,18 +397,13 @@ mean(mam_lda1_pred$class!=mammal_test_df$redlistCategory)
 ### Variable Selection
 
 ```{r}
-mammal_lda_variables = list(c(38,4, 5, 6, 7, 8, 9, 10, 11, 12, 13), #all diet variables
-                            c(38,7, 9, 10, 11, 12, 13),                  #selected diet variables
-                            c(38,41),                               #log body mass
+mammal_lda_variables = list(c(38,7, 9, 10, 11, 12, 13),                  #selected diet variables
                             c(38,19, 20, 21, 41),                   #activity and body mass
-                            c(38,4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 20, 21), #all diet and activity variables
-                            c(38,4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 41),         #all diet and body mass
                             c(38,41, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 20, 21), #all diet and activity and body mass
                             c(38,7, 9, 10, 11, 12, 13, 41), #selected activity variables and body mass
                             c(38,7, 9, 10, 11, 12, 13, 19, 20, 21), #selected diet and activity
                             c(38,7, 9, 10, 11, 12, 13, 19, 20, 21, 41), #selected diet, activity and body mass
-                            c(38,42, 43, 44, 45, 46, 47, 48), # 7 PC for diet
-                            c(38,42, 43, 44, 45, 46, 47, 48, 41), # PCA for diet and diet
+                            c(38,42, 43, 44, 45, 46, 47, 48, 41), # PCA for diet and body mass
                             c(38,42, 43, 44, 45, 46, 47, 48, 19, 20, 21), # PCA for diet and activity
                             c(38,42, 43, 44, 45, 46, 47, 48, 19, 20, 21, 41), # PCA for diet, activity, and body mass
                             c(38,7, 9, 10, 11, 12, 13, 16),     #selected diet variables and foraging
@@ -1041,18 +1037,295 @@ colnames(mammal_train_df)[mammal_lda_variables[[10]]]
 
 #test error 0.3117428
 
+<<<<<<< HEAD
 ```
 
 # 8: Boosted Forests
 
 # 9: Neural Networks
+=======
+## Bird Random Forest
 
+
+
+
+# 8: Boosted Forests
+
+## Mammal Boosted Forest
+
+### Variable Selection
+>>>>>>> 33f3e94aaa1f5140099f1a5c3543a03f2a520202
+
+```{r}
+
+#Using variables selected for LDA
+test_errors = rep(0, length(mammal_lda_variables)*5)
+
+
+set.seed(10)
+for(i in 1:length(mammal_lda_variables)){
+  var = mammal_lda_variables[[i]]
+  
+  if(i==3) next
+  
+  for (ii in 1:5) {
+  mammal_boost = gbm(as.factor(redlistCategory) ~ .,
+                      data=mammal_train_df[,var],n.trees=1000,distribution = "multinomial",
+                     interaction.depth=4,shrinkage = c(0.1,0.01,0.001,0.0001)[ii])
+  pred_tmp = predict(mammal_boost,newdata = mammal_test_df[,var],n.trees = 1000)
+  tmp_max = apply(pred_tmp, 1, which.max)
+  pred_boosted=c("Endangered","Least Concern", "Near Threatened","Vulnerable")[tmp_max]
+
+  iii=(i-1)*5+ii
+  
+  test_errors[iii] = mean(pred_boosted!= mammal_test_df$redlistCategory)
+}
+  
+}
+
+test_errors[test_errors==0]=1
+
+which.min(test_errors)
+mammal_lda_variables[[
+  ceiling(which.min(test_errors)/5)
+  ]]
+#shrinkage
+c(0.1,0.01,0.001,0.0001,0.00001)[which.min(test_errors)%%5]
+
+mammal_lda_variables[[3]]
+
+```
+
+### Best Model
+
+## Bird Boosted Forest
+
+### Variable Selection
+
+### Best Model
 
 
 # 10: Support Vector Machines
 
 
+## Mammal Boosted Forest
 
+### Variable Selection
+
+#### Using a Linear Function
+
+```{r}
+#Using variables selected for LDA
+test_errors = rep(0, length(mammal_lda_variables)*5)
+
+best_params = data.frame(cost = rep(0, length(mammal_lda_variables)*5),
+                         gamma=rep(0, length(mammal_lda_variables)*5))
+
+set.seed(10)
+for(i in 1:length(mammal_lda_variables)){
+  var = mammal_lda_variables[[i]]
+  
+  if(i==3) next
+  
+  mammal_svm = tune(svm, as.factor(redlistCategory)∼., 
+                  data=mammal_train_df[,var],kernel="linear",
+                  ranges=list(cost=c(0.1,1,10),
+                  gamma=c(0.5,1,2,3,4)))
+    
+  best_params[i] = mammal_svm$best.parameters
+  test_errors[i] = mean(dat[-train ,"y"] != predict(tune.out$best.model,newdata=dat[-train ,]))
+    
+  
+
+  
+}
+
+which.min(test_errors)
+mammal_lda_variables[[which.min(test_errors)]]
+best_params[which.min(test_errors),]
+
+
+
+```
+
+#### Using a Polynomial Function
+
+```{r}
+#Using variables selected for LDA
+test_errors = rep(0, length(mammal_lda_variables)*5)
+
+best_params = data.frame(cost = rep(0, length(mammal_lda_variables)*5),
+                         gamma=rep(0, length(mammal_lda_variables)*5))
+
+set.seed(10)
+for(i in 1:length(mammal_lda_variables)){
+  var = mammal_lda_variables[[i]]
+  
+  if(i==3) next
+  
+  mammal_svm = tune(svm, as.factor(redlistCategory)∼., 
+                  data=mammal_train_df[,var],kernel="polynomial",
+                  ranges=list(cost=c(0.1,1,10),
+                  gamma=c(0.5,1,2,3,4)))
+    
+  best_params[i] = mammal_svm$best.parameters
+  test_errors[i] = mean(dat[-train ,"y"] != predict(tune.out$best.model,newdata=dat[-train ,]))
+    
+  
+
+  
+}
+
+which.min(test_errors)
+mammal_lda_variables[[which.min(test_errors)]]
+best_params[which.min(test_errors),]
+```
+
+
+#### Using a Radial Function
+```{r}
+#Using variables selected for LDA
+test_errors = rep(0, length(mammal_lda_variables)*5)
+
+best_params = data.frame(cost = rep(0, length(mammal_lda_variables)*5),
+                         gamma=rep(0, length(mammal_lda_variables)*5))
+
+set.seed(10)
+for(i in 1:length(mammal_lda_variables)){
+  var = mammal_lda_variables[[i]]
+  
+  if(i==3) next
+  
+  mammal_svm = tune(svm, as.factor(redlistCategory)∼., 
+                  data=mammal_train_df[,var],kernel="radial",
+                  ranges=list(cost=c(0.1,1,10),
+                  gamma=c(0.5,1,2,3,4)))
+    
+  best_params[i] = mammal_svm$best.parameters
+  test_errors[i] = mean(dat[-train ,"y"] != predict(tune.out$best.model,newdata=dat[-train ,]))
+    
+  
+
+  
+}
+
+which.min(test_errors)
+mammal_lda_variables[[which.min(test_errors)]]
+best_params[which.min(test_errors),]
+```
+
+
+### Best Model
+
+## Bird Boosted Forest
+
+
+### Variable Selection
+
+
+#### Using a Linear Function
+
+```{r}
+#Using variables selected for LDA
+test_errors = rep(0, length(bird_lda_variables)*5)
+
+best_params = data.frame(cost = rep(0, length(bird_lda_variables)*5),
+                         gamma=rep(0, length(bird_lda_variables)*5))
+
+set.seed(10)
+for(i in 1:length(bird_lda_variables)){
+  var = bird_lda_variables[[i]]
+  
+  if(i==3) next
+  
+  bird_svm = tune(svm, as.factor(redlistCategory)∼., 
+                  data=bird_train_df[,var],kernel="linear",
+                  ranges=list(cost=c(0.1,1,10),
+                  gamma=c(0.5,1,2,3,4)))
+    
+  best_params[i] = bird_svm$best.parameters
+  test_errors[i] = mean(dat[-train ,"y"] != predict(tune.out$best.model,newdata=dat[-train ,]))
+    
+  
+
+  
+}
+
+which.min(test_errors)
+bird_lda_variables[[which.min(test_errors)]]
+best_params[which.min(test_errors),]
+
+
+
+```
+
+#### Using a Polynomial Function
+
+```{r}
+#Using variables selected for LDA
+test_errors = rep(0, length(bird_lda_variables)*5)
+
+best_params = data.frame(cost = rep(0, length(bird_lda_variables)*5),
+                         gamma=rep(0, length(bird_lda_variables)*5))
+
+set.seed(10)
+for(i in 1:length(bird_lda_variables)){
+  var = bird_lda_variables[[i]]
+  
+  if(i==3) next
+  
+  bird_svm = tune(svm, as.factor(redlistCategory)∼., 
+                  data=bird_train_df[,var],kernel="polynomial",
+                  ranges=list(cost=c(0.1,1,10),
+                  gamma=c(0.5,1,2,3,4)))
+    
+  best_params[i] = bird_svm$best.parameters
+  test_errors[i] = mean(dat[-train ,"y"] != predict(tune.out$best.model,newdata=dat[-train ,]))
+    
+  
+
+  
+}
+
+which.min(test_errors)
+bird_lda_variables[[which.min(test_errors)]]
+best_params[which.min(test_errors),]
+```
+
+
+#### Using a Radial Function
+```{r}
+#Using variables selected for LDA
+test_errors = rep(0, length(bird_lda_variables)*5)
+
+best_params = data.frame(cost = rep(0, length(bird_lda_variables)*5),
+                         gamma=rep(0, length(bird_lda_variables)*5))
+
+set.seed(10)
+for(i in 1:length(bird_lda_variables)){
+  var = bird_lda_variables[[i]]
+  
+  if(i==3) next
+  
+  bird_svm = tune(svm, as.factor(redlistCategory)∼., 
+                  data=bird_train_df[,var],kernel="radial",
+                  ranges=list(cost=c(0.1,1,10),
+                  gamma=c(0.5,1,2,3,4)))
+    
+  best_params[i] = bird_svm$best.parameters
+  test_errors[i] = mean(dat[-train ,"y"] != predict(tune.out$best.model,newdata=dat[-train ,]))
+    
+  
+
+  
+}
+
+which.min(test_errors)
+bird_lda_variables[[which.min(test_errors)]]
+best_params[which.min(test_errors),]
+```
+
+### Best Model
 
 
 
