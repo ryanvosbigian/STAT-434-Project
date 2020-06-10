@@ -196,6 +196,173 @@ bird_test_df = bird_df[-train_bird,]
 
 # 1: Logistic Regression
   
+## Mammals 
+
+### Format Variables
+
+```{r}
+
+# Create separate logistic regression dataframe
+mammals_log_train_df = mammal_train_df
+mammals_log_test_df = mammal_test_df
+
+# Change Response to Binary
+mammals_log_train_df = mammals_log_train_df %>% 
+  mutate(
+    redlistCategory = case_when(
+      redlistCategory == "Endangered" ~ 1,
+      redlistCategory == "Near Threatened" ~ 1,
+      redlistCategory == "Vulnerable" ~ 1,
+      TRUE ~ 0
+    )
+  )
+
+mammals_log_test_df = mammals_log_test_df %>% 
+  mutate(
+    redlistCategory = case_when(
+      redlistCategory == "Endangered" ~ 1,
+      redlistCategory == "Near Threatened" ~ 1,
+      redlistCategory == "Vulnerable" ~ 1,
+      TRUE ~ 0
+    )
+  )
+
+```
+
+### Variable Selection
+
+```{r}
+
+mammal_log_variables = list(c(38,4, 5, 6, 7, 8, 9, 10, 11, 12, 13), #all diet variables
+                            c(38,7, 9, 10, 11, 12, 13),                  #selected diet variables
+                            c(38,41),                               #log body mass
+                            c(38,19, 20, 21, 41),                   #activity and body mass
+                            c(38,4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 20, 21), #all diet and activity variables
+                            c(38,4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 41),         #all diet and body mass
+                            c(38,41, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 20, 21), #all diet and activity and body mass
+                            c(38,7, 9, 10, 11, 12, 13, 41), #selected activity variables and body mass
+                            c(38,7, 9, 10, 11, 12, 13, 19, 20, 21), #selected diet and activity
+                            c(38,7, 9, 10, 11, 12, 13, 19, 20, 21, 41), #selected diet, activity and body mass
+                            c(38,42, 43, 44, 45, 46, 47, 48), # 7 PC for diet
+                            c(38,42, 43, 44, 45, 46, 47, 48, 41), # PCA for diet and diet
+                            c(38,42, 43, 44, 45, 46, 47, 48, 19, 20, 21), # PCA for diet and activity
+                            c(38,42, 43, 44, 45, 46, 47, 48, 19, 20, 21, 41), # PCA for diet, activity, and body mass
+                            c(38,7, 9, 10, 11, 12, 13, 16),     #selected diet variables and foraging
+                            c(38,7, 9, 10, 11, 12, 13, 41, 16), #selected activity variables and body mass and foraging
+                            c(38, 16, 19, 20, 21), # activity and foraging
+                            c(38, 16, 42, 43, 44, 45, 46, 47, 48, 41),   # PCA for diet, and body mass and foraging
+                            c(38, 16, 42, 43, 44, 45, 46, 47, 48, 19, 20, 21, 41), #PCAdiet, and activity, body mass, and foraging
+                            c(38,7, 9, 10, 11, 12, 13, 19, 20, 21, 41, 16)#selected diet, activity and body mass and foraging
+                        
+                            )  
+test_errors = rep(0, length(mammal_log_variables))
+
+for(i in 1:length(mammal_log_variables)){
+  var = mammal_log_variables[[i]]
+  mammal_log = glm(redlistCategory ~ .,
+                   data = mammals_log_train_df[,var])
+  log_prob = predict(mammal_log, newdata=mammals_log_test_df[,var], type = "response")
+  log_pred = rep(0, 2146)
+  log_pred[log_prob > 0.5] = 1
+  test_errors[i] = mean(log_pred != mammals_log_test_df$redlistCategory)
+}
+
+which.min(test_errors)
+mammal_log_variables[[which.min(test_errors)]]
+
+# Best Variables: Selected diet variables, bodymass, and foraging
+
+```
+
+### Best Model
+
+```{r}
+
+var = mammal_log_variables[[16]]
+mammal_log = glm(redlistCategory ~ .,
+                   data = mammals_log_train_df[,var])
+log_prob = predict(mammal_log, newdata=mammals_log_test_df[,var], type = "response")
+log_pred = rep(0, 2146)
+log_pred[log_prob > 0.5] = 1
+mean(log_pred != mammals_log_test_df$redlistCategory)
+
+# Error rate = 0.288
+
+```
+
+## Birds
+  
+### Format Variables
+
+```{r}
+
+# Create separate logistic regression dataframe
+bird_log_train_df = bird_train_df
+bird_log_test_df = bird_test_df
+
+# Change Response to Binary
+bird_log_train_df = bird_log_train_df %>% 
+  mutate(
+    redlistCategory = case_when(
+      redlistCategory == "Endangered" ~ 1,
+      redlistCategory == "Near Threatened" ~ 1,
+      redlistCategory == "Vulnerable" ~ 1,
+      TRUE ~ 0
+    )
+  )
+
+bird_log_test_df = bird_log_test_df %>% 
+  mutate(
+    redlistCategory = case_when(
+      redlistCategory == "Endangered" ~ 1,
+      redlistCategory == "Near Threatened" ~ 1,
+      redlistCategory == "Vulnerable" ~ 1,
+      TRUE ~ 0
+    )
+  )
+
+```
+
+### Variable Selection
+
+```{r}
+# Having trouble with bird logistic regression
+bird_log_variables = list(#c(54, 12:21), # all diet variables
+                          #c(54, 37,57), # activity and body mass
+                          #c(54, 12:21, 37), # all diet and activity variables
+                          #c(54, 12:21, 57), # all diet and body mass
+                          #c(54, 12:21, 37, 57), # all diet and activity and body mass
+                          c(54, 26:33), # foraging variables
+                          #c(54, 26:33, 12:21), # diet and foraging
+                          #c(54, 26:33, 57), # foraging and body mass
+                          #c(54, 26:33, 12:21, 37, 57), 
+                          # foraging, body mass, activity, and diet
+                          #c(54, 75:91), # PCA for diet and foraing together
+                          c(54, 75:91, 57), 
+                          # PCA for diet and foraging together and body mass
+                          c(54, 75:91, 57, 37)
+                          # PCA for diet + foraging, activity, and body mass
+                        )
+test_errors = rep(0, length(bird_log_variables))
+
+for(i in 1:length(bird_log_variables)){
+  var = bird_log_variables[[i]]
+  print(var)
+  bird_log = glm(redlistCategory ~ .,
+                   data = bird_log_train_df[,var])
+  log_prob = predict(bird_log, newdata=bird_log_test_df[,var], type = "response")
+  log_pred = rep(0, 2146)
+  log_pred[log_prob > 0.5] = 1
+  test_errors[i] = mean(log_pred != bird_log_test_df$redlistCategory)
+}
+
+which.min(test_errors)
+bird_log_variables[[which.min(test_errors)]]
+
+```
+
+### Best Model
+
 # 2: Linear Discriminant Analysis
 
 ## Mammals
@@ -389,7 +556,6 @@ mammal_qda_variables = list(c(38,4, 5, 6, 7, 8, 9, 10, 11,13), #all diet variabl
                             c(38, 16, 42, 43, 44, 45, 46, 47, 48, 41),   # PCA for diet, and body mass and foraging
                             c(38, 16, 42, 43, 44, 45, 46, 47, 48, 19, 20, 21, 41), #PCAdiet, and activity, body mass, and foraging
                             c(38,7, 9, 10, 11, 12, 13, 19, 20, 21, 41, 16)#selected diet, activity and body mass and foraging
-                        
                             )  
 test_errors = rep(0, length(mammal_lda_variables))
 
@@ -725,7 +891,7 @@ mammal_test_df$redlistCategory = as.factor(mammal_test_df$redlistCategory)
 
 ```{r mammal class tree}
 
-mammal_tree = tree(redlistCategory ~ log_bodymass + populationTrend + ForStrat.Value + 
+mammal_tree = tree(redlistCategory ~ log_bodymass + ForStrat.Value + 
                    Activity.Crepuscular + Activity.Diurnal + Activity.Nocturnal + 
                    Diet.Inv + Diet.Vend + Diet.Vect + Diet.Vfish + Diet.Vunk + 
                    Diet.Scav + Diet.Fruit + Diet.PlantO, 
@@ -748,7 +914,6 @@ text(mammal_tree, pretty = 0)
 ## Mammal Bagged Trees
 
 ### Variable Selection
-
 
 ```{r}
 #Using variables selected for LDA
@@ -829,8 +994,6 @@ colnames(bird_train_df)[bird_lda_variables[[7]]]
 
 # 7: Random Forests
 
-Hey Emma! I started on Random Forests bc it took about 30 seconds to copy and paste what I had for bagging. Is this what you were thinking of doing?
-
 ## Mammal Random Forests
 
 ### Variable Selection
@@ -875,8 +1038,14 @@ colnames(mammal_train_df)[mammal_lda_variables[[10]]]
 varImpPlot(mammal_rf)
 
 #test error 0.3117428
+
+<<<<<<< HEAD
 ```
 
+# 8: Boosted Forests
+
+# 9: Neural Networks
+=======
 ## Bird Random Forest
 
 
@@ -887,6 +1056,7 @@ varImpPlot(mammal_rf)
 ## Mammal Boosted Forest
 
 ### Variable Selection
+>>>>>>> 33f3e94aaa1f5140099f1a5c3543a03f2a520202
 
 Boosted forests are computationally inefficient, so we are using the best half of the sets of variable identified by the random forests and using ony 500 trees.
 
@@ -941,8 +1111,6 @@ c(0.1,0.01,0.001)[which.min(test_errors)%%5]
 
 ### Best Model
 
-
-# 9: Neural Networks
 
 # 10: Support Vector Machines
 
