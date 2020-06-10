@@ -588,9 +588,9 @@ bird_df %>%
   dplyr::summarize(n = n())
 
 ```
-The majority of species in our dataset are of least concern, followed by data deficient and vulnurable. However, combining critically endangered, endangered, extinct, and extinct in the wild results in 324 species.
+The majority of species in our dataset are of least concern, followed by data deficient and vulnurable. However, combining critically endangered, endangered, extinct, and extinct in the wild results in 592 species.
 
-The majority of birds have a bodymass less than 100g followed by a bodymass between 1069. There are some mammals with a bodymass orders of magnitude greater than 100,000g. 
+The majority of birds have a bodymass less than 100g followed by a bodymass between 1000 and 100 grams There afre very view with greater than 10,000 grams. 
 
 ```{r bird single variable graphs}
 
@@ -606,19 +606,10 @@ ggplot(bird_df, aes(BodyMass.Value)) +
   theme_classic()
 
 ```
-Because of the large disparity between large birds, such as ostriches and emus, with a much greater body mass than most birds, the distribution of bodymass is very skewed right. 
+Because of the large disparity between large birds, such as ostriches and emus, with a much greater body mass than most birds, the distribution of bodymass is skewed right. 
 
 ### Pairwise Relationships
 
-```{r bird explanatory vs response tables}
-
-# Redlist Category vs Population Trend
-table(bird_df$redlistCategory, bird_df$populationTrend)
-
-# Redlist Category vs Foraging Stratum 
-prop.table(table(bird_df$redlistCategory,bird_df$ForStrat.Value),2)*100 #makes a nice looking table with % by column
-
-```
 
 ```{r bird explanatory vs response graphs}
 
@@ -670,7 +661,7 @@ bird_df %>%
       TRUE ~ as.character(redlistCategory)
     )
   ) %>% 
-  gather(key = "diet_type", value = "percentage", Diet.Inv, Diet.Vend, 
+  gather(key = "diet_type", value = "percentage",Diet.Inv, Diet.Vend, 
          Diet.Vect, Diet.Vfish, Diet.Vunk, Diet.Scav, Diet.Fruit, Diet.Nect,
          Diet.Seed, Diet.PlantO) %>% 
   ggplot(aes(diet_type, percentage)) +
@@ -696,10 +687,10 @@ bird_df %>%
       TRUE ~ as.character(redlistCategory)
     )
   ) %>% 
-  gather(key = "foraging_type", value = "percentage", Diet.Inv, Diet.Vend, 
-         Diet.Vect, Diet.Vfish, Diet.Vunk, Diet.Scav, Diet.Fruit, Diet.Nect,
-         Diet.Seed, Diet.PlantO) %>% 
-  ggplot(aes(diet_type, percentage)) +
+  gather(key = "foraging_type", value = "percentage","ForStrat.watbelowsurf" , "ForStrat.wataroundsurf" ,"ForStrat.ground",       
+ "ForStrat.understory" ,   "ForStrat.midhigh"   ,    "ForStrat.canopy"    ,    "ForStrat.aerial"     ,  
+  "PelagicSpecialist" ) %>% 
+  ggplot(aes(foraging_type, percentage)) +
     stat_summary(geom = "bar", fun = mean, position = position_dodge(), 
                  colour = "black", fill = "white",
                  width = 0.7) +
@@ -709,6 +700,9 @@ bird_df %>%
     facet_wrap(~redlistCat2) +
     coord_flip() +
     theme_classic()
+
+
+
 
 ```
 1) The majority of endangered or extinct birds (critically endangered, endangered, extinct, and extinct in the wild grouped into one category) have a decreasing population trend. The majority of vulnerable and near threatened birds also have a decreasing population trend. The majority of least concern birds have either a stable population trend or an unknown population trend. 
