@@ -1826,7 +1826,7 @@ log_prob = predict(mammal_log, newdata=mammals_log_test2_df[,var], type = "respo
 log_pred = rep(0, 2146)
 log_pred[log_prob > 0.5] = 1
 mean(log_pred != mammals_log_test2_df$redlistCategory)
-
+table(preds=log_pred, truth=mammals_log_test2_df$redlistCategory)
 
 ```
 
@@ -2046,6 +2046,7 @@ SVM = 0.222
 K-Nearest-Neighbor, Neural Networks, and Support Vector Machines were all equivalent in predicting the redlist status of a bird species. This is the same result as the 50/50 training/test data split. 
 
 
-=======
-```
->>>>>>> 30919e999c11f86ad4c34e026f72fd07d8481071
+
+
+
+
