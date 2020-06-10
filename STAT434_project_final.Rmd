@@ -30,14 +30,14 @@ After determining the best model that predicts status, we used the model to pred
 
 
 
-```{r load packages}
+```{r loading packages}
 
 library(tidyverse)
 library(Hmisc)
 
 ```
 
-```{r set pathway, eval=FALSE}
+```{r set pathways, eval=FALSE}
 
 ## Local Pathways - copy/paste your local pathway to the github repository
 
@@ -356,7 +356,7 @@ Elton traits: diet, foraging strata, foraging time, and body size.
 
 ## Mammals
 
-```{r variables}
+```{r mammal variables}
 
 names(mammal_df)
 
