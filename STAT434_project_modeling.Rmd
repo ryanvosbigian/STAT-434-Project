@@ -324,23 +324,20 @@ colnames(bird_test_df)
 
 ```{r}
 
-Diet.Inv + Diet.Vend + Diet.Vect + Diet.Vfish + Diet.Vunk + Diet.Scav + Diet.Fruit + Diet.Nect + Diet.Seed + Diet.PlantO
 bird_lda_variables = list(c(54, 12:21), #all diet variables
-                            c(54, ),                  #selected diet variables
                             c(54,91),                               #log body mass
                             c(54,37,91),                   #activity and body mass
-                            c(54,4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 20, 21), #all diet and activity variables
-                            c(54,4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 41),         #all diet and body mass
-                            c(54,41, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 20, 21), #all diet and activity and body mass
-                            c(54,7, 9, 10, 11, 12, 13, 41), #selected activity variables and body mass
-                            c(54,7, 9, 10, 11, 12, 13, 19, 20, 21), #selected diet and activity
-                            c(54,7, 9, 10, 11, 12, 13, 19, 20, 21, 41), #selected diet, activity and body mass
-                            c(54,42, 43, 44, 45, 46, 47, 48), # 7 PC for diet
-                            c(54,42, 43, 44, 45, 46, 47, 48, 41), # PCA for diet and diet
-                            c(54,42, 43, 44, 45, 46, 47, 48, 19, 20, 21), # PCA for diet and activity
-                            c(54,42, 43, 44, 45, 46, 47, 48, 19, 20, 21, 41) # PCA for diet, activity, and body mass
-                            
-                            )  
+                            c(54,12:21, 37), #all diet and activity variables
+                            c(54,12:21, 91),         #all diet and body mass
+                            c(54,12:21, 37, 91), #all diet and activity and body mass
+                            c(54,26:33), # foraging variables
+                            c(54,26:33, 12:21), # diet and foraging
+                            c(54,26:33,91), #foraging and body mass
+                            c(54,26:33, 12:21, 37, 91), # foraging, body mass, activity, and diet
+                            c(54,109:119), # PCA for diet and foraing together
+                            c(54,109:119, 91), # PCA for diet and foraging together and body mass
+                            c(54,109:119, 91, 37) # PCA for diet + foraging, activity, and body mass
+                            )
 test_errors = rep(0, length(bird_lda_variables))
 
 
@@ -360,91 +357,134 @@ bird_lda_variables[[which.min(test_errors)]]
 
 ### Best Model
 
+```{r}
+bird_lda = lda(redlistCategory ~ .,
+                   data = bird_train_df[,bird_lda_variables[[7]]])
+lda_pred = predict(bird_lda,newdata=bird_test_df[,bird_lda_variables[[7]]])
+mean(lda_pred$class != bird_test_df$redlistCategory)
+table(pred=lda_pred$class,truth=bird_test_df$redlistCategory)
 
+#test error 0.227339
+
+colnames(bird_train_df)[mammal_lda_variables[[7]]]
+```
+This is the worst possible model.
 
 
 # 3: Quadratic Discriminant Analysis
 
 ## Mammals
 
+### Variable Selection
+
 ```{r}
 
-#Starting with full model
-mam_qda1 = qda(redlistCategory ~ Diet.Vfish + Diet.Vend + Diet.Scav + Diet.Seed + Diet.Inv + Diet.Fruit + Diet.Nect +  + Diet.PlantO + ForStrat.Value + Activity.Nocturnal + Activity.Crepuscular +  Activity.Diurnal + log_bodymass, data=mammal_train_df)
+# using less variables to avoid rank deficiency, just removing some that have collinearity
+mammal_qda_variables = list(c(38,4, 5, 6, 7, 8, 9, 10, 11,13), #all diet variables
+                            c(38,7, 9, 10, 11, 13),                  #selected diet variables
+                            c(38,41),                               #log body mass
+                            c(38,19, 20, 21, 41),                   #activity and body mass
+                            c(38,4, 5, 6, 7, 8, 9, 10, 11, 19, 20), #all diet and activity variables
+                            c(38,4, 5, 6, 7, 8, 9, 10, 11, 13, 41),         #all diet and body mass
+                            c(38,41, 4, 5, 6, 7, 8, 9, 10, 11, 13, 19, 20, 21), #all diet and activity and body mass
+                            c(38,7, 9, 10, 11, 13, 41), #selected activity variables and body mass
+                            c(38,7, 9, 10, 11, 13, 19, 20, 21), #selected diet and activity
+                            c(38,7, 9, 10, 11, 13, 19, 20, 21, 41), #selected diet, activity and body mass
+                            c(38,42, 43, 44, 45, 46, 47, 48), # 7 PC for diet
+                            c(38,42, 43, 44, 45, 46, 47, 48, 41), # PCA for diet and diet
+                            c(38,42, 43, 44, 45, 46, 47, 48, 19, 20, 21), # PCA for diet and activity
+                            c(38,42, 43, 44, 45, 46, 47, 48, 19, 20, 21, 41), # PCA for diet, activity, and body mass
+                            c(38,7, 9, 10, 11, 12, 13, 16),     #selected diet variables and foraging
+                            c(38,7, 9, 10, 11, 12, 13, 41, 16), #selected activity variables and body mass and foraging
+                            c(38, 16, 19, 20, 21), # activity and foraging
+                            c(38, 16, 42, 43, 44, 45, 46, 47, 48, 41),   # PCA for diet, and body mass and foraging
+                            c(38, 16, 42, 43, 44, 45, 46, 47, 48, 19, 20, 21, 41), #PCAdiet, and activity, body mass, and foraging
+                            c(38,7, 9, 10, 11, 12, 13, 19, 20, 21, 41, 16)#selected diet, activity and body mass and foraging
+                        
+                            )  
+test_errors = rep(0, length(mammal_lda_variables))
 
-mam_qda1_pred=predict(mam_qda1, mammal_test_df)
-
-table(preds = mam_qda1_pred$class, truth = mammal_test_df$redlistCategory)
-
-mean(mam_qda1_pred$class!=mammal_test_df$redlistCategory)
-#error rate 0.4128611
 
 
+for(i in 1:length(mammal_qda_variables)){
+  var = mammal_qda_variables[[i]]
+  mammal_qda = qda(redlistCategory ~ .,
+                   data = mammal_train_df[,var])
+  qda_pred = predict(mammal_qda,newdata=mammal_test_df[,var])
+  test_errors[i] = mean(qda_pred$class != mammal_test_df$redlistCategory)
+}
 
-
+which.min(test_errors)
+mammal_qda_variables[[which.min(test_errors)]]
 ```
-### Using PCA 
+
+### Best Model
 
 ```{r}
+mammal_qda = qda(redlistCategory ~ .,
+                   data = mammal_train_df[,mammal_qda_variables[[3]]])
+qda_pred = predict(mammal_qda,newdata=mammal_test_df[,mammal_qda_variables[[3]]])
+mean(qda_pred$class != mammal_test_df$redlistCategory)
+table(pred=qda_pred$class,truth=mammal_test_df$redlistCategory)
 
-#Using first 7 PCs for Diet PCs, because that is where the elbow is in the graph above
-mammal_qda_pca1 = lda(redlistCategory ~ DietPC1 + DietPC2 + DietPC3 + DietPC4 + DietPC5 + DietPC6 + DietPC7 + ForStrat.Value + Activity.Nocturnal + Activity.Crepuscular +  Activity.Diurnal + log_bodymass,data=mammal_train_df)
+#test error 0.3289842
 
-mammal_qda_pca1=predict(mammal_qda_pca1, mammal_test_df)
-
-table(preds = mammal_qda_pca1$class, truth = mammal_test_df$redlistCategory)
-
-mean(mammal_qda_pca1$class != mammal_test_df$redlistCategory)
-#error rate 0.3089469
-
-#Removing one PC
-
-mammal_qda_pca2 = lda(redlistCategory ~ DietPC1 + DietPC2 + DietPC3 + DietPC4 + DietPC5 + DietPC6 + ForStrat.Value + Activity.Nocturnal + Activity.Crepuscular +  Activity.Diurnal + log_bodymass,data=mammal_train_df)
-
-mammal_qda_pca2 =predict(mammal_qda_pca2, mammal_test_df)
-
-table(preds = mammal_qda_pca2$class, truth = mammal_test_df$redlistCategory)
-
-mean(mammal_qda_pca2$class != mammal_test_df$redlistCategory)
-#error rate 0.3094129
-
-
-#Only removing one activity variable
-
-mammal_qda_pca3 = lda(redlistCategory ~ DietPC1 + DietPC2 + DietPC3 + DietPC4 + DietPC5 + DietPC6+ DietPC7 + ForStrat.Value + Activity.Nocturnal + Activity.Diurnal + log_bodymass,data=mammal_train_df)
-
-mammal_qda_pca3 =predict(mammal_qda_pca3, mammal_test_df)
-
-table(preds = mammal_qda_pca3$class, truth = mammal_test_df$redlistCategory)
-
-mean(mammal_qda_pca3$class != mammal_test_df$redlistCategory)
-#error rate 0.3084809
-
+colnames(mammal_train_df)[mammal_qda_variables[[3]]]
 ```
 
 
 ## Birds
+
+### Variable Selection
+
 ```{r}
+#removing first diet and foraging variables to avoid rank deficiency
+bird_qda_variables = list(c(54, 13:21), #all diet variables
+                            c(54,91),                               #log body mass
+                            c(54,37,91),                   #activity and body mass
+                            c(54,13:21, 37), #all diet and activity variables
+                            c(54,13:21, 91),         #all diet and body mass
+                            c(54,13:21, 37, 91), #all diet and activity and body mass
+                            c(54,27:33), # foraging variables
+                            c(54,27:33, 13:21), # diet and foraging
+                            c(54,27:33,91), #foraging and body mass
+                            c(54,27:33, 13:21, 37, 91), # foraging, body mass, activity, and diet
+                            c(54,109:119), # PCA for diet and foraing together
+                            c(54,109:119, 91), # PCA for diet and foraging together and body mass
+                            c(54,109:119, 91, 37) # PCA for diet + foraging, activity, and body mass
+                            )
+test_errors = rep(0, length(bird_qda_variables))
 
-bird_qda1 = qda(redlistCategory ~ Diet.Inv + Diet.Vend + Diet.Vect + Diet.Vfish + Diet.Vunk + Diet.Scav + Diet.Fruit + Diet.Nect + Diet.Seed + Diet.PlantO + ForStrat.watbelowsurf + ForStrat.wataroundsurf + ForStrat.aerial +  PelagicSpecialist + Nocturnal + scale(BodyMass.Value), data=bird_train_df)
-
-bird_qda1_pred = predict(bird_qda1, bird_test_df)
-
-table(preds = bird_qda1_pred$class,truth = bird_test_df$redlistCategory)
-
-mean(bird_qda_pred$class != bird.test.df$redlistCategory)
 
 
-bird_qda_pca1 = qda(redlistCategory ~ DietForPC1 + DietForPC2 + DietForPC3 + DietForPC4 + DietForPC5 + DietForPC6 + DietForPC7 + DietForPC8 + DietForPC9 + DietForPC10 +DietForPC11 +  PelagicSpecialist + Nocturnal + scale(BodyMass.Value),data=bird_train_df)
+for(i in 1:length(bird_qda_variables)){
+  var = bird_qda_variables[[i]]
+  bird_qda = qda(redlistCategory ~ .,
+                   data = bird_train_df[,var])
+  qda_pred = predict(bird_qda,newdata=bird_test_df[,var])
+  test_errors[i] = mean(qda_pred$class != bird_test_df$redlistCategory)
+}
 
-bird_qda_pca1_pred = predict(bird_qda_pca1, bird_test_df)
-
-table(preds = bird_qda_pca1_pred$class, truth = bird_test_df$redlistCategory)
-
-mean(bird_qda_pca1_pred$class != bird_test_df$redlistCategory)
-#test error: 0.2945078
+which.min(test_errors)
+bird_qda_variables[[which.min(test_errors)]]
 
 ```
+
+
+### Best Model
+
+```{r}
+bird_qda = qda(redlistCategory ~ .,
+                   data = bird_train_df[,bird_qda_variables[[2]]])
+qda_pred = predict(bird_qda,newdata=bird_test_df[,bird_qda_variables[[2]]])
+mean(qda_pred$class != bird_test_df$redlistCategory)
+table(pred=qda_pred$class,truth=bird_test_df$redlistCategory)
+
+#test error 0.2279642
+
+colnames(bird_train_df)[bird_qda_variables[[2]]]
+```
+
 
 # 4: K-Nearest Neighbor
 
