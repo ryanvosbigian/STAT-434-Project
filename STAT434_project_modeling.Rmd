@@ -1354,7 +1354,7 @@ for(i in 1:length(mammal_lda_variables)){
     test_errors[i]=1
     next
   }
-  mammal_svm=svm(as.factor(redlistCategory)∼., 
+  mammal_svm=svm(as.factor(redlistCategory)~., 
                   data=mammal_train_df[,var],kernel="linear", gamma=1,cost=1)
     
   pred_svm = predict(mammal_svm,newdata=mammal_test_df[,var])
@@ -1376,7 +1376,7 @@ colnames(mammal_train_df[mammal_lda_variables[[which.min(test_errors)]]])
 ```{r}
 
 var = mammal_lda_variables[[2]]
-mammal_svm = tune(svm, as.factor(redlistCategory)∼., 
+mammal_svm = tune(svm, as.factor(redlistCategory)~., 
                   data=mammal_train_df[,var],kernel="linear",
                   ranges=list(cost=c(0.1,1,10),
                   gamma=c(0.5,1,2,3,4)))
@@ -1407,7 +1407,7 @@ for(i in 1:length(mammal_lda_variables)){
     test_errors[i]=1
     next
   }
-  mammal_svm=svm(as.factor(redlistCategory)∼., 
+  mammal_svm=svm(as.factor(redlistCategory)~., 
                   data=mammal_train_df[,var],kernel="radial", gamma=1,cost=1)
     
   pred_svm = predict(mammal_svm,newdata=mammal_test_df[,var])
@@ -1431,7 +1431,7 @@ colnames(mammal_train_df[mammal_lda_variables[[which.min(test_errors)]]])
 
 ```{r}
 var = mammal_lda_variables[[11]]
-mammal_svm = tune(svm, as.factor(redlistCategory)∼., 
+mammal_svm = tune(svm, as.factor(redlistCategory)~., 
                   data=mammal_train_df[,var],kernel="radial",
                   ranges=list(cost=c(0.1,1,10),
                   gamma=c(0.5,1,2,3,4)))
@@ -1455,7 +1455,7 @@ Best parameters have cost of 1 and gamma of 0.5.
 
 ```{r}
 var = mammal_lda_variables[[11]]
-mammal_svm=svm(as.factor(redlistCategory)∼., 
+mammal_svm=svm(as.factor(redlistCategory) ~., 
                   data=mammal_train_df[,var],kernel="radial", gamma=0.5,cost=1)
 
 
@@ -1484,7 +1484,7 @@ for(i in 1:length(bird_lda_variables)){
     test_errors[i]=1
     next
   }
-  bird_svm=svm(as.factor(redlistCategory)∼., 
+  bird_svm=svm(as.factor(redlistCategory)~., 
                   data=bird_train_df[,var],kernel="linear", gamma=1,cost=1)
     
   pred_svm = predict(bird_svm,newdata=bird_test_df[,var])
@@ -1538,7 +1538,7 @@ for(i in 1:length(bird_lda_variables)){
     test_errors[i]=1
     next
   }
-  bird_svm=svm(as.factor(redlistCategory)∼., 
+  bird_svm=svm(as.factor(redlistCategory)~., 
                   data=bird_train_df[,var],kernel="radial", gamma=1,cost=1)
     
   pred_svm = predict(bird_svm,newdata=bird_test_df[,var])
@@ -1599,13 +1599,9 @@ colnames(bird_train_df[var])
 ```
 
 =======
-#test eror 0.227339
-```
+test eror 0.227339
 
 
-
-
->>>>>>> 21c240a0b5c62d88815fb3920780bc1a2efcd1e2
 # Model Comparison
 
 ## Half Training Data and Half Test Data 
@@ -1668,8 +1664,22 @@ mammal_nn = nnet(redlistCategory ~ .,
 nn_pred = predict(mammal_nn, newdata=mammal_test_df[,var], type = "class")
 mean(nn_pred != mammal_test_df$redlistCategory)
 
+# Support Vector Machine
+var = mammal_lda_variables[[11]]
+mammal_svm=svm(as.factor(redlistCategory) ~., 
+                  data=mammal_train_df[,var],kernel="radial", gamma=0.5,cost=1)
+mean(pred_svm != mammal_test_df$redlistCategory)
 
 ```
+Mammal Model Variables:
+Logistic Regression: 
+LDA:
+QDA = 0.329
+KNN = 0.305
+Bagged Tree = 0.319
+Random Forest = 0.312
+Neural Network = 0.312
+SVM = 0.315
 
 Mammal Model Error Rates
 Logistic Regression = 0.280
@@ -1679,6 +1689,9 @@ KNN = 0.305
 Bagged Tree = 0.319
 Random Forest = 0.312
 Neural Network = 0.312
+SVM = 0.315
+
+The best model to predict the redlist status of a mammal species based on its Elton traits was a Logistic Regression.  
 
 ### Best Bird Models
 
@@ -1729,7 +1742,23 @@ bird_nn = nnet(redlistCategory ~ .,
 nn_pred = predict(bird_nn, newdata=bird_test_df[,var], type = "class")
 mean(nn_pred != bird_test_df$redlistCategory)
 
+# Support Vector Machines
+var = bird_lda_variables[[9]]
+bird_svm=svm(as.factor(redlistCategory)~., 
+                  data=bird_train_df[,var],kernel="radial", gamma=0.1,cost=0.1)
+mean(pred_svm != bird_test_df$redlistCategory)
+
+
 ```
+
+Bird Model Variables
+LDA = 0.227
+QDA = 0.228
+KNN = 0.222
+Bagged Tree = 0.236
+Random Forest = 0.225
+Neural Network = 0.222
+SVM = 0.222
 
 Bird Model Error Rates 
 LDA = 0.227
@@ -1738,6 +1767,9 @@ KNN = 0.222
 Bagged Tree = 0.236
 Random Forest = 0.225
 Neural Network = 0.222
+SVM = 0.222
+
+Neural Networks, Support Vector Machines, and K-Nearest-Neighbors were all equivalent in predicting the redlist status of a bird species. 
 
 ## Two-Thirds Training Data and One-Third Test Data
 
@@ -1895,6 +1927,12 @@ mammal_nn = nnet(redlistCategory ~ .,
 nn_pred = predict(mammal_nn, newdata=mammal_test2_df[,var], type = "class")
 mean(nn_pred != mammal_test2_df$redlistCategory)
 
+# Support Vector Machine
+var = mammal_lda_variables[[11]]
+mammal_svm=svm(as.factor(redlistCategory) ~., 
+                  data=mammal_train2_df[,var],kernel="radial", gamma=0.5,cost=1)
+mean(pred_svm != mammal_test2_df$redlistCategory)
+
 ```
 
 Mammal Model Error Rates:
@@ -1905,7 +1943,9 @@ KNN = 0.305
 Bagged Tree = 0.322
 Random Forest = 0.303
 Neural Network = 0.311
+SVM = 0.325
 
+Logistic regression was the best model at predicting the redlist category of a mammal species. This is the same result from the 50/50 training/test data split. 
 
 ### Bird Models 
 
@@ -1986,6 +2026,12 @@ bird_nn = nnet(redlistCategory ~ .,
 nn_pred = predict(bird_nn, newdata=bird_test2_df[,var], type = "class")
 mean(nn_pred != bird_test2_df$redlistCategory)
 
+# Support Vector Machines
+var = bird_lda_variables[[9]]
+bird_svm=svm(as.factor(redlistCategory)~., 
+                  data=bird_train2_df[,var],kernel="radial", gamma=0.1,cost=0.1)
+mean(pred_svm != bird_test2_df$redlistCategory)
+
 ```
 
 Bird Model Error Rates:
@@ -1995,7 +2041,9 @@ KNN = 0.222
 Bagged Tree = 0.233
 Random Forest = 0.225
 Neural Network = 0.222
+SVM = 0.222
 
+K-Nearest-Neighbor, Neural Networks, and Support Vector Machines were all equivalent in predicting the redlist status of a bird species. This is the same result as the 50/50 training/test data split. 
 
 
 =======
