@@ -286,7 +286,7 @@ log_pred = rep(0, 2146)
 log_pred[log_prob > 0.5] = 1
 mean(log_pred != mammals_log_test_df$redlistCategory)
 
-# Error rate = 0.288
+# Error rate = 0.2795899
 
 ```
 
@@ -367,31 +367,7 @@ bird_log_variables[[which.min(test_errors)]]
 
 ## Mammals
 
-```{r}
 
-mam_lda1 = lda(redlistCategory ~ Diet.Vfish + Diet.Vend + Diet.Scav + Diet.Seed + Diet.Inv + Diet.Fruit + Diet.Nect +  + Diet.PlantO + ForStrat.Value + Activity.Nocturnal + Activity.Crepuscular +  Activity.Diurnal + log_bodymass, data=mammal_train_df)
-
-mam_lda1_pred=predict(mam_lda1, mammal_test_df)
-
-table(preds = mam_lda1_pred$class, truth = mammal_test_df$redlistCategory)
-
-mean(mam_lda1_pred$class!=mammal_test_df$redlistCategory)
-#error rate 0.3080149
-mam_lda1
-
-```
-
-```{r}
-
-mam_lda1 = lda(redlistCategory ~ Diet.Vfish + Diet.Vend + Diet.Scav + Diet.Seed + Diet.Inv + Diet.Fruit + Diet.Nect +  + Diet.PlantO + ForStrat.Value + Activity.Nocturnal + Activity.Crepuscular +  Activity.Diurnal + log_bodymass, data=mammal_train_df)
-
-mam_lda1_pred=predict(mam_lda1, mammal_test_df)
-
-table(preds = mam_lda1_pred$class, truth = mammal_test_df$redlistCategory)
-
-mean(mam_lda1_pred$class!=mammal_test_df$redlistCategory)
-#error rate 0.3080149
-```
 
 
 ### Variable Selection
@@ -437,14 +413,14 @@ mammal_lda_variables[[which.min(test_errors)]]
 ```{r}
 
 mammal_lda = lda(redlistCategory ~ .,
-                   data = mammal_train_df[,mammal_lda_variables[[19]]])
-lda_pred = predict(mammal_lda,newdata=mammal_test_df[,mammal_lda_variables[[19]]])
+                   data = mammal_train_df[,mammal_lda_variables[[14]]])
+lda_pred = predict(mammal_lda,newdata=mammal_test_df[,mammal_lda_variables[[14]]])
 mean(lda_pred$class != mammal_test_df$redlistCategory)
 table(pred=lda_pred$class,truth=mammal_test_df$redlistCategory)
 
 #test error 0.3089469
 
-colnames(mammal_train_df)[mammal_lda_variables[[19]]]
+colnames(mammal_train_df)[mammal_lda_variables[[14]]]
 ```
 
 ## Birds
@@ -481,18 +457,18 @@ colnames(bird_test_df)
 ```{r}
 
 bird_lda_variables = list(c(54, 12:21), #all diet variables
-                            c(54,91),                               #log body mass
-                            c(54,37,91),                   #activity and body mass
+                            c(54,57),                               #log body mass
+                            c(54,37,57),                   #activity and body mass
                             c(54,12:21, 37), #all diet and activity variables
-                            c(54,12:21, 91),         #all diet and body mass
-                            c(54,12:21, 37, 91), #all diet and activity and body mass
+                            c(54,12:21, 57),         #all diet and body mass
+                            c(54,12:21, 37, 57), #all diet and activity and body mass
                             c(54,26:33), # foraging variables
                             c(54,26:33, 12:21), # diet and foraging
-                            c(54,26:33,91), #foraging and body mass
-                            c(54,26:33, 12:21, 37, 91), # foraging, body mass, activity, and diet
-                            c(54,109:119), # PCA for diet and foraing together
-                            c(54,109:119, 91), # PCA for diet and foraging together and body mass
-                            c(54,109:119, 91, 37) # PCA for diet + foraging, activity, and body mass
+                            c(54,26:33,57), #foraging and body mass
+                            c(54,26:33, 12:21, 37, 57), # foraging, body mass, activity, and diet
+                            c(54,75:85), # PCA for diet and foraing together
+                            c(54,75:85, 57), # PCA for diet and foraging together and body mass
+                            c(54,75:85, 57, 37) # PCA for diet + foraging, activity, and body mass
                             )
 test_errors = rep(0, length(bird_lda_variables))
 
@@ -595,18 +571,18 @@ colnames(mammal_train_df)[mammal_qda_variables[[3]]]
 ```{r}
 #removing first diet and foraging variables to avoid rank deficiency
 bird_qda_variables = list(c(54, 13:21), #all diet variables
-                            c(54,91),                               #log body mass
-                            c(54,37,91),                   #activity and body mass
+                            c(54,57),                               #log body mass
+                            c(54,37,57),                   #activity and body mass
                             c(54,13:21, 37), #all diet and activity variables
-                            c(54,13:21, 91),         #all diet and body mass
-                            c(54,13:21, 37, 91), #all diet and activity and body mass
+                            c(54,13:21, 57),         #all diet and body mass
+                            c(54,13:21, 37, 57), #all diet and activity and body mass
                             c(54,27:33), # foraging variables
                             c(54,27:33, 13:21), # diet and foraging
-                            c(54,27:33,91), #foraging and body mass
-                            c(54,27:33, 13:21, 37, 91), # foraging, body mass, activity, and diet
-                            c(54,109:119), # PCA for diet and foraing together
-                            c(54,109:119, 91), # PCA for diet and foraging together and body mass
-                            c(54,109:119, 91, 37) # PCA for diet + foraging, activity, and body mass
+                            c(54,27:33,57), #foraging and body mass
+                            c(54,27:33, 13:21, 37, 57), # foraging, body mass, activity, and diet
+                            c(54,75:85), # PCA for diet and foraing together
+                            c(54,75:85, 57), # PCA for diet and foraging together and body mass
+                            c(54,75:85, 57, 37) # PCA for diet + foraging, activity, and body mass
                             )
 test_errors = rep(0, length(bird_qda_variables))
 
@@ -1039,7 +1015,7 @@ varImpPlot(mammal_rf)
 
 #test error 0.3117428
 
-<<<<<<< HEAD
+
 ```
 
 # 8: Boosted Forests
