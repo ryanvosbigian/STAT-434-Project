@@ -231,21 +231,65 @@ mean(mam_lda1_pred$class!=mammal_test_df$redlistCategory)
 ```
 
 
-#### Using PCA
-``` {r}
+### Variable Selection
+
+```{r}
+mammal_lda_variables = list(c(38,4, 5, 6, 7, 8, 9, 10, 11, 12, 13), #all diet variables
+                            c(38,7, 9, 10, 11, 12, 13),                  #selected diet variables
+                            c(38,41),                               #log body mass
+                            c(38,19, 20, 21, 41),                   #activity and body mass
+                            c(38,4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 20, 21), #all diet and activity variables
+                            c(38,4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 41),         #all diet and body mass
+                            c(38,41, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 20, 21), #all diet and activity and body mass
+                            c(38,7, 9, 10, 11, 12, 13, 41), #selected activity variables and body mass
+                            c(38,7, 9, 10, 11, 12, 13, 19, 20, 21), #selected diet and activity
+                            c(38,7, 9, 10, 11, 12, 13, 19, 20, 21, 41), #selected diet, activity and body mass
+                            c(38,42, 43, 44, 45, 46, 47, 48), # 7 PC for diet
+                            c(38,42, 43, 44, 45, 46, 47, 48, 41), # PCA for diet and diet
+                            c(38,42, 43, 44, 45, 46, 47, 48, 19, 20, 21), # PCA for diet and activity
+                            c(38,42, 43, 44, 45, 46, 47, 48, 19, 20, 21, 41), # PCA for diet, activity, and body mass
+                            c(38,7, 9, 10, 11, 12, 13, 16),     #selected diet variables and foraging
+                            c(38,7, 9, 10, 11, 12, 13, 41, 16), #selected activity variables and body mass and foraging
+                            c(38, 16, 19, 20, 21), # activity and foraging
+                            c(38, 16, 42, 43, 44, 45, 46, 47, 48, 41),   # PCA for diet, and body mass and foraging
+                            c(38, 16, 42, 43, 44, 45, 46, 47, 48, 19, 20, 21, 41), #PCAdiet, and activity, body mass, and foraging
+                            c(38,7, 9, 10, 11, 12, 13, 19, 20, 21, 41, 16)#selected diet, activity and body mass and foraging
+                        
+                            )  
+test_errors = rep(0, length(mammal_lda_variables))
+
+mammal_train_df[,mammal_lda_variables[[1]]]
+
+for(i in 1:length(mammal_lda_variables)){
+  var = mammal_lda_variables[[i]]
+  mammal_lda = lda(redlistCategory ~ .,
+                   data = mammal_train_df[,var])
+  lda_pred = predict(mammal_lda,newdata=mammal_test_df[,var])
+  test_errors[i] = mean(lda_pred$class != mammal_test_df$redlistCategory)
+}
+
+which.min(test_errors)
+mammal_lda_variables[[which.min(test_errors)]]
 
 
-#Using first 11 PCs for Diet and Foraging PCs, because that is where the elbow is in the graph above
-mammal_lda_pca1 = lda(redlistCategory ~ DietPC1 + DietPC2 + DietPC3 + DietPC4 + DietPC5 + DietPC6 + DietPC7 + ForStrat.Value + Activity.Nocturnal + Activity.Crepuscular +  Activity.Diurnal + log_bodymass,data=mammal_train_df)
-
-mammal_lda_pca1=predict(mammal_lda_pca1, mammal_test_df)
-
-table(preds = mammal_lda_pca1$class, truth = mammal_test_df$redlistCategory)
-
-mean(mammal_lda_pca1$class != mammal_test_df$redlistCategory)
-#error rate 0.3089469
 
 ```
+### Best Model
+
+```{r}
+
+mammal_lda = lda(redlistCategory ~ .,
+                   data = mammal_train_df[,mammal_lda_variables[[19]]])
+lda_pred = predict(mammal_lda,newdata=mammal_test_df[,mammal_lda_variables[[19]]])
+mean(lda_pred$class != mammal_test_df$redlistCategory)
+table(pred=lda_pred$class,truth=mammal_test_df$redlistCategory)
+
+#test error 0.3089469
+
+colnames(mammal_train_df)[mammal_lda_variables[[19]]]
+```
+
+
 
 ## Birds
 
@@ -273,8 +317,49 @@ table(preds = bird_lda_pca1_pred$class, truth = bird_test_df$redlistCategory)
 
 mean(bird_lda_pca1_pred$class != bird_test_df$redlistCategory)
 #error rate 0.2287977
-
+colnames(bird_test_df)
 ```
+
+### Variable Selection
+
+```{r}
+
+Diet.Inv + Diet.Vend + Diet.Vect + Diet.Vfish + Diet.Vunk + Diet.Scav + Diet.Fruit + Diet.Nect + Diet.Seed + Diet.PlantO
+bird_lda_variables = list(c(54, 12:21), #all diet variables
+                            c(54, ),                  #selected diet variables
+                            c(54,91),                               #log body mass
+                            c(54,37,91),                   #activity and body mass
+                            c(54,4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 20, 21), #all diet and activity variables
+                            c(54,4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 41),         #all diet and body mass
+                            c(54,41, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 20, 21), #all diet and activity and body mass
+                            c(54,7, 9, 10, 11, 12, 13, 41), #selected activity variables and body mass
+                            c(54,7, 9, 10, 11, 12, 13, 19, 20, 21), #selected diet and activity
+                            c(54,7, 9, 10, 11, 12, 13, 19, 20, 21, 41), #selected diet, activity and body mass
+                            c(54,42, 43, 44, 45, 46, 47, 48), # 7 PC for diet
+                            c(54,42, 43, 44, 45, 46, 47, 48, 41), # PCA for diet and diet
+                            c(54,42, 43, 44, 45, 46, 47, 48, 19, 20, 21), # PCA for diet and activity
+                            c(54,42, 43, 44, 45, 46, 47, 48, 19, 20, 21, 41) # PCA for diet, activity, and body mass
+                            
+                            )  
+test_errors = rep(0, length(bird_lda_variables))
+
+
+
+for(i in 1:length(bird_lda_variables)){
+  var = bird_lda_variables[[i]]
+  bird_lda = lda(redlistCategory ~ .,
+                   data = bird_train_df[,var])
+  lda_pred = predict(bird_lda,newdata=bird_test_df[,var])
+  test_errors[i] = mean(lda_pred$class != bird_test_df$redlistCategory)
+}
+
+which.min(test_errors)
+bird_lda_variables[[which.min(test_errors)]]
+```
+
+
+### Best Model
+
 
 
 
@@ -427,6 +512,32 @@ mammal_knn_test_df = mammal_knn_test_df %>%
 ### Variable Selection
 Explanatory Variables: Diet, Foraging Stratum, Activity, Body Mass, Population Trend. It appears that you cannot make single explanatory variable KNN models.
 ```{r mammal knn variable selection}
+
+### Hey Emma! Can you use these sets of variables? It also allows us to use the PCA
+
+# list(c(38,4, 5, 6, 7, 8, 9, 10, 11, 12, 13), #all diet variables
+#                             c(38,7, 9, 10, 11, 12, 13),                  #selected diet variables
+#                             c(38,41),                               #log body mass
+#                             c(38,19, 20, 21, 41),                   #activity and body mass
+#                             c(38,4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 20, 21), #all diet and activity variables
+#                             c(38,4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 41),         #all diet and body mass
+#                             c(38,41, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 20, 21), #all diet and activity and body mass
+#                             c(38,7, 9, 10, 11, 12, 13, 41), #selected activity variables and body mass
+#                             c(38,7, 9, 10, 11, 12, 13, 19, 20, 21), #selected diet and activity
+#                             c(38,7, 9, 10, 11, 12, 13, 19, 20, 21, 41), #selected diet, activity and body mass
+#                             c(38,42, 43, 44, 45, 46, 47, 48), # 7 PC for diet
+#                             c(38,42, 43, 44, 45, 46, 47, 48, 41), # PCA for diet and diet
+#                             c(38,42, 43, 44, 45, 46, 47, 48, 19, 20, 21), # PCA for diet and activity
+#                             c(38,42, 43, 44, 45, 46, 47, 48, 19, 20, 21, 41), # PCA for diet, activity, and body mass
+#                             c(38,7, 9, 10, 11, 12, 13, 16),     #selected diet variables and foraging
+#                             c(38,7, 9, 10, 11, 12, 13, 41, 16), #selected activity variables and body mass and foraging
+#                             c(38, 16, 19, 20, 21), # activity and foraging
+#                             c(38, 16, 42, 43, 44, 45, 46, 47, 48, 41),   # PCA for diet, and body mass and foraging
+#                             c(38, 16, 42, 43, 44, 45, 46, 47, 48, 19, 20, 21, 41), #PCAdiet, and activity, body mass, and foraging
+#                             c(38,7, 9, 10, 11, 12, 13, 19, 20, 21, 41, 16)#selected diet, activity and body mass and foraging
+#                         
+#                             )  
+
 
 mammal_knn_variables = list(c(4, 5, 6, 7, 8, 9, 10, 11, 12, 13), 
                             c(41, 43),
