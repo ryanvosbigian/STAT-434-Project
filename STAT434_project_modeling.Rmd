@@ -70,11 +70,9 @@ bird_df = read.csv("cleaned_bird_df_updated_5_29.csv")
 ```{r chopping off extra rows}
 
 nrow(bird_df)
-
 bird_df = bird_df[1:9640,]
 
 ```
-
 
 # Preparing Data
 
@@ -204,10 +202,6 @@ bird_test_df = bird_df[-train_bird,]
 
 ```{r}
 
-library(MASS)
-
-
-
 mam_lda1 = lda(redlistCategory ~ Diet.Vfish + Diet.Vend + Diet.Scav + Diet.Seed + Diet.Inv + Diet.Fruit + Diet.Nect +  + Diet.PlantO + ForStrat.Value + Activity.Nocturnal + Activity.Crepuscular +  Activity.Diurnal + log_bodymass, data=mammal_train_df)
 
 mam_lda1_pred=predict(mam_lda1, mammal_test_df)
@@ -221,6 +215,7 @@ mam_lda1
 ```
 
 ```{r}
+
 mam_lda1 = lda(redlistCategory ~ Diet.Vfish + Diet.Vend + Diet.Scav + Diet.Seed + Diet.Inv + Diet.Fruit + Diet.Nect +  + Diet.PlantO + ForStrat.Value + Activity.Nocturnal + Activity.Crepuscular +  Activity.Diurnal + log_bodymass, data=mammal_train_df)
 
 mam_lda1_pred=predict(mam_lda1, mammal_test_df)
@@ -284,8 +279,6 @@ table(pred=lda_pred$class,truth=mammal_test_df$redlistCategory)
 
 colnames(mammal_train_df)[mammal_lda_variables[[19]]]
 ```
-
-
 
 ## Birds
 
@@ -481,7 +474,6 @@ table(pred=qda_pred$class,truth=bird_test_df$redlistCategory)
 colnames(bird_train_df)[bird_qda_variables[[2]]]
 ```
 
-
 # 4: K-Nearest Neighbor
 
 ## Mammal K-Nearest Neighbor
@@ -508,15 +500,7 @@ mammal_knn_train_df = mammal_knn_train_df %>%
       ForStrat.Value == "M" ~ 4,
       ForStrat.Value == "S" ~ 5
       ),
-    for_strat_num = as.numeric(for_strat_num),
-    
-    pop_trend_num = case_when(
-      populationTrend == "Decreasing" ~ 1,
-      populationTrend == "Increasing" ~ 2,
-      populationTrend == "Stable" ~ 3,
-      populationTrend == "Unknown" ~ 4   
-      ),
-    pop_trend_num = as.numeric(pop_trend_num)
+    for_strat_num = as.numeric(for_strat_num)
   )
 
 mammal_knn_test_df = mammal_knn_test_df %>% 
@@ -532,56 +516,49 @@ mammal_knn_test_df = mammal_knn_test_df %>%
       ForStrat.Value == "M" ~ 4,
       ForStrat.Value == "S" ~ 5
       ),
-    for_strat_num = as.numeric(for_strat_num),
-    
-    pop_trend_num = case_when(
-      populationTrend == "Decreasing" ~ 1,
-      populationTrend == "Increasing" ~ 2,
-      populationTrend == "Stable" ~ 3,
-      populationTrend == "Unknown" ~ 4   
-      ),
-    pop_trend_num = as.numeric(pop_trend_num)
+    for_strat_num = as.numeric(for_strat_num)
   )
-#colnames(mammal_knn_train_df)
+
 ```
 
 ### Variable Selection
-Explanatory Variables: Diet, Foraging Stratum, Activity, Body Mass, Population Trend. It appears that you cannot make single explanatory variable KNN models.
+Explanatory Variables: Diet, Foraging Stratum, Activity, Body Mass. It appears that you cannot make single explanatory variable KNN models.
 ```{r mammal knn variable selection}
 
-### Hey Emma! Can you use these sets of variables? It also allows us to use the PCA
-
-# list(c(38,4, 5, 6, 7, 8, 9, 10, 11, 12, 13), #all diet variables
-#                             c(38,7, 9, 10, 11, 12, 13),                  #selected diet variables
-#                             c(38,41),                               #log body mass
-#                             c(38,19, 20, 21, 41),                   #activity and body mass
-#                             c(38,4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 20, 21), #all diet and activity variables
-#                             c(38,4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 41),         #all diet and body mass
-#                             c(38,41, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 20, 21), #all diet and activity and body mass
-#                             c(38,7, 9, 10, 11, 12, 13, 41), #selected activity variables and body mass
-#                             c(38,7, 9, 10, 11, 12, 13, 19, 20, 21), #selected diet and activity
-#                             c(38,7, 9, 10, 11, 12, 13, 19, 20, 21, 41), #selected diet, activity and body mass
-#                             c(38,42, 43, 44, 45, 46, 47, 48), # 7 PC for diet
-#                             c(38,42, 43, 44, 45, 46, 47, 48, 41), # PCA for diet and diet
-#                             c(38,42, 43, 44, 45, 46, 47, 48, 19, 20, 21), # PCA for diet and activity
-#                             c(38,42, 43, 44, 45, 46, 47, 48, 19, 20, 21, 41), # PCA for diet, activity, and body mass
-#                             c(38,7, 9, 10, 11, 12, 13, 16),     #selected diet variables and foraging
-#                             c(38,7, 9, 10, 11, 12, 13, 41, 16), #selected activity variables and body mass and foraging
-#                             c(38, 16, 19, 20, 21), # activity and foraging
-#                             c(38, 16, 42, 43, 44, 45, 46, 47, 48, 41),   # PCA for diet, and body mass and foraging
-#                             c(38, 16, 42, 43, 44, 45, 46, 47, 48, 19, 20, 21, 41), #PCAdiet, and activity, body mass, and foraging
-#                             c(38,7, 9, 10, 11, 12, 13, 19, 20, 21, 41, 16)#selected diet, activity and body mass and foraging
-#                         
-#                             )  
-
-
-mammal_knn_variables = list(c(4, 5, 6, 7, 8, 9, 10, 11, 12, 13), 
-                            c(41, 43),
-                            c(41, 42, 43),
-                            c(19, 20, 21, 41, 42, 43),
-                            c(4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 20, 21),
-                            c(4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 41, 42, 43),
-                            c(41, 42, 43, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 20, 21)) 
+mammal_knn_variables = list(c(4, 5, 6, 7, 8, 9, 10, 11, 12, 13), # all diet variables
+                            c(7, 9, 10, 11, 12, 13), # selected diet variables
+                            c(19, 20, 21, 41), # activity and body mass
+                            c(4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 20, 21), 
+                            # all diet and activity variables
+                            c(4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 41),        
+                            # all diet and body mass
+                            c(41, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 20, 21), 
+                            # all diet and activity and body mass
+                            c(7, 9, 10, 11, 12, 13, 41),
+                            # selected activity variables and body mass
+                            c(7, 9, 10, 11, 12, 13, 19, 20, 21), 
+                            # selected diet and activity
+                            c(7, 9, 10, 11, 12, 13, 19, 20, 21, 41), 
+                            # selected diet, activity and body mass
+                            c(42, 43, 44, 45, 46, 47, 48), # 7 PCA for diet
+                            c(42, 43, 44, 45, 46, 47, 48, 41), 
+                            # PCA for diet and bodymass
+                            c(42, 43, 44, 45, 46, 47, 48, 19, 20, 21), 
+                            # PCA for diet and activity
+                            c(42, 43, 44, 45, 46, 47, 48, 19, 20, 21, 41), 
+                            # PCA for diet, activity, and body mass
+                            c(7, 9, 10, 11, 12, 13, 52),     
+                            # selected diet variables and foraging
+                            c(7, 9, 10, 11, 12, 13, 41, 52), 
+                            # selected activity variables and body mass and foraging
+                            c(52, 19, 20, 21), # activity and foraging
+                            c(52, 42, 43, 44, 45, 46, 47, 48, 41),   
+                            # PCA for diet, and body mass and foraging
+                            c(52, 42, 43, 44, 45, 46, 47, 48, 19, 20, 21, 41), 
+                            # PCA diet, and activity, body mass, and foraging
+                            c(7, 9, 10, 11, 12, 13, 19, 20, 21, 41, 52)
+                            # selected diet, activity and body mass and foraging
+                            )
 test_errors = rep(0, length(mammal_knn_variables))
 
 for(i in 1:length(mammal_knn_variables)){
@@ -595,14 +572,16 @@ for(i in 1:length(mammal_knn_variables)){
 which.min(test_errors)
 mammal_knn_variables[[which.min(test_errors)]]
 
+# Best Variables: Selected Diet + Activity Variables 
+
 ```
 
 ```{r mammal prediction and error rate}
 
-# Error Rate
 mean(mammal_knn != mammal_knn_test_df$redlistCategory)
-
 table(preds = mammal_knn, truth = mammal_knn_test_df$redlistCategory)
+
+# Error rate = 0.311
 
 ```
 
@@ -612,8 +591,8 @@ table(preds = mammal_knn, truth = mammal_knn_test_df$redlistCategory)
 
 test_errors = rep(0, 25)
 for(i in 1:25){
-  mammal_knn = knn(mammal_knn_train_df[,c(4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 41, 42, 43)],
-                 mammal_knn_test_df[,c(4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 41, 42, 43)],
+  mammal_knn = knn(mammal_knn_train_df[,c(7, 9, 10, 11, 12, 13, 19, 20, 21)],
+                 mammal_knn_test_df[,c(7, 9, 10, 11, 12, 13, 19, 20, 21)],
                  mammal_knn_train_df[,38], k=i)
   test_errors[i] = mean(mammal_knn != mammal_knn_test_df$redlistCategory)
 }
@@ -626,12 +605,13 @@ which.min(test_errors)
 
 ```{r mammal best knn model}
 
-mammal_knn = knn(mammal_knn_train_df[,c(4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 41, 42, 43)],
-                 mammal_knn_test_df[,c(4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 41, 42, 43)],
+mammal_knn = knn(mammal_knn_train_df[,c(7, 9, 10, 11, 12, 13, 19, 20, 21)],
+                 mammal_knn_test_df[,c(7, 9, 10, 11, 12, 13, 19, 20, 21)],
                  mammal_knn_train_df[,38], k=14)
 mean(mammal_knn != mammal_knn_test_df$redlistCategory)
 
-#error rate 0.3000932
+# Error rate = 0.305
+
 ```
 
 ## Bird K-Nearest Neighbor
@@ -643,13 +623,94 @@ mean(mammal_knn != mammal_knn_test_df$redlistCategory)
 bird_knn_train_df = bird_train_df
 bird_knn_test_df = bird_test_df
 
+# Change factor variables to numeric
+bird_knn_train_df = bird_knn_train_df %>% 
+  mutate(
+    Nocturnal = as.numeric(Nocturnal)
+  )
+
+bird_knn_test_df = bird_knn_test_df %>% 
+  mutate(
+    Nocturnal = as.numeric(Nocturnal)
+  )
+
 ```
 
 ### Variable Selection
+Explanatory variables: Body Mass, Diet, Activity, Foraging
+```{r bird knn variable selection}
+
+# Commented out variable groups had too many ties
+bird_knn_variables = list(#c(12:21), # all diet variables
+                          c(37,57), # activity and body mass
+                          #c(12:21, 37), # all diet and activity variables
+                          c(12:21, 57), # all diet and body mass
+                          c(12:21, 37, 57), # all diet and activity and body mass
+                          c(26:33), # foraging variables
+                          c(26:33, 12:21), # diet and foraging
+                          c(26:33, 57), # foraging and body mass
+                          c(26:33, 12:21, 37, 57), 
+                          # foraging, body mass, activity, and diet
+                          c(75:91), # PCA for diet and foraing together
+                          c(75:91, 57), 
+                          # PCA for diet and foraging together and body mass
+                          c(75:91, 57, 37)
+                          # PCA for diet + foraging, activity, and body mass
+                        )
+test_errors = rep(0, length(bird_knn_variables))
+
+for(i in 1:length(bird_knn_variables)){
+  var = bird_knn_variables[[i]]
+  bird_knn = knn(bird_knn_train_df[,var],
+                 bird_knn_test_df[,var],
+                 bird_knn_train_df[,54], k=14)
+  test_errors[i] = mean(bird_knn != bird_knn_test_df$redlistCategory)
+}
+
+which.min(test_errors)
+bird_knn_variables[[which.min(test_errors)]]
+
+# Best Variables: Foraging variables
+
+```
+
+```{r bird prediction and error rate}
+
+mean(bird_knn != bird_knn_test_df$redlistCategory)
+table(preds = bird_knn, truth = bird_knn_test_df$redlistCategory)
+
+# Error rate = 0.223
+
+```
 
 ### Hyperparameter Tuning
 
+```{r bird k value selection}
+
+test_errors = rep(0, 25)
+for(i in 1:25){
+  bird_knn = knn(bird_knn_train_df[,c(26:33)],
+                 bird_knn_test_df[,c(26:33)],
+                 bird_knn_train_df[,54], k=i)
+  test_errors[i] = mean(bird_knn != bird_knn_test_df$redlistCategory)
+}
+
+which.min(test_errors)
+
+```
+
 ### Best Model
+
+```{r mammal best knn model}
+
+bird_knn = knn(bird_knn_train_df[,c(26:33)],
+                 bird_knn_test_df[,c(26:33)],
+                 bird_knn_train_df[,54], k=12)
+mean(bird_knn != bird_knn_test_df$redlistCategory)
+
+# Error rate = 0.222
+
+```
 
 # 5: Classification Tree
 
