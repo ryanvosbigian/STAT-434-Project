@@ -215,6 +215,24 @@ table(preds = mam_lda1_pred$class, truth = mammal_test_df$redlistCategory)
 
 mean(mam_lda1_pred$class!=mammal_test_df$redlistCategory)
 #error rate 0.3080149
+mam_lda1
+
+```
+
+```{r}
+mam_lda1 = lda(redlistCategory ~ Diet.Vfish + Diet.Vend + Diet.Scav + Diet.Seed + Diet.Inv + Diet.Fruit + Diet.Nect +  + Diet.PlantO + ForStrat.Value + Activity.Nocturnal + Activity.Crepuscular +  Activity.Diurnal + log_bodymass, data=mammal_train_df)
+
+mam_lda1_pred=predict(mam_lda1, mammal_test_df)
+
+table(preds = mam_lda1_pred$class, truth = mammal_test_df$redlistCategory)
+
+mean(mam_lda1_pred$class!=mammal_test_df$redlistCategory)
+#error rate 0.3080149
+```
+
+
+#### Using PCA
+``` {r}
 
 
 #Using first 11 PCs for Diet and Foraging PCs, because that is where the elbow is in the graph above
@@ -306,7 +324,7 @@ mean(mammal_qda_pca2$class != mammal_test_df$redlistCategory)
 #error rate 0.3094129
 
 
-#Only removing once activity variable
+#Only removing one activity variable
 
 mammal_qda_pca3 = lda(redlistCategory ~ DietPC1 + DietPC2 + DietPC3 + DietPC4 + DietPC5 + DietPC6+ DietPC7 + ForStrat.Value + Activity.Nocturnal + Activity.Diurnal + log_bodymass,data=mammal_train_df)
 
