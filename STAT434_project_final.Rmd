@@ -2394,7 +2394,8 @@ Random Forest = 0.312
 Neural Network = 0.312
 SVM = 0.315
 
-The best model to predict the redlist status of a mammal species based on its Elton traits was a Logistic Regression.  
+The best model to predict the redlist status of a mammal species based on its Elton traits was a Logistic Regression. However, logistic regression only determines whether the species is least concern or not, which is less desirable than determining status. 
+After logistic regression, K-Nearest Neighbors provides the best error rate. Thus, we will use KNN to predict the unknown status of species.
 
 ### Best Bird Models
 
@@ -2454,6 +2455,7 @@ var = bird_lda_variables[[9]]
 bird_svm=svm(as.factor(redlistCategory)~., 
                   data=bird_train_df[,var],kernel="radial", gamma=0.1,cost=0.1)
 mean(pred_svm != bird_test_df$redlistCategory)
+pred_svm = predict(bird_svm,newdata = bird_test_df[,var])
 table(pred_svm, bird_test_df$redlistCategory)
 
 ```
@@ -2476,7 +2478,7 @@ Random Forest = 0.225
 Neural Network = 0.222
 SVM = 0.222
 
-Neural Networks, Support Vector Machines, and K-Nearest-Neighbors were all equivalent in predicting the redlist status of a bird species. 
+Neural Networks, Support Vector Machines, and K-Nearest-Neighbors were all equivalent in predicting the redlist status of a bird species. However, all expect for QDA and bagged trees almost everything classified as least concern. Thus, we will use QDA, which of the models that do not classify everything as least concern has the lowest test error.
 
 ## Two-Thirds Training Data and One-Third Test Data
 
@@ -2534,7 +2536,7 @@ log_pred = rep(0, 2146)
 log_pred[log_prob > 0.5] = 1
 mean(log_pred != mammals_log_test2_df$redlistCategory)
 
-
+table(log_pred, mammals_log_test2_df$redlistCategory)
 ```
 
 ```{r}
@@ -2544,12 +2546,14 @@ mammal_lda = lda(redlistCategory ~ .,
                    data = mammal_train2_df[,mammal_lda_variables[[14]]])
 lda_pred = predict(mammal_lda,newdata=mammal_test2_df[,mammal_lda_variables[[14]]])
 mean(lda_pred$class != mammal_test2_df$redlistCategory)
+table(lda_pred$class, mammal_test2_df$redlistCategory)
 
 # Quadratic Discriminant Analysis
 mammal_qda = qda(redlistCategory ~ .,
                    data = mammal_train2_df[,mammal_qda_variables[[3]]])
 qda_pred = predict(mammal_qda,newdata=mammal_test2_df[,mammal_qda_variables[[3]]])
 mean(qda_pred$class != mammal_test2_df$redlistCategory)
+table(qda_pred$class,mammal_test2_df$redlistCategory)
 
 ```
 
@@ -2597,7 +2601,7 @@ mammal_knn = knn(mammal_knn_train2_df[,c(7, 9, 10, 11, 12, 13, 19, 20, 21)],
                  mammal_knn_test2_df[,c(7, 9, 10, 11, 12, 13, 19, 20, 21)],
                  mammal_knn_train2_df[,38], k=14)
 mean(mammal_knn != mammal_knn_test2_df$redlistCategory)
-
+table(mammal_knn, mammal_knn_test2_df$redlistCategory)
 ```
 
 ```{r}
@@ -2619,6 +2623,7 @@ mammal_rf = randomForest(as.factor(redlistCategory) ~ .,
                    )
 bag_pred = predict(mammal_rf,newdata=mammal_test2_df[,var])
 mean(bag_pred != mammal_test2_df$redlistCategory)
+table(bag_pred, mammal_test2_df$redlistCategory)
 
 ```
 
@@ -2756,9 +2761,47 @@ K-Nearest-Neighbor, Neural Networks, and Support Vector Machines were all equiva
 
 # Final Predictions of Unknown Status
 
+Based on the above model results we will use KNN for predicting mammals and QDA for predicting birds.
+
+```{r predict mammals}
+
+data_deficient_mammals_df
+
+
+mammal_knn = knn(mammal_df[,c(7, 9, 10, 11, 12, 13, 19, 20, 21)],
+                 data_deficient_mammals_df[,c(7, 9, 10, 11, 12, 13, 19, 20, 21)],
+                 mammal_df[,38], k=14)
+
+
+data_deficient_mammals_df$predredlistCategory = mammal_knn
+
+table(mammal_knn)
+
+#write.csv(data_deficient_mammals_df,"best_model_predictions_undeterminedmammals.csv")
+
+data_deficient_mammals_df$scientificName[qda_pred$class=="Endangered"]
+
+```
+
+
+```{r predict birds}
+data_deficient_birds_df
+bird_qda = qda(redlistCategory ~ .,
+                   data = bird_df[,bird_qda_variables[[2]]])
+qda_pred = predict(bird_qda,newdata=data_deficient_birds_df[,bird_qda_variables[[2]]])
+
+data_deficient_birds_df$predredlistCategory = qda_pred$class
+
+table(qda_pred$class)
+#write.csv(data_deficient_mammals_df,"best_model_predictions_undeterminedbirds.csv")
+
+data_deficient_birds_df$scientificName[qda_pred$class==Endangered]
+```
 
 
 # Conclusions
+
+
 
 # Bibliography
 
