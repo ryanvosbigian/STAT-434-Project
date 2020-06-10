@@ -1671,15 +1671,6 @@ mammal_svm=svm(as.factor(redlistCategory) ~.,
 mean(pred_svm != mammal_test_df$redlistCategory)
 
 ```
-Mammal Model Variables:
-Logistic Regression: 
-LDA:
-QDA = 0.329
-KNN = 0.305
-Bagged Tree = 0.319
-Random Forest = 0.312
-Neural Network = 0.312
-SVM = 0.315
 
 Mammal Model Error Rates
 Logistic Regression = 0.280
