@@ -1,0 +1,643 @@
+---
+title: "STAT 434 Final Project"
+author: "Emma Barton & Ryan Vosbigian"
+date: "6/10/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+
+# Introduction
+
+
+
+# Data Cleaning
+
+
+
+```{r load packages}
+
+library(tidyverse)
+library(Hmisc)
+
+```
+
+```{r set pathway, eval=FALSE}
+
+## Local Pathways - copy/paste your local pathway to the github repository
+
+# Emma
+pathway = "/Users/emmabarton/Desktop/spring_2020/STAT434/project/"
+
+# Ryan
+#pathway = "~/GitHub/"
+
+```
+
+## Loading Datasets
+
+```{r raw data, eval=FALSE}
+
+redlist_df = read.csv(paste0(pathway, "STAT-434---not-the-dodo-/simple_summary_IUCN_birds_mammals.csv"))
+
+elton_mammal_df = read.csv(paste0(pathway, "STAT-434---not-the-dodo-/EltonTraits/MamFuncDat.txt"),sep = "\t")
+
+elton_bird_df = read.csv(paste0(pathway, "STAT-434---not-the-dodo-/EltonTraits/BirdFuncDat.txt"),sep = "\t")
+
+```
+
+```{r change raw data types, eval=FALSE}
+
+redlist_df$scientificName = as.character(redlist_df$scientificName)
+elton_mammal_df$scientificName = as.character(elton_mammal_df$Scientific)
+elton_bird_df$scientificName = as.character(elton_bird_df$Scientific)
+
+```
+
+```{r join elton and redlist, eval=FALSE}
+
+# Filter mammals and birds from redlist species
+redlist_mammals_df = redlist_df[redlist_df$className=="MAMMALIA",]
+redlist_birds_df = redlist_df[redlist_df$className=="AVES",]
+
+# Join Elton traits and redlist species for mammals
+mammal_df = left_join(x = elton_mammal_df, y = redlist_mammals_df, 
+                      by="scientificName")
+
+# Join Elton traits and redlist species for birds
+bird_df = left_join(x = elton_bird_df, y = redlist_birds_df,  
+                    by="scientificName")
+
+# Write data
+write.csv(mammal_df, "uncleaned_mammal_df.csv")
+write.csv(bird_df, "uncleaned_bird_df.csv")
+
+```
+
+```{r uncleaned data, eval=FALSE}
+
+mammal_df = read.csv("uncleaned_mammal_df.csv")
+bird_df = read.csv("uncleaned_bird_df.csv")
+
+```
+
+## Data Cleaning
+
+```{r data dimensions, eval=FALSE}
+
+dim(mammal_df)
+dim(bird_df)
+
+```
+
+```{r missing redlist species, eval=FALSE}
+
+table(is.na(mammal_df$Diet.Vect))
+nrow(mammal_df)
+nrow(elton_mammal_df)
+nrow(redlist_mammals_df)
+
+# Check redlist mammals that do not have Elton traits
+redlist_mammals_df %>% 
+  filter(!(scientificName %in% elton_mammal_df$scientificName)) %>% 
+  nrow()
+
+# Check redlist birds that do not have Elton traits
+redlist_birds_df %>% 
+  filter(!(scientificName %in% elton_bird_df$scientificName)) %>% 
+  nrow()
+
+```
+
+```{r select columns, eval=FALSE}
+
+# Removed unnecessary or mostly empty columns
+mammal_df = mammal_df %>% 
+  select(-X, -MSW3_ID, -infraType, -infraName, -infraAuthority, 
+         -redlistCriteria, -criteriaVersion)
+
+bird_df = bird_df %>% 
+  select(-X, -infraType, -infraName, -infraAuthority, 
+         -redlistCriteria, -criteriaVersion)
+
+```
+
+```{r missing redlist status, eval=FALSE}
+
+mammal_df %>% 
+  filter(is.na(redlistCategory)) %>% 
+  nrow()
+
+bird_df %>% 
+  filter(is.na(redlistCategory)) %>% 
+  nrow()
+
+```
+
+```{r filter out missing redlist status, eval=FALSE}
+
+# Create prediction/test datasets 
+mammal_pred_df = mammal_df %>% 
+  filter(is.na(redlistCategory))
+
+bird_pred_df = bird_df %>% 
+  filter(is.na(redlistCategory))
+
+# Filter out rows with missing redlist category to make training dataset
+mammal_df = mammal_df %>% 
+  filter(!is.na(redlistCategory))
+
+bird_df = bird_df %>% 
+  filter(!is.na(redlistCategory))
+
+```
+
+```{r change factor levels, eval=FALSE}
+
+mammal_df = mammal_df %>% 
+  mutate(
+    populationTrend = case_when(
+      populationTrend == "" ~ "Unknown",
+      TRUE ~ as.character(populationTrend)
+    )
+  )
+
+```
+
+```{r write cleaned data, eval=FALSE}
+
+write.csv(mammal_df, "cleaned_mammal_df.csv")
+write.csv(bird_df, "cleaned_bird_df.csv")
+
+write.csv(mammal_pred_df, "mammal_pred_df.csv")
+write.csv(bird_pred_df, "bird_pred_df.csv")
+
+```
+
+Not having much luck matching these 500 mammal taxons. maybe just drop them??
+```{r matching extra mammal species, eval=FALSE}
+
+# matching MAMMAL species that didnt have a perfect match between the IUCN and EltonTraits databases
+mammal_pred_df = read.csv("mammal_pred_df.csv")
+
+syn_df = read.csv("asm-species-2020-05-27_containssynonymsfromeltontraits.csv")
+
+#removing the empty columns from the missing IUCN join
+mammal_pred_df = mammal_pred_df[,1:27]
+
+#reformatting the deprecated.scientific name column from: {"herpestes javanica":":$2009"}
+
+#chopping off the first two characters
+
+syn_df$Deprecated.Scientific = gsub('^."([^"]*[^"]*)".*$', "\\1",syn_df$Deprecated.Scientific)
+
+#capitalizing
+syn_df$Deprecated.Scientific = capitalize(syn_df$Deprecated.Scientific)
+
+mammal_pred_df %>% 
+  filter(!(scientificName %in% syn_df$Deprecated.Scientific)) %>% 
+  unique()
+
+mammal_pred_df$scientificName = as.character(mammal_pred_df$scientificName)
+syn_df$Deprecated.Scientific = as.character(syn_df$Deprecated.Scientific)
+syn_df$Canonical.Sciname = as.character(syn_df$Canonical.Sciname)
+
+for (i in 1:nrow(mammal_pred_df)){
+  sci_index = match(mammal_pred_df$scientificName[i],syn_df$Deprecated.Scientific)
+  if (is.na(sci_index)==FALSE) {
+    mammal_pred_df$scientificName[i] = syn_df$Canonical.Sciname[sci_index]
+  }else {
+    mammal_pred_df$scientificName[i] = NA
+  }
+}
+
+```
+
+TaxonomicChanges_BirdLife_Avibase.csv was scrapped from avibase.bs-eoc.org
+https://avibase.bsc-eoc.org/compare.jsp?source1=birdlife&version1=BIRDLIFE03&source2=birdlife&version2=BIRDLIFE12&continent=&reg_type=9
+
+It is a table with that matches the Birdlife checklist version 3 (EltonTraits uses) with the HBW Birdlife Taxonomic Checklist v4 (which IUCN uses). Using this table to change names to the new taxonomic system to change the taxonomic system used in EltonTraits to the more updated v4. 
+
+http://datazone.birdlife.org/species/taxonomy
+^birdlife taxonomy
+
+
+ 	
+```{r matching extra bird species, eval=FALSE}
+
+# matching BIRDS that didnt have a perfect match between the IUCN and EltonTraits databases
+mammal_pred_df = read.csv("mammal_pred_df.csv")
+
+bird_pred_df = read.csv("bird_pred_df.csv")
+
+avibase_df = read.csv("TaxonomicChanges_Birdlife_Avibase.csv")
+avibase_df = avibase_df[,2:ncol(avibase_df)] #chopping off the 
+avibase_ioc_df = read.csv("TaxonomicChanges_IOC27_HBWBirdlife4.csv")
+avibase_ioc_df$Scientific.name = avibase_ioc_df$'ï..Scientific.name'
+
+#matching taxonomy from Birdlife v3 to HBW v4, filtering out ones that don't match (the ones using taxonomy IOC 2.7 don't match)
+bird_pred_df %>% 
+  filter((!scientificName %in% avibase_df$Scientific.name)) %>% 
+  unique()
+
+#looking at taxons that don't match within IOC2.7 or birdlife v3
+bird_pred_df %>% 
+  filter((!scientificName %in% avibase_df$Scientific.name)) %>% 
+  filter((!scientificName %in% avibase_ioc_df$Scientific.name)) %>%
+  unique()
+
+#changing to character to avoid errors
+bird_pred_df$scientificName = as.character(bird_pred_df$scientificName)
+avibase_df$Scientific.name = as.character(avibase_df$Scientific.name)
+avibase_df$Scientific.name2 = as.character(avibase_df$Scientific.name2)
+avibase_ioc_df$Scientific.name = as.character(avibase_ioc_df$Scientific.name)
+avibase_ioc_df$Scientific.name2 = as.character(avibase_ioc_df$Scientific.name2)
+
+#loop through and update name to correct taxon
+for(i in 1:nrow(bird_pred_df)) {
+  sci_index = match(bird_pred_df$scientificName[i],avibase_df$Scientific.name,nomatch=0)
+  if(sci_index==0){ # then is in IOC2.7 database
+    sci_index = match(bird_pred_df$scientificName[i],avibase_ioc_df$Scientific.name,nomatch=0)
+    if(sci_index!=0){ #if it matches, then we assign it to the correct taxonomy
+      bird_pred_df$scientificName[i] = avibase_ioc_df$Scientific.name2[sci_index]
+    }else{
+      bird_pred_df$scientificName[i] = NA
+    }
+    
+  }else{ # then is in the birdlife 3 database and assign it to the correct taxonomy
+    bird_pred_df$scientificName[i] = avibase_df$Scientific.name2[sci_index]
+  }
+}
+
+#saving those with missing taxonomy to a datafile
+bird_pred_df %>%
+  filter(scientificName == "") %>%
+  write.csv("missingtaxonomy_birds.csv")
+
+#removing those taxons with missing taxonomy
+bird_pred_df2 = bird_pred_df %>%
+  filter(scientificName != "")
+
+#chopping off some columns
+bird_pred_df2 = bird_pred_df2[,1:42]
+
+redlist_birds_df$scientificName = as.character(redlist_birds_df$scientificName)
+
+new_bird_df = left_join(x = bird_pred_df2, y = redlist_birds_df,  
+                    by="scientificName")
+
+clean_bird_df = read.csv("cleaned_bird_df.csv")
+
+colnames(clean_bird_df)
+colnames(new_bird_df)
+
+new_bird_df = new_bird_df %>% 
+  dplyr::select(-infraType, -infraName, -infraAuthority, 
+         -redlistCriteria, -criteriaVersion)
+
+new_clean_bird_df = rbind(clean_bird_df,new_bird_df)
+
+write.csv(new_clean_bird_df,"cleaned_bird_df_updated_5_29.csv")
+
+```
+
+# Data Exploration
+
+
+
+
+
+
+## Set Up
+
+```{r load packages}
+
+library(tidyverse)
+
+```
+
+```{r set pathway}
+
+## Local Pathways - copy/paste your local pathway to the github repository
+
+# Emma
+pathway = "/Users/emmabarton/Desktop/spring_2020/STAT434/project/"
+
+# Ryan
+#pathway = "~/GitHub/STAT-434---not-the-dodo-/"
+
+```
+
+```{r load data}
+
+mammal_df = read.csv("cleaned_mammal_df.csv")
+bird_df = read.csv("cleaned_bird_df_updated_5_29.csv")
+
+```
+
+# Data Exploration
+
+Elton traits: diet, foraging strata, foraging time, and body size. 
+
+## Mammals
+
+```{r variables}
+
+names(mammal_df)
+
+```
+Diet variables are the estimated percent use of Inv: invertebrates Vend: mammals and birds, Vect: reptiles, snakes, amphibians, salamanders, Vfish: fish, Vunk: general vertebrates or unknown, Scav: scavenge, garbage, offal, carcasses, trawlers, carrion, Fruit: fruit and drupes, Nect: nector, pollen, plant exudates, gums, Seed: seed, maize, nuts, spores, wheat, grains, Plant: other plant material. All diet categories should add to 100%.
+
+Diet source is a reference ID and diet certainty is the estimated reliability of the diet sources (see metadata for rankings).
+
+ForStrat.Value: One of five foraging stratum categories (marine, ground, scansorial, arboreal, aerial).
+
+Activity variables are binary 0:no, 1:yes. Nocturnal: night, Crepuscular: twilight, Diurnal: day. 
+
+Bodymass.Value: average adult body mass (g)
+
+Redlist Category: Critically Endangered, Data Deficient, Endangered, Extinct, Extinct in the Wild, Least Concern, Near Threatened, Vulnerable
+
+### Single Variable Distributions
+
+```{r mammal single variable tables}
+
+# Response: Redlist Category
+table(mammal_df$redlistCategory)
+
+# Body Mass distribution
+mammal_df %>% 
+  mutate(
+    bodymass_bin = case_when(
+      BodyMass.Value >= 100000 ~ ">=100,000",
+      BodyMass.Value < 100000 & BodyMass.Value >= 10000 ~ "10,000 - 100,000",
+      BodyMass.Value < 10000 & BodyMass.Value >= 1000 ~ "10,000 - 1,000",
+      BodyMass.Value < 1000 & BodyMass.Value >= 100 ~ "1,000 - 100",
+      BodyMass.Value < 100 ~ "<100"
+     )
+  ) %>% 
+  group_by(bodymass_bin) %>% 
+  dplyr::summarize(n = n())
+
+```
+The majority of species in our dataset are of least concern, followed by data deficient and vulnurable. However, combining critically endangered, endangered, extinct, and extinct in the wild results in 626 species.
+
+The majority of mammals have a bodymass less than 100g followed by a bodymass between 1069. There are some mammals with a bodymass orders of magnitude greater than 100,000g. 
+
+```{r mammal single variable graphs}
+
+# Body Mass Histogram
+ggplot(mammal_df, aes(BodyMass.Value)) + 
+  geom_histogram(binwidth = 25000000) + 
+  theme_classic()
+
+# Log Transformed Body Mass Histogram
+ggplot(mammal_df, aes(BodyMass.Value)) + 
+  geom_histogram() + 
+  scale_x_continuous(trans = "log") +
+  theme_classic()
+
+```
+Because of the large disparity between large mammals with a much greater body mass than 100,000 and the majority of mammals, the distribution of bodymass is very skewed right. 
+
+### Pairwise Relationships
+
+```{r mammal explanatory vs response tables}
+
+# Redlist Category vs Population Trend
+table(mammal_df$redlistCategory, mammal_df$populationTrend)
+
+# Redlist Category vs Foraging Stratum 
+prop.table(table(mammal_df$redlistCategory,mammal_df$ForStrat.Value),2)*100 #makes a nice looking table with % by column
+
+```
+
+```{r mammal explanatory vs response graphs}
+
+# 1
+# Population Trend and Redlist Category Bar Plot
+mammal_df %>% 
+  mutate(
+    redlistCat2 = case_when(
+      redlistCategory == "Critically Endangered" ~ "Endangered or Extinct",
+      redlistCategory == "Endangered" ~ "Endangered or Extinct",
+      redlistCategory == "Extinct" ~ "Endangered or Extinct",
+      redlistCategory == "Extinct in the Wild" ~ "Endangered or Extinct",
+      TRUE ~ as.character(redlistCategory)
+    )
+  ) %>% 
+  ggplot(aes(populationTrend)) +
+    geom_bar(col = "black") +
+    facet_wrap(~redlistCat2) +
+    coord_flip() +
+    theme_classic()
+
+# 2
+# Redlist Category vs Body Mass Value Box Plot
+mammal_df %>% 
+  mutate(
+    redlistCat2 = case_when(
+      redlistCategory == "Critically Endangered" ~ "Endangered or Extinct",
+      redlistCategory == "Endangered" ~ "Endangered or Extinct",
+      redlistCategory == "Extinct" ~ "Endangered or Extinct",
+      redlistCategory == "Extinct in the Wild" ~ "Endangered or Extinct",
+      TRUE ~ as.character(redlistCategory)
+    )
+  ) %>% 
+  ggplot(aes(redlistCat2, BodyMass.Value)) +
+    geom_boxplot() +
+    coord_flip() +
+    scale_y_continuous(trans = "log") +
+    theme_classic()
+
+# 3 
+# Average Diet Percent Use vs Redlist Category Barplots
+mammal_df %>% 
+  mutate(
+    redlistCat2 = case_when(
+      redlistCategory == "Critically Endangered" ~ "Endangered or Extinct",
+      redlistCategory == "Endangered" ~ "Endangered or Extinct",
+      redlistCategory == "Extinct" ~ "Endangered or Extinct",
+      redlistCategory == "Extinct in the Wild" ~ "Endangered or Extinct",
+      TRUE ~ as.character(redlistCategory)
+    )
+  ) %>% 
+  gather(key = "diet_type", value = "percentage", Diet.Inv, Diet.Vend, 
+         Diet.Vect, Diet.Vfish, Diet.Vunk, Diet.Scav, Diet.Fruit, Diet.Nect,
+         Diet.Seed, Diet.PlantO) %>% 
+  ggplot(aes(diet_type, percentage)) +
+    stat_summary(geom = "bar", fun = mean, position = position_dodge(), 
+                 colour = "black", fill = "white",
+                 width = 0.7) +
+    stat_summary(geom = "errorbar", fun.data = mean_se, 
+                 position = position_dodge(0.7),
+                 width = 0.25) +
+    facet_wrap(~redlistCat2) +
+    coord_flip() +
+    theme_classic()
+
+# 4
+# Foraging Stratum and Redlist Category Bar Plot
+mammal_df %>% 
+  mutate(
+    redlistCat2 = case_when(
+      redlistCategory == "Critically Endangered" ~ "Endangered or Extinct",
+      redlistCategory == "Endangered" ~ "Endangered or Extinct",
+      redlistCategory == "Extinct" ~ "Endangered or Extinct",
+      redlistCategory == "Extinct in the Wild" ~ "Endangered or Extinct",
+      TRUE ~ as.character(redlistCategory)
+    )
+  ) %>% 
+  ggplot(aes(ForStrat.Value)) +
+    geom_bar(col = "black") +
+    facet_wrap(~redlistCat2) +
+    theme_classic()
+
+```
+1) The majority of endangered or extinct mammals (critically endangered, endangered, extinct, and extinct in the wild grouped into one category) have a decreasing population trend. The majority of vulnerable and near threatened mammals also have a decreasing population trend. The majority of least concern mammals have either a stable population trend or an unknown population trend. 
+
+It is very likely that the redlist category of a mammal is designated based on population trend knowledge. Many of the mammals in the least concern category may actually be more threatened than believed becasue their population trend is unknown.  
+
+2) Natural log transformed body mass value (g) vs redlist category. There are visually no major differences in body mass distributions between categories other than mammals categorized as least concern and data deficient seem to have more outliers with large body mass values. 
+
+3) Average percent use of each diet category for each redlist category. Averages appear similar across redlist categories. 
+
+4) Distribution of foraging stratum divided by redlist category. Mammals that are of least concern have a higher proportion of ground foragers. Other than this there are appear to be no major differences between the categories.      
+
+```{r mammal explanatory vs explanatory graphs}
+
+# 5
+# Average Percent Use of Each Diet Type
+mammal_df %>% 
+  gather(key = "diet_type", value = "percentage", Diet.Inv, Diet.Vend, 
+         Diet.Vect, Diet.Vfish, Diet.Vunk, Diet.Scav, Diet.Fruit, Diet.Nect,
+         Diet.Seed, Diet.PlantO) %>% 
+  ggplot(aes(diet_type, percentage)) + 
+    stat_summary(geom = "bar", fun = mean, position = position_dodge(), 
+                 colour = "black", fill = "white",
+                 width = 0.7) +
+    stat_summary(geom = "errorbar", fun.data = mean_se, 
+                 position = position_dodge(0.7),
+                 width = 0.25) +
+    coord_flip() + 
+    theme_classic()
+
+# 6 
+# Activity vs Body Mass Boxplot
+mammal_df %>%
+  gather(key = "activity_type", value = "value", Activity.Nocturnal, 
+         Activity.Crepuscular, Activity.Diurnal) %>% 
+  filter(value == 1) %>% 
+  ggplot(aes(activity_type, BodyMass.Value)) +
+    geom_boxplot() +
+    scale_y_continuous(trans = "log") +
+    coord_flip() +
+    theme_classic()
+
+```
+5) Invertebrates were the diet component with the highest average percent use, followed by other plant parts and fruit.
+
+6) Average body mass value for each activity type. Diurnal and Crepuscular have slightly larger median bodymass values. 
+
+## Birds 
+
+```{r variables}
+
+names(bird_df)
+
+```
+Diet variables are the estimated percent use of Inv: invertebrates Vend: mammals and birds, Vect: reptiles, snakes, amphibians, salamanders, Vfish: fish, Vunk: general vertebrates or unknown, Scav: scavenge, garbage, offal, carcasses, trawlers, carrion, Fruit: fruit and drupes, Nect: nector, pollen, plant exudates, gums, Seed: seed, maize, nuts, spores, wheat, grains, Plant: other plant material. All diet categories should add to 100%.
+
+Diet.5Cat: assignment to one of five diet categories (PlantSeed, FruiNect, Invertebrate, VertFishScav, Omnivore)
+
+Foraging stratum variables are the estimated percent use of watbelowsurf: below water surface, wataroundsurf: on water surface, ground: ground, understory: below 2m in understory, midhigh: higher than 2m but below canopy, canopy: canopy, aerial: well above tree structures. All foraging stratum categories should add to 100%. 
+
+PelagicSpecialist: binary variable for foraging being mostly pelagic.
+
+Nocturnal: binary variable for night foraging
+
+Bodymass.Value: average adult body mass (g)
+
+Redlist Category: Critically Endangered, Data Deficient, Endangered, Extinct, Extinct in the Wild, Least Concern, Near Threatened, Vulnerable
+
+### Single Variable Distributions
+
+```{r}
+
+```
+
+### Pairwise Relationships
+
+```{r}
+
+```
+
+
+```{r investigate birds}
+
+prop.table(table(bird_df$redlistCategory))*100
+
+prop.table(table(bird_df$redlistCategory,bird_df$populationTrend),2)*100
+
+prop.table(table(bird_df$redlistCategory,bird_df$Diet.Inv),2)*100
+
+prop.table(table(bird_df$redlistCategory,bird_df$Diet.Nect),2)*100
+
+prop.table(table(bird_df$redlistCategory,bird_df$Nocturnal),2)*100
+
+prop.table(table(bird_df$redlistCategory,bird_df$PelagicSpecialist),2)*100
+
+#Deciding which ones to include based on whether different redlistcategories have different percentages in each percentage of variable 
+
+prop.table(table(bird_df$redlistCategory,bird_df$ForStrat.watbelowsurf),2)*100 #include in model
+
+prop.table(table(bird_df$redlistCategory,bird_df$ForStrat.wataroundsurf),2)*100 # include in model
+ 
+prop.table(table(bird_df$redlistCategory,bird_df$ForStrat.ground),2)*100 #even across all categories so not including in model
+
+prop.table(table(bird_df$redlistCategory,bird_df$ForStrat.understory),2)*100 #pretty even across categories, not including
+
+prop.table(table(bird_df$redlistCategory,bird_df$ForStrat.midhigh),2)*100 #pretty even across categories, not including
+
+prop.table(table(bird_df$redlistCategory,bird_df$ForStrat.canopy),2)*100 # moderately even
+
+prop.table(table(bird_df$redlistCategory,bird_df$ForStrat.aerial),2)*100 #very high proportion in least concern, including
+
+sapply(split(bird_df$BodyMass.Value,bird_df$redlistCategory),mean)
+sapply(split(bird_df$BodyMass.Value,bird_df$redlistCategory),length)
+
+```
+
+# Descriptive Statistics
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

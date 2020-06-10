@@ -1,0 +1,350 @@
+---
+title: "STAT 434 Final Project"
+author: "Emma Barton & Ryan Vosbigian"
+date: "6/10/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+
+# Introduction
+
+
+
+# Data Cleaning
+
+```{r load packages}
+
+library(tidyverse)
+library(Hmisc)
+
+```
+
+```{r set pathway}
+
+## Local Pathways - copy/paste your local pathway to the github repository
+
+# Emma
+pathway = "/Users/emmabarton/Desktop/spring_2020/STAT434/project/"
+
+# Ryan
+#pathway = "~/GitHub/"
+
+```
+
+## Loading Datasets
+
+```{r raw data}
+
+redlist_df = read.csv(paste0(pathway, "STAT-434---not-the-dodo-/simple_summary_IUCN_birds_mammals.csv"))
+
+elton_mammal_df = read.csv(paste0(pathway, "STAT-434---not-the-dodo-/EltonTraits/MamFuncDat.txt"),sep = "\t")
+
+elton_bird_df = read.csv(paste0(pathway, "STAT-434---not-the-dodo-/EltonTraits/BirdFuncDat.txt"),sep = "\t")
+
+```
+
+```{r change raw data types}
+
+redlist_df$scientificName = as.character(redlist_df$scientificName)
+elton_mammal_df$scientificName = as.character(elton_mammal_df$Scientific)
+elton_bird_df$scientificName = as.character(elton_bird_df$Scientific)
+
+```
+
+```{r join elton and redlist}
+
+# Filter mammals and birds from redlist species
+redlist_mammals_df = redlist_df[redlist_df$className=="MAMMALIA",]
+redlist_birds_df = redlist_df[redlist_df$className=="AVES",]
+
+# Join Elton traits and redlist species for mammals
+mammal_df = left_join(x = elton_mammal_df, y = redlist_mammals_df, 
+                      by="scientificName")
+
+# Join Elton traits and redlist species for birds
+bird_df = left_join(x = elton_bird_df, y = redlist_birds_df,  
+                    by="scientificName")
+
+# Write data
+write.csv(mammal_df, "uncleaned_mammal_df.csv")
+write.csv(bird_df, "uncleaned_bird_df.csv")
+
+```
+
+```{r uncleaned data}
+
+mammal_df = read.csv("uncleaned_mammal_df.csv")
+bird_df = read.csv("uncleaned_bird_df.csv")
+
+```
+
+## Data Cleaning
+
+```{r data dimensions}
+
+dim(mammal_df)
+dim(bird_df)
+
+```
+
+```{r missing redlist species}
+
+table(is.na(mammal_df$Diet.Vect))
+nrow(mammal_df)
+nrow(elton_mammal_df)
+nrow(redlist_mammals_df)
+
+# Check redlist mammals that do not have Elton traits
+redlist_mammals_df %>% 
+  filter(!(scientificName %in% elton_mammal_df$scientificName)) %>% 
+  nrow()
+
+# Check redlist birds that do not have Elton traits
+redlist_birds_df %>% 
+  filter(!(scientificName %in% elton_bird_df$scientificName)) %>% 
+  nrow()
+
+```
+
+```{r select columns}
+
+# Removed unnecessary or mostly empty columns
+mammal_df = mammal_df %>% 
+  select(-X, -MSW3_ID, -infraType, -infraName, -infraAuthority, 
+         -redlistCriteria, -criteriaVersion)
+
+bird_df = bird_df %>% 
+  select(-X, -infraType, -infraName, -infraAuthority, 
+         -redlistCriteria, -criteriaVersion)
+
+```
+
+```{r missing redlist status}
+
+mammal_df %>% 
+  filter(is.na(redlistCategory)) %>% 
+  nrow()
+
+bird_df %>% 
+  filter(is.na(redlistCategory)) %>% 
+  nrow()
+
+```
+
+```{r filter out missing redlist status}
+
+# Create prediction/test datasets 
+mammal_pred_df = mammal_df %>% 
+  filter(is.na(redlistCategory))
+
+bird_pred_df = bird_df %>% 
+  filter(is.na(redlistCategory))
+
+# Filter out rows with missing redlist category to make training dataset
+mammal_df = mammal_df %>% 
+  filter(!is.na(redlistCategory))
+
+bird_df = bird_df %>% 
+  filter(!is.na(redlistCategory))
+
+```
+
+```{r change factor levels}
+
+mammal_df = mammal_df %>% 
+  mutate(
+    populationTrend = case_when(
+      populationTrend == "" ~ "Unknown",
+      TRUE ~ as.character(populationTrend)
+    )
+  )
+
+```
+
+```{r write cleaned data}
+
+write.csv(mammal_df, "cleaned_mammal_df.csv")
+write.csv(bird_df, "cleaned_bird_df.csv")
+
+write.csv(mammal_pred_df, "mammal_pred_df.csv")
+write.csv(bird_pred_df, "bird_pred_df.csv")
+
+```
+
+Not having much luck matching these 500 mammal taxons. maybe just drop them??
+```{r matching extra mammal species}
+
+# matching MAMMAL species that didnt have a perfect match between the IUCN and EltonTraits databases
+mammal_pred_df = read.csv("mammal_pred_df.csv")
+
+syn_df = read.csv("asm-species-2020-05-27_containssynonymsfromeltontraits.csv")
+
+#removing the empty columns from the missing IUCN join
+mammal_pred_df = mammal_pred_df[,1:27]
+
+#reformatting the deprecated.scientific name column from: {"herpestes javanica":":$2009"}
+
+#chopping off the first two characters
+
+syn_df$Deprecated.Scientific = gsub('^."([^"]*[^"]*)".*$', "\\1",syn_df$Deprecated.Scientific)
+
+#capitalizing
+syn_df$Deprecated.Scientific = capitalize(syn_df$Deprecated.Scientific)
+
+mammal_pred_df %>% 
+  filter(!(scientificName %in% syn_df$Deprecated.Scientific)) %>% 
+  unique()
+
+mammal_pred_df$scientificName = as.character(mammal_pred_df$scientificName)
+syn_df$Deprecated.Scientific = as.character(syn_df$Deprecated.Scientific)
+syn_df$Canonical.Sciname = as.character(syn_df$Canonical.Sciname)
+
+for (i in 1:nrow(mammal_pred_df)){
+  sci_index = match(mammal_pred_df$scientificName[i],syn_df$Deprecated.Scientific)
+  if (is.na(sci_index)==FALSE) {
+    mammal_pred_df$scientificName[i] = syn_df$Canonical.Sciname[sci_index]
+  }else {
+    mammal_pred_df$scientificName[i] = NA
+  }
+}
+
+```
+
+TaxonomicChanges_BirdLife_Avibase.csv was scrapped from avibase.bs-eoc.org
+https://avibase.bsc-eoc.org/compare.jsp?source1=birdlife&version1=BIRDLIFE03&source2=birdlife&version2=BIRDLIFE12&continent=&reg_type=9
+
+It is a table with that matches the Birdlife checklist version 3 (EltonTraits uses) with the HBW Birdlife Taxonomic Checklist v4 (which IUCN uses). Using this table to change names to the new taxonomic system to change the taxonomic system used in EltonTraits to the more updated v4. 
+
+http://datazone.birdlife.org/species/taxonomy
+^birdlife taxonomy
+
+Legend at bottom of table
+Taxon removed. This color indicates that the taxonomic concept is only present in the first checklist. The species was either removed entirely from the list, or may have been replaced by another taxon concept (eg, following a species split or a species lump).
+ 	Taxon added. This color indicates that the taxonomic concept is only present in the second checklist. The species was either entirely new to the checklist, or it may replace another concept (eg, following a species split or a species lump).
+ 	Name changed. This color indicates that the taxonomic concept is the same between the 2 versions (ie, that the names refers to the same population), but that the scientific, common or family name has been modified. 
+ 	
+```{r matching extra bird species}
+
+# matching BIRDS that didnt have a perfect match between the IUCN and EltonTraits databases
+mammal_pred_df = read.csv("mammal_pred_df.csv")
+
+bird_pred_df = read.csv("bird_pred_df.csv")
+
+avibase_df = read.csv("TaxonomicChanges_Birdlife_Avibase.csv")
+avibase_df = avibase_df[,2:ncol(avibase_df)] #chopping off the 
+avibase_ioc_df = read.csv("TaxonomicChanges_IOC27_HBWBirdlife4.csv")
+avibase_ioc_df$Scientific.name = avibase_ioc_df$'ï..Scientific.name'
+
+#matching taxonomy from Birdlife v3 to HBW v4, filtering out ones that don't match (the ones using taxonomy IOC 2.7 don't match)
+bird_pred_df %>% 
+  filter((!scientificName %in% avibase_df$Scientific.name)) %>% 
+  unique()
+
+#looking at taxons that don't match within IOC2.7 or birdlife v3
+bird_pred_df %>% 
+  filter((!scientificName %in% avibase_df$Scientific.name)) %>% 
+  filter((!scientificName %in% avibase_ioc_df$Scientific.name)) %>%
+  unique()
+
+#changing to character to avoid errors
+bird_pred_df$scientificName = as.character(bird_pred_df$scientificName)
+avibase_df$Scientific.name = as.character(avibase_df$Scientific.name)
+avibase_df$Scientific.name2 = as.character(avibase_df$Scientific.name2)
+avibase_ioc_df$Scientific.name = as.character(avibase_ioc_df$Scientific.name)
+avibase_ioc_df$Scientific.name2 = as.character(avibase_ioc_df$Scientific.name2)
+
+#loop through and update name to correct taxon
+for(i in 1:nrow(bird_pred_df)) {
+  sci_index = match(bird_pred_df$scientificName[i],avibase_df$Scientific.name,nomatch=0)
+  if(sci_index==0){ # then is in IOC2.7 database
+    sci_index = match(bird_pred_df$scientificName[i],avibase_ioc_df$Scientific.name,nomatch=0)
+    if(sci_index!=0){ #if it matches, then we assign it to the correct taxonomy
+      bird_pred_df$scientificName[i] = avibase_ioc_df$Scientific.name2[sci_index]
+    }else{
+      bird_pred_df$scientificName[i] = NA
+    }
+    
+  }else{ # then is in the birdlife 3 database and assign it to the correct taxonomy
+    bird_pred_df$scientificName[i] = avibase_df$Scientific.name2[sci_index]
+  }
+}
+
+#saving those with missing taxonomy to a datafile
+bird_pred_df %>%
+  filter(scientificName == "") %>%
+  write.csv("missingtaxonomy_birds.csv")
+
+#removing those taxons with missing taxonomy
+bird_pred_df2 = bird_pred_df %>%
+  filter(scientificName != "")
+
+#chopping off some columns
+bird_pred_df2 = bird_pred_df2[,1:42]
+
+redlist_birds_df$scientificName = as.character(redlist_birds_df$scientificName)
+
+new_bird_df = left_join(x = bird_pred_df2, y = redlist_birds_df,  
+                    by="scientificName")
+
+clean_bird_df = read.csv("cleaned_bird_df.csv")
+
+colnames(clean_bird_df)
+colnames(new_bird_df)
+
+new_bird_df = new_bird_df %>% 
+  dplyr::select(-infraType, -infraName, -infraAuthority, 
+         -redlistCriteria, -criteriaVersion)
+
+new_clean_bird_df = rbind(clean_bird_df,new_bird_df)
+
+write.csv(new_clean_bird_df,"cleaned_bird_df_updated_5_29.csv")
+
+```
+
+## Old Code
+
+Old Code to match species
+```{r format species name}
+
+# fulldata_df=NULL
+# redlist_df$MSW05_Binomial = redlist_df$scientificName
+# amniote_df$MSW05_Binomial = paste(amniote_df$genus,amniote_df$species,sep = " ")
+# pantheria93_df$MSW05_Binomial = as.character(pantheria93_df$MSW05_Binomial)
+# 
+# redlist_df$MSW05_Binomial = as.character(gsub("^([^\\s]*\\s[^\\s]*)\\s.*$", "\\1",redlist_df$scientificName)) 
+# #https://stackoverflow.com/questions/7449564/regex-return-all-before-the-second-occurrence
+# #returns everything before the second space, so that we get the binomial
+# redlist_df$MSW05_Binomial[40:50]
+# 
+# fulldata_df = left_join(x = redlist_df,amniote_df,by="MSW05_Binomial")
+# 
+# fulldata_df = left_join(x = fulldata_df,pantheria93_df,by="MSW05_Binomial")
+# 
+# write.csv(fulldata_df,"fulldataset2.csv")
+
+```
+
+```{r check nas}
+
+# fulldata_df = read.csv("fulldataset.csv",header = TRUE)
+# 
+# 
+# # for (i in 1:ncol(fulldata_df)) {
+# #   fulldata_df[,i][fulldata_df[,i]== "-999" | fulldata_df[,i]=="NA"] = NA
+# # }
+# 
+# 
+# for (i in 1:ncol(fulldata_df)) {
+#   print(colnames(fulldata_df)[i])
+#   print(table(is.na(fulldata_df[,i])))
+# }
+# 
+# 
+
+```
