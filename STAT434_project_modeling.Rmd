@@ -44,26 +44,12 @@ library(tree)
 library(randomForest)
 library(MASS)
 library(e1071)
-<<<<<<< HEAD
 library(nnet)
-=======
 library(gbm)
->>>>>>> e3a97ee3c26b5a0a6eb3e8aa787c90a3ff5e2b0f
-
-```
-
-```{r set pathway}
-
-## Local Pathways - copy/paste your local pathway to the github repository
-
-# Emma
-pathway = "/Users/emmabarton/Desktop/spring_2020/STAT434/project/"
-
-# Ryan
-#pathway = "~/GitHub/STAT-434---not-the-dodo-/"
 
 
 ```
+
 
 ```{r load data}
 
@@ -1485,7 +1471,7 @@ colnames(mammal_train_df[var])
 
 #### Using a Linear Function
 
-```{r}
+```{r, eval=FALSE}
 #Using variables selected for LDA
 test_errors = rep(0, length(bird_lda_variables))
 
@@ -1517,7 +1503,7 @@ colnames(bird_train_df[bird_lda_variables[[which.min(test_errors)]]])
 
 ```
 #### Tuning Parameters
-```{r}
+```{r, eval=FALSE}
 
 var = bird_lda_variables[[1]] #best from above
 bird_svm = tune(svm, as.factor(redlistCategory)∼., 
@@ -1535,6 +1521,7 @@ table(pred_svm, bird_test_df$redlistCategory)
 
 ```
 
+Classifies everything as least concern, so not including.
 
 
 #### Using a Radial Function
@@ -1574,7 +1561,7 @@ colnames(bird_train_df[bird_lda_variables[[which.min(test_errors)]]])
 ### Tuning Parameters
 
 ```{r}
-var = bird_lda_variables[[11]]
+var = bird_lda_variables[[9]]
 bird_svm = tune(svm, as.factor(redlistCategory)∼., 
                   data=bird_train_df[,var],kernel="radial",
                   ranges=list(cost=c(0.1,1,10),
@@ -1590,17 +1577,16 @@ sum(pred_svm != bird_test_df$redlistCategory & bird_test_df$redlistCategory == "
 mean(pred_svm != bird_test_df$redlistCategory)
 table(pred_svm, bird_test_df$redlistCategory)
 
-
-#test error 0.304753
+#test error 
 ```
-Best parameters have cost of 1 and gamma of 0.5.
+Best parameters have cost of 0.1 and gamma of 0.5.
 
 ### Best Model
 
 ```{r}
-var = bird_lda_variables[[11]]
+var = bird_lda_variables[[9]]
 bird_svm=svm(as.factor(redlistCategory)∼., 
-                  data=bird_train_df[,var],kernel="radial", gamma=0.5,cost=1)
+                  data=bird_train_df[,var],kernel="radial", gamma=0.1,cost=0.1)
 
 
 mean(pred_svm != bird_test_df$redlistCategory)
