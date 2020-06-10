@@ -14,20 +14,30 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Introduction
 
+Understanding species and identifying potential for endangerment and extinction is essential to protecting species and biodiversity. However, it is difficult to monitor and track every species and their individual risks. The International Union for Conservation of Nature (2020) maintains a list of the status of all known species, but there are many that are still unknown, due to lack of research focused on those species. The status outlined by the IUCN Redlist are in order of lowest to highest risk of endangerement and extinction: least concern, near threatened, vulnerable, endangered, highly endangered, extinct in the wild, extinct. The IUCN lists another option of unknown.
+
+While many individual species have not been studied enough to determine status, there are species databases that have compiled information on all bird and mammal species. Elton Traits, which was created by Wilman and colleagues (2014), has compiled diet and foraging variables for all currently existing birds and mammals and used interpolation based on similar traits and phylogentic relationships to fill in for missing traits.
+
+These foraging and diet characteristics could help predict status, because species that share similar food sources or foraging strageties could be influenced similarly by human activities and other pressures. Alternatively, decreased competition between similar species if one becomes endangered could lead to more opportunities and higher fitness for similar species. Additionally, traits that could be affected by pressures in one area, such as a city, could be different than traits that are threatened by pressures in forests such as from logging.
+
+We combined the IUCN's Redlist status of birds and mammals with the Elton Traits database, and used traits of birds and mammals to predict status. We used classification models, to predict whether species is least concern, near threatened, vulnerable, or endangered, where we lumped endangered, highly endangered, extinct in wild, and extinct into one category. These were combined, because between when the Elton Traits were published in 2014 and 2020 when the IUCN Redlist were updated, some species went extinct, so there were low numbers in each of those categories and lumping helped make the models more generalizable.
+
+After determining the best model that predicts status, we used the model to predicted the IUCN Redlist Status for the species where the status is unknown.
+
 
 
 # Data Cleaning
 
 
 
-```{r load packages}
+```{r loading packages}
 
 library(tidyverse)
 library(Hmisc)
 
 ```
 
-```{r set pathway, eval=FALSE}
+```{r set pathways, eval=FALSE}
 
 ## Local Pathways - copy/paste your local pathway to the github repository
 
@@ -346,7 +356,7 @@ Elton traits: diet, foraging strata, foraging time, and body size.
 
 ## Mammals
 
-```{r variables}
+```{r mammal variables}
 
 names(mammal_df)
 
@@ -791,6 +801,17 @@ sapply(split(bird_df$BodyMass.Value,bird_df$redlistCategory),length)
 
 
 
+
+
+
+
+
+
+# Bibliography
+
+IUCN 2020. The IUCN Red List of Threatened Species. Version 2020-1. https://www.iucnredlist.org. Downloaded on 19 March 2020.
+
+Hamish Wilman, Jonathan Belmaker, Jennifer Simpson, Carolina de la Rosa, Marcelo M. Rivadeneira, Walter Jetz. 2014. EltonTraits 1.0: Species-level foraging attributes of the world's birds and mammals. Ecology 95:2027. http://dx.doi.org/10.1890/13-1917.1
 
 
 
