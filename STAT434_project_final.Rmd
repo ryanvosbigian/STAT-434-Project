@@ -2809,6 +2809,50 @@ SVM = 0.222
 K-Nearest-Neighbor, Neural Networks, and Support Vector Machines were all equivalent in predicting the redlist status of a bird species. This is the same result as the 50/50 training/test data split. 
 
 
+
+# Final Predictions of Unknown Status
+
+Based on the above model results we will use KNN for predicting mammals and QDA for predicting birds.
+
+```{r predict mammals}
+
+data_deficient_mammals_df
+
+
+mammal_knn = knn(mammal_df[,c(7, 9, 10, 11, 12, 13, 19, 20, 21)],
+                 data_deficient_mammals_df[,c(7, 9, 10, 11, 12, 13, 19, 20, 21)],
+                 mammal_df[,38], k=14)
+
+
+data_deficient_mammals_df$predredlistCategory = mammal_knn
+
+table(mammal_knn)
+
+#write.csv(data_deficient_mammals_df,"best_model_predictions_undeterminedmammals.csv")
+
+data_deficient_mammals_df$scientificName[qda_pred$class=="Endangered"]
+
+```
+
+
+```{r predict birds}
+data_deficient_birds_df
+bird_qda = qda(redlistCategory ~ .,
+                   data = bird_df[,bird_qda_variables[[2]]])
+qda_pred = predict(bird_qda,newdata=data_deficient_birds_df[,bird_qda_variables[[2]]])
+
+data_deficient_birds_df$predredlistCategory = qda_pred$class
+
+table(qda_pred$class)
+#write.csv(data_deficient_mammals_df,"best_model_predictions_undeterminedbirds.csv")
+
+data_deficient_birds_df$scientificName[qda_pred$class==Endangered]
+```
+
+
+# Conclusions
+
+
 # Bibliography
 
 IUCN 2020. The IUCN Red List of Threatened Species. Version 2020-1. https://www.iucnredlist.org. Downloaded on 19 March 2020.
