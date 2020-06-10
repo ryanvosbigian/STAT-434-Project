@@ -1589,4 +1589,141 @@ best_params[which.min(test_errors),]
 
 
 
+# Model Comparison
+
+## Half Training Data and Half Test Data 
+
+### Best Mammal Models
+
+```{r}
+
+# Logistic Regression
+var = mammal_log_variables[[16]]
+mammal_log = glm(redlistCategory ~ .,
+                   data = mammals_log_train_df[,var])
+log_prob = predict(mammal_log, newdata=mammals_log_test_df[,var], type = "response")
+log_pred = rep(0, 2146)
+log_pred[log_prob > 0.5] = 1
+mean(log_pred != mammals_log_test_df$redlistCategory)
+
+# Linear Discriminant Analysis
+mammal_lda = lda(redlistCategory ~ .,
+                   data = mammal_train_df[,mammal_lda_variables[[14]]])
+lda_pred = predict(mammal_lda,newdata=mammal_test_df[,mammal_lda_variables[[14]]])
+mean(lda_pred$class != mammal_test_df$redlistCategory)
+table(pred=lda_pred$class,truth=mammal_test_df$redlistCategory)
+
+# Quadratic Discriminant Analysis
+mammal_qda = qda(redlistCategory ~ .,
+                   data = mammal_train_df[,mammal_qda_variables[[3]]])
+qda_pred = predict(mammal_qda,newdata=mammal_test_df[,mammal_qda_variables[[3]]])
+mean(qda_pred$class != mammal_test_df$redlistCategory)
+table(pred=qda_pred$class,truth=mammal_test_df$redlistCategory)
+
+# K Nearest Neighbors
+mammal_knn = knn(mammal_knn_train_df[,c(7, 9, 10, 11, 12, 13, 19, 20, 21)],
+                 mammal_knn_test_df[,c(7, 9, 10, 11, 12, 13, 19, 20, 21)],
+                 mammal_knn_train_df[,38], k=14)
+mean(mammal_knn != mammal_knn_test_df$redlistCategory)
+
+# Bagged Tree
+var = mammal_lda_variables[[2]]
+mammal_lda = randomForest(as.factor(redlistCategory) ~ .,
+                   data = mammal_train_df[,var],
+                   mtry = (length(var)-1))
+bag_pred = predict(mammal_lda,newdata=mammal_test_df[,var])
+mean(bag_pred != mammal_test_df$redlistCategory)
+
+# Random Forest
+set.seed(10)
+var = mammal_lda_variables[[10]]
+mammal_rf = randomForest(as.factor(redlistCategory) ~ .,
+                   data = mammal_train_df[,var],
+                   mtry = round(sqrt(length(var)-1))
+                   )
+bag_pred = predict(mammal_rf,newdata=mammal_test_df[,var])
+mean(bag_pred != mammal_test_df$redlistCategory)
+
+# Neural Network
+var = mammal_nn_variables[[4]]
+mammal_nn = nnet(redlistCategory ~ .,
+                   data = mammal_train_df[,var], size = 5, linout = FALSE)
+nn_pred = predict(mammal_nn, newdata=mammal_test_df[,var], type = "class")
+mean(nn_pred != mammal_test_df$redlistCategory)
+
+
+```
+
+Mammal Model Error Rates
+Logistic Regression = 0.280
+LDA = 0.309
+QDA = 0.329
+KNN = 0.305
+Bagged Tree = 0.319
+Random Forest = 0.312
+Neural Network = 0.312
+
+
+
+### Best Bird Models
+
+```{r}
+
+# Linear Discriminant Analysis
+bird_lda = lda(redlistCategory ~ .,
+                   data = bird_train_df[,bird_lda_variables[[7]]])
+lda_pred = predict(bird_lda,newdata=bird_test_df[,bird_lda_variables[[7]]])
+mean(lda_pred$class != bird_test_df$redlistCategory)
+table(pred=lda_pred$class,truth=bird_test_df$redlistCategory)
+
+# Quadratic Discriminant Analysis
+bird_qda = qda(redlistCategory ~ .,
+                   data = bird_train_df[,bird_qda_variables[[2]]])
+qda_pred = predict(bird_qda,newdata=bird_test_df[,bird_qda_variables[[2]]])
+mean(qda_pred$class != bird_test_df$redlistCategory)
+table(pred=qda_pred$class,truth=bird_test_df$redlistCategory)
+
+# K Nearest Neighbor
+bird_knn = knn(bird_knn_train_df[,c(26:33)],
+                 bird_knn_test_df[,c(26:33)],
+                 bird_knn_train_df[,54], k=12)
+mean(bird_knn != bird_knn_test_df$redlistCategory)
+
+# Bagged Tree
+var = bird_lda_variables[[7]]
+bird_lda = randomForest(as.factor(redlistCategory) ~ .,
+                   data = bird_train_df[,var],
+                   mtry = (length(var)-1))
+bag_pred = predict(bird_lda,newdata=bird_test_df[,var])
+mean(bag_pred != bird_test_df$redlistCategory)
+
+# Random Forest
+set.seed(10)
+var = bird_lda_variables[[7]]
+bird_rf = randomForest(as.factor(redlistCategory) ~ .,
+                   data = bird_train_df[,var],
+                   mtry = round(sqrt(length(var)-1))
+                   )
+bag_pred = predict(bird_rf,newdata=bird_test_df[,var])
+mean(bag_pred != bird_test_df$redlistCategory)
+
+# Neural Network
+var = bird_nn_variables[[4]]
+bird_nn = nnet(redlistCategory ~ .,
+                   data = bird_train_df[,var], size = 5, linout = FALSE)
+nn_pred = predict(bird_nn, newdata=bird_test_df[,var], type = "class")
+mean(nn_pred != bird_test_df$redlistCategory)
+
+```
+
+Bird Model Error Rates 
+LDA = 0.227
+QDA = 0.228
+KNN = 0.222
+Bagged Tree = 0.236
+Random Forest = 0.225
+Neural Network = 0.222
+
+## Two-Thirds Training Data and One-Third Test Data
+
 
