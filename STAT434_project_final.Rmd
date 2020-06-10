@@ -783,28 +783,1965 @@ sapply(split(bird_df$BodyMass.Value,bird_df$redlistCategory),length)
 
 ```
 
+# Modeling
+
+Types of models to use:
+
+Classification models only (could convert classes to numeric 1 thru 4, but makes our prediction undesirable, plus not equal jumps between classes)
+
+  1. Logistic Regression (pairwise/one-versus-one and one-versus-all)?
+  2. Linear Discriminant Analysis
+  3. Quadratic Discriminant Analysis
+  4. K-Nearest Neighbor
+  5. Classification Tree
+  6. Bagged Trees
+  7. Random Forests
+  8. Boosted Forests
+  9. Neural Networks
+  10. Support Vector Machines
+  
+Additional Considerations for Modeling
+
+  1. PCA of all diet and foraging variables
+    a. All diet variables are highly correlated, because they each sum up to 100. Thus, using PCA could really simplify the models considerably
+    b. Additionally, if PCA is performed on diet variables then the diet variables should not be scaled because they already are by nature of the data
+  
+# Set Up
+
+```{r load packages}
+
+library(tidyverse)
+library(class)
+library(tree)
+library(randomForest)
+library(MASS)
+library(e1071)
+library(nnet)
+library(gbm)
+
+```
+
+```{r load data}
+
+mammal_df = read.csv("cleaned_mammal_df.csv")
+bird_df = read.csv("cleaned_bird_df_updated_5_29.csv")
+
+```
+
+```{r chopping off extra rows}
+
+nrow(bird_df)
+bird_df = bird_df[1:9640,]
+
+```
+
+# Preparing Data
+
+## Transforming Variables
+
+```{r changing variable types}
+
+# Converting mammal activity variables to factors 
+mammal_df$Activity.Nocturnal = as.factor(mammal_df$Activity.Nocturnal)
+mammal_df$Activity.Crepuscular = as.factor(mammal_df$Activity.Crepuscular)
+mammal_df$Activity.Diurnal = as.factor(mammal_df$Activity.Diurnal)
+mammal_df$redlistCategory = as.factor(mammal_df$redlistCategory)
+
+# Converting bird activity variables to factors 
+bird_df$Nocturnal = as.factor(bird_df$Nocturnal)
+bird_df$redlistCategory = as.factor(bird_df$redlistCategory)
+
+```
+
+```{r response variable transformations}
+
+# Combine "Extinct" & "Extinct in the Wild" & "Critically Endangered" into "Endangered"
+mammal_df$redlistCategory = as.character(car::recode(mammal_df$redlistCategory,recodes = "'Extinct'='Endangered';'Extinct in the Wild'='Endangered';'Critically Endangered'='Endangered'"))
+
+bird_df$redlistCategory = as.character(car::recode(bird_df$redlistCategory,recodes = "'Extinct'='Endangered';'Extinct in the Wild'='Endangered';'Critically Endangered'='Endangered'"))
+
+```
+
+```{r explanatory variable transformations}
+
+# Mammal Explanatory Variable Transformations
+mammal_df = mammal_df %>% 
+  mutate(
+    log_bodymass = log(BodyMass.Value)
+  )
+
+
+# Bird Explanatory Variable Transformations 
+
+bird_df = bird_df %>% 
+  mutate(
+    log_bodymass = log(BodyMass.Value)
+  )
+```
+
+## Adding PCA of Diet and Foraging
+
+Creating data frames with Principle Components as columns
+```{r}
+
+pcbirddiet = prcomp(bird_df[,c(12:21)],scale=FALSE)
+
+pcbirdforage = prcomp(bird_df[,c(26:32)],scale=FALSE)
+
+pcmammal = prcomp(mammal_df[,c(4:13)],scale = FALSE)
+
+pcbird = prcomp(bird_df[,c(12:21,26:32)],scale=FALSE)
+
+summary(pcmammal)
+
+
+plot(cumsum(pcbirddiet$sdev^2/sum(pcbirddiet$sdev^2)), xlab="Principal  Component", ylab="Cumulative  Proportion  of Variance  Explained", ylim=c(0,1),type="b",main = "Bird Diet")
+
+plot(cumsum(pcmammal$sdev^2/sum(pcmammal$sdev^2)), xlab="Principal  Component", ylab="Cumulative  Proportion  of Variance  Explained", ylim=c(0,1),type="b",main = "Mammal Diet")
+
+
+plot(cumsum(pcbirdforage$sdev^2/sum(pcbirdforage$sdev^2)), xlab="Principal  Component", ylab="Cumulative  Proportion  of Variance  Explained", ylim=c(0,1),type="b",main = "Bird Foraging")
+
+plot(cumsum(pcbird$sdev^2/sum(pcbird$sdev^2)), xlab="Principal  Component", ylab="Cumulative  Proportion  of Variance  Explained", ylim=c(0,1),type="b",main = "Bird Foraging and Diet")
+
+
+colnames(pcbirddiet$x) = paste("Diet",colnames(pcbirddiet$x),sep = "")
+
+colnames(pcmammal$x) = paste("Diet",colnames(pcmammal$x),sep = "")
+
+colnames(pcbirdforage$x) = paste("For",colnames(pcbirdforage$x),sep = "")
+
+colnames(pcbird$x) = paste("DietFor",colnames(pcbird$x),sep = "")
+
+bird_df = cbind(bird_df,
+                   cbind(pcbirddiet$x,
+                         cbind(pcbirdforage$x,pcbird$x)))
+
+mammal_df = cbind(mammal_df,pcmammal$x)
+
+remove(pcbird,pcbirddiet,pcbirdforage,pcmammal)
+
+```
+
+## Making Training and Test Datasets
+
+```{r separating data deficient observations}
+
+# Moving data deficient mammals to different data set
+data_deficient_mammals_df = mammal_df[mammal_df$redlistCategory == "Data Deficient",]
+# Removing data deficient mammals
+mammal_df = mammal_df[mammal_df$redlistCategory != "Data Deficient",]
+
+# Moving data def birds to different dataset
+data_deficient_birds_df = bird_df[bird_df$redlistCategory == "Data Deficient",]
+# Removing data deficient birds
+bird_df = bird_df[bird_df$redlistCategory != "Data Deficient",]
+
+```
+
+```{r creating test and training datasets}
+
+# Creating indices for training sets
+set.seed(10)
+train_mammal = sample(1:nrow(mammal_df), size = round(nrow(mammal_df)/2))
+train_bird = sample(1:nrow(bird_df), size = round(nrow(bird_df)/2))
+
+# Creating training and test sets
+mammal_train_df = mammal_df[train_mammal,]
+mammal_test_df = mammal_df[-train_mammal,]
+
+bird_train_df = bird_df[train_bird,]
+bird_test_df = bird_df[-train_bird,]
+
+```
+
+# 1: Logistic Regression
+  
+## Mammal Logistic Regression
+
+### Format Variables
+
+```{r}
+
+# Create separate logistic regression dataframe
+mammals_log_train_df = mammal_train_df
+mammals_log_test_df = mammal_test_df
+
+# Change Response to Binary
+mammals_log_train_df = mammals_log_train_df %>% 
+  mutate(
+    redlistCategory = case_when(
+      redlistCategory == "Endangered" ~ 1,
+      redlistCategory == "Near Threatened" ~ 1,
+      redlistCategory == "Vulnerable" ~ 1,
+      TRUE ~ 0
+    )
+  )
+
+mammals_log_test_df = mammals_log_test_df %>% 
+  mutate(
+    redlistCategory = case_when(
+      redlistCategory == "Endangered" ~ 1,
+      redlistCategory == "Near Threatened" ~ 1,
+      redlistCategory == "Vulnerable" ~ 1,
+      TRUE ~ 0
+    )
+  )
+
+```
+
+### Variable Selection
+
+```{r}
+
+mammal_log_variables = list(c(38,4, 5, 6, 7, 8, 9, 10, 11, 12, 13), #all diet variables
+                            c(38,7, 9, 10, 11, 12, 13),                  #selected diet variables
+                            c(38,41),                               #log body mass
+                            c(38,19, 20, 21, 41),                   #activity and body mass
+                            c(38,4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 20, 21), #all diet and activity variables
+                            c(38,4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 41),         #all diet and body mass
+                            c(38,41, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 20, 21), #all diet and activity and body mass
+                            c(38,7, 9, 10, 11, 12, 13, 41), #selected activity variables and body mass
+                            c(38,7, 9, 10, 11, 12, 13, 19, 20, 21), #selected diet and activity
+                            c(38,7, 9, 10, 11, 12, 13, 19, 20, 21, 41), #selected diet, activity and body mass
+                            c(38,42, 43, 44, 45, 46, 47, 48), # 7 PC for diet
+                            c(38,42, 43, 44, 45, 46, 47, 48, 41), # PCA for diet and diet
+                            c(38,42, 43, 44, 45, 46, 47, 48, 19, 20, 21), # PCA for diet and activity
+                            c(38,42, 43, 44, 45, 46, 47, 48, 19, 20, 21, 41), # PCA for diet, activity, and body mass
+                            c(38,7, 9, 10, 11, 12, 13, 16),     #selected diet variables and foraging
+                            c(38,7, 9, 10, 11, 12, 13, 41, 16), #selected activity variables and body mass and foraging
+                            c(38, 16, 19, 20, 21), # activity and foraging
+                            c(38, 16, 42, 43, 44, 45, 46, 47, 48, 41),   # PCA for diet, and body mass and foraging
+                            c(38, 16, 42, 43, 44, 45, 46, 47, 48, 19, 20, 21, 41), #PCAdiet, and activity, body mass, and foraging
+                            c(38,7, 9, 10, 11, 12, 13, 19, 20, 21, 41, 16)#selected diet, activity and body mass and foraging
+                        
+                            )  
+test_errors = rep(0, length(mammal_log_variables))
+
+for(i in 1:length(mammal_log_variables)){
+  var = mammal_log_variables[[i]]
+  mammal_log = glm(redlistCategory ~ .,
+                   data = mammals_log_train_df[,var])
+  log_prob = predict(mammal_log, newdata=mammals_log_test_df[,var], type = "response")
+  log_pred = rep(0, 2146)
+  log_pred[log_prob > 0.5] = 1
+  test_errors[i] = mean(log_pred != mammals_log_test_df$redlistCategory)
+}
+
+which.min(test_errors)
+mammal_log_variables[[which.min(test_errors)]]
+
+# Best Variables: Selected diet variables, bodymass, and foraging
+
+```
+
+### Best Model
+
+```{r}
+
+var = mammal_log_variables[[16]]
+mammal_log = glm(redlistCategory ~ .,
+                   data = mammals_log_train_df[,var])
+log_prob = predict(mammal_log, newdata=mammals_log_test_df[,var], type = "response")
+log_pred = rep(0, 2146)
+log_pred[log_prob > 0.5] = 1
+mean(log_pred != mammals_log_test_df$redlistCategory)
+
+# Error rate = 0.2795899
+
+```
+
+## Bird Logistic Regression
+  
+### Format Variables
+
+```{r}
+
+# Create separate logistic regression dataframe
+bird_log_train_df = bird_train_df
+bird_log_test_df = bird_test_df
+
+# Change Response to Binary
+bird_log_train_df = bird_log_train_df %>% 
+  mutate(
+    redlistCategory = case_when(
+      redlistCategory == "Endangered" ~ 1,
+      redlistCategory == "Near Threatened" ~ 1,
+      redlistCategory == "Vulnerable" ~ 1,
+      TRUE ~ 0
+    )
+  )
+
+bird_log_test_df = bird_log_test_df %>% 
+  mutate(
+    redlistCategory = case_when(
+      redlistCategory == "Endangered" ~ 1,
+      redlistCategory == "Near Threatened" ~ 1,
+      redlistCategory == "Vulnerable" ~ 1,
+      TRUE ~ 0
+    )
+  )
+
+```
+
+### Variable Selection
+
+```{r}
+# Having trouble with bird logistic regression
+bird_log_variables = list(#c(54, 12:21), # all diet variables
+                          #c(54, 37,57), # activity and body mass
+                          #c(54, 12:21, 37), # all diet and activity variables
+                          #c(54, 12:21, 57), # all diet and body mass
+                          #c(54, 12:21, 37, 57), # all diet and activity and body mass
+                          c(54, 26:33), # foraging variables
+                          #c(54, 26:33, 12:21), # diet and foraging
+                          #c(54, 26:33, 57), # foraging and body mass
+                          #c(54, 26:33, 12:21, 37, 57), 
+                          # foraging, body mass, activity, and diet
+                          #c(54, 75:91), # PCA for diet and foraing together
+                          c(54, 75:91, 57), 
+                          # PCA for diet and foraging together and body mass
+                          c(54, 75:91, 57, 37)
+                          # PCA for diet + foraging, activity, and body mass
+                        )
+test_errors = rep(0, length(bird_log_variables))
+
+for(i in 1:length(bird_log_variables)){
+  var = bird_log_variables[[i]]
+  print(var)
+  bird_log = glm(redlistCategory ~ .,
+                   data = bird_log_train_df[,var])
+  log_prob = predict(bird_log, newdata=bird_log_test_df[,var], type = "response")
+  log_pred = rep(0, 2146)
+  log_pred[log_prob > 0.5] = 1
+  test_errors[i] = mean(log_pred != bird_log_test_df$redlistCategory)
+}
+
+which.min(test_errors)
+bird_log_variables[[which.min(test_errors)]]
+
+```
+
+# 2: Linear Discriminant Analysis
+
+## Mammals
+
+### Variable Selection
+
+```{r}
+mammal_lda_variables = list(c(38,7, 9, 10, 11, 12, 13),                  #selected diet variables
+                            c(38,19, 20, 21, 41),                   #activity and body mass
+                            c(38,41, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 20, 21), #all diet and activity and body mass
+                            c(38,7, 9, 10, 11, 12, 13, 41), #selected activity variables and body mass
+                            c(38,7, 9, 10, 11, 12, 13, 19, 20, 21), #selected diet and activity
+                            c(38,7, 9, 10, 11, 12, 13, 19, 20, 21, 41), #selected diet, activity and body mass
+                            c(38,42, 43, 44, 45, 46, 47, 48, 41), # PCA for diet and body mass
+                            c(38,42, 43, 44, 45, 46, 47, 48, 19, 20, 21), # PCA for diet and activity
+                            c(38,42, 43, 44, 45, 46, 47, 48, 19, 20, 21, 41), # PCA for diet, activity, and body mass
+                            c(38,7, 9, 10, 11, 12, 13, 16),     #selected diet variables and foraging
+                            c(38,7, 9, 10, 11, 12, 13, 41, 16), #selected activity variables and body mass and foraging
+                            c(38, 16, 19, 20, 21), # activity and foraging
+                            c(38, 16, 42, 43, 44, 45, 46, 47, 48, 41),   # PCA for diet, and body mass and foraging
+                            c(38, 16, 42, 43, 44, 45, 46, 47, 48, 19, 20, 21, 41), #PCAdiet, and activity, body mass, and foraging
+                            c(38,7, 9, 10, 11, 12, 13, 19, 20, 21, 41, 16)#selected diet, activity and body mass and foraging
+                        
+                            )  
+test_errors = rep(0, length(mammal_lda_variables))
+
+mammal_train_df[,mammal_lda_variables[[1]]]
+
+for(i in 1:length(mammal_lda_variables)){
+  var = mammal_lda_variables[[i]]
+  mammal_lda = lda(redlistCategory ~ .,
+                   data = mammal_train_df[,var])
+  lda_pred = predict(mammal_lda,newdata=mammal_test_df[,var])
+  test_errors[i] = mean(lda_pred$class != mammal_test_df$redlistCategory)
+}
+
+which.min(test_errors)
+mammal_lda_variables[[which.min(test_errors)]]
+
+```
+
+### Best Model
+
+```{r}
+
+mammal_lda = lda(redlistCategory ~ .,
+                   data = mammal_train_df[,mammal_lda_variables[[14]]])
+lda_pred = predict(mammal_lda,newdata=mammal_test_df[,mammal_lda_variables[[14]]])
+mean(lda_pred$class != mammal_test_df$redlistCategory)
+table(pred=lda_pred$class,truth=mammal_test_df$redlistCategory)
+
+#test error 0.3089469
+
+colnames(mammal_train_df)[mammal_lda_variables[[14]]]
+```
+
+## Birds
+
+```{r}
+
+library(MASS)
+library(pROC)
+
+bird_lda1 = lda(redlistCategory ~ Diet.Inv + Diet.Vend + Diet.Vect + Diet.Vfish + Diet.Vunk + Diet.Scav + Diet.Fruit + Diet.Nect + Diet.Seed + Diet.PlantO + ForStrat.watbelowsurf + ForStrat.wataroundsurf + ForStrat.aerial +  PelagicSpecialist + Nocturnal + BodyMass.Value, data=bird_train_df)
+
+bird_lda1_pred=predict(bird_lda1, bird_test_df)
+
+table(preds = bird_lda1_pred$class, truth = bird_test_df$redlistCategory)
+
+mean(bird_lda1_pred$class!=bird_test_df$redlistCategory)
+#error rate 0.2315066
+
+
+#Using first 11 PCs for Diet and Foraging PCs, because that is where the elbow is in the graph above
+bird_lda_pca1 = lda(redlistCategory ~ DietForPC1 + DietForPC2 + DietForPC3 + DietForPC4 + DietForPC5 + DietForPC6 + DietForPC7 + DietForPC8 + DietForPC9 + DietForPC10 +DietForPC11 +  PelagicSpecialist + Nocturnal + scale(BodyMass.Value),data=bird_train_df)
+
+bird_lda_pca1_pred=predict(bird_lda_pca1, bird_test_df)
+
+table(preds = bird_lda_pca1_pred$class, truth = bird_test_df$redlistCategory)
+
+mean(bird_lda_pca1_pred$class != bird_test_df$redlistCategory)
+#error rate 0.2287977
+colnames(bird_test_df)
+```
+
+### Variable Selection
+
+```{r}
+
+bird_lda_variables = list(c(54, 12:21), #all diet variables
+                            c(54,57),                               #log body mass
+                            c(54,37,57),                   #activity and body mass
+                            c(54,12:21, 37), #all diet and activity variables
+                            c(54,12:21, 57),         #all diet and body mass
+                            c(54,12:21, 37, 57), #all diet and activity and body mass
+                            c(54,26:33), # foraging variables
+                            c(54,26:33, 12:21), # diet and foraging
+                            c(54,26:33,57), #foraging and body mass
+                            c(54,26:33, 12:21, 37, 57), # foraging, body mass, activity, and diet
+                            c(54,75:85), # PCA for diet and foraing together
+                            c(54,75:85, 57), # PCA for diet and foraging together and body mass
+                            c(54,75:85, 57, 37) # PCA for diet + foraging, activity, and body mass
+                            )
+test_errors = rep(0, length(bird_lda_variables))
 
 
 
+for(i in 1:length(bird_lda_variables)){
+  var = bird_lda_variables[[i]]
+  bird_lda = lda(redlistCategory ~ .,
+                   data = bird_train_df[,var])
+  lda_pred = predict(bird_lda,newdata=bird_test_df[,var])
+  test_errors[i] = mean(lda_pred$class != bird_test_df$redlistCategory)
+}
+
+which.min(test_errors)
+bird_lda_variables[[which.min(test_errors)]]
+```
+
+### Best Model
+
+```{r}
+bird_lda = lda(redlistCategory ~ .,
+                   data = bird_train_df[,bird_lda_variables[[7]]])
+lda_pred = predict(bird_lda,newdata=bird_test_df[,bird_lda_variables[[7]]])
+mean(lda_pred$class != bird_test_df$redlistCategory)
+table(pred=lda_pred$class,truth=bird_test_df$redlistCategory)
+
+#test error 0.227339
+
+colnames(bird_train_df)[mammal_lda_variables[[7]]]
+```
+Classifies all observations as least concern.
+
+# 3: Quadratic Discriminant Analysis
+
+## Mammals
+
+### Variable Selection
+
+```{r}
+
+# using less variables to avoid rank deficiency, just removing some that have collinearity
+mammal_qda_variables = list(c(38,4, 5, 6, 7, 8, 9, 10, 11,13), #all diet variables
+                            c(38,7, 9, 10, 11, 13),                  #selected diet variables
+                            c(38,41),                               #log body mass
+                            c(38,19, 20, 21, 41),                   #activity and body mass
+                            c(38,4, 5, 6, 7, 8, 9, 10, 11, 19, 20), #all diet and activity variables
+                            c(38,4, 5, 6, 7, 8, 9, 10, 11, 13, 41),         #all diet and body mass
+                            c(38,41, 4, 5, 6, 7, 8, 9, 10, 11, 13, 19, 20, 21), #all diet and activity and body mass
+                            c(38,7, 9, 10, 11, 13, 41), #selected activity variables and body mass
+                            c(38,7, 9, 10, 11, 13, 19, 20, 21), #selected diet and activity
+                            c(38,7, 9, 10, 11, 13, 19, 20, 21, 41), #selected diet, activity and body mass
+                            c(38,42, 43, 44, 45, 46, 47, 48), # 7 PC for diet
+                            c(38,42, 43, 44, 45, 46, 47, 48, 41), # PCA for diet and diet
+                            c(38,42, 43, 44, 45, 46, 47, 48, 19, 20, 21), # PCA for diet and activity
+                            c(38,42, 43, 44, 45, 46, 47, 48, 19, 20, 21, 41), # PCA for diet, activity, and body mass
+                            c(38,7, 9, 10, 11, 12, 13, 16),     #selected diet variables and foraging
+                            c(38,7, 9, 10, 11, 12, 13, 41, 16), #selected activity variables and body mass and foraging
+                            c(38, 16, 19, 20, 21), # activity and foraging
+                            c(38, 16, 42, 43, 44, 45, 46, 47, 48, 41),   # PCA for diet, and body mass and foraging
+                            c(38, 16, 42, 43, 44, 45, 46, 47, 48, 19, 20, 21, 41), #PCAdiet, and activity, body mass, and foraging
+                            c(38,7, 9, 10, 11, 12, 13, 19, 20, 21, 41, 16)#selected diet, activity and body mass and foraging
+                            )  
+test_errors = rep(0, length(mammal_lda_variables))
+
+for(i in 1:length(mammal_qda_variables)){
+  var = mammal_qda_variables[[i]]
+  mammal_qda = qda(redlistCategory ~ .,
+                   data = mammal_train_df[,var])
+  qda_pred = predict(mammal_qda,newdata=mammal_test_df[,var])
+  test_errors[i] = mean(qda_pred$class != mammal_test_df$redlistCategory)
+}
+
+which.min(test_errors)
+mammal_qda_variables[[which.min(test_errors)]]
+```
+
+### Best Model
+
+```{r}
+mammal_qda = qda(redlistCategory ~ .,
+                   data = mammal_train_df[,mammal_qda_variables[[3]]])
+qda_pred = predict(mammal_qda,newdata=mammal_test_df[,mammal_qda_variables[[3]]])
+mean(qda_pred$class != mammal_test_df$redlistCategory)
+table(pred=qda_pred$class,truth=mammal_test_df$redlistCategory)
+
+#test error 0.3289842
+
+colnames(mammal_train_df)[mammal_qda_variables[[3]]]
+```
+
+## Birds
+
+### Variable Selection
+
+```{r}
+#removing first diet and foraging variables to avoid rank deficiency
+bird_qda_variables = list(c(54, 13:21), #all diet variables
+                            c(54,57),                               #log body mass
+                            c(54,37,57),                   #activity and body mass
+                            c(54,13:21, 37), #all diet and activity variables
+                            c(54,13:21, 57),         #all diet and body mass
+                            c(54,13:21, 37, 57), #all diet and activity and body mass
+                            c(54,27:33), # foraging variables
+                            c(54,27:33, 13:21), # diet and foraging
+                            c(54,27:33,57), #foraging and body mass
+                            c(54,27:33, 13:21, 37, 57), # foraging, body mass, activity, and diet
+                            c(54,75:85), # PCA for diet and foraing together
+                            c(54,75:85, 57), # PCA for diet and foraging together and body mass
+                            c(54,75:85, 57, 37) # PCA for diet + foraging, activity, and body mass
+                            )
+test_errors = rep(0, length(bird_qda_variables))
 
 
 
+for(i in 1:length(bird_qda_variables)){
+  var = bird_qda_variables[[i]]
+  bird_qda = qda(redlistCategory ~ .,
+                   data = bird_train_df[,var])
+  qda_pred = predict(bird_qda,newdata=bird_test_df[,var])
+  test_errors[i] = mean(qda_pred$class != bird_test_df$redlistCategory)
+}
+
+which.min(test_errors)
+bird_qda_variables[[which.min(test_errors)]]
+
+```
+
+### Best Model
+
+```{r}
+bird_qda = qda(redlistCategory ~ .,
+                   data = bird_train_df[,bird_qda_variables[[2]]])
+qda_pred = predict(bird_qda,newdata=bird_test_df[,bird_qda_variables[[2]]])
+mean(qda_pred$class != bird_test_df$redlistCategory)
+table(pred=qda_pred$class,truth=bird_test_df$redlistCategory)
+
+#test error 0.2279642
+
+colnames(bird_train_df)[bird_qda_variables[[2]]]
+```
+
+# 4: K-Nearest Neighbor
+
+## Mammal K-Nearest Neighbor
+
+### Format Variables
+For some reason the knn function cannot deal with explanatory variables as factors so we'll have to recode categorical variables such as ForStrat.Value
+```{r mammal change factors to numeric}
+
+# Create separate dataframes for KNN
+mammal_knn_train_df = mammal_train_df
+mammal_knn_test_df = mammal_test_df
+
+# Change factor variables to numeric
+mammal_knn_train_df = mammal_knn_train_df %>% 
+  mutate(
+    Activity.Diurnal = as.numeric(Activity.Diurnal),
+    Activity.Crepuscular = as.numeric(Activity.Crepuscular),
+    Activity.Nocturnal = as.numeric(Activity.Nocturnal),
+    
+    for_strat_num = case_when(
+      ForStrat.Value == "A" ~ 1,
+      ForStrat.Value == "Ar" ~ 2,
+      ForStrat.Value == "G" ~ 3,
+      ForStrat.Value == "M" ~ 4,
+      ForStrat.Value == "S" ~ 5
+      ),
+    for_strat_num = as.numeric(for_strat_num)
+  )
+
+mammal_knn_test_df = mammal_knn_test_df %>% 
+  mutate(
+    Activity.Diurnal = as.numeric(Activity.Diurnal),
+    Activity.Crepuscular = as.numeric(Activity.Crepuscular),
+    Activity.Nocturnal = as.numeric(Activity.Nocturnal),
+    
+    for_strat_num = case_when(
+      ForStrat.Value == "A" ~ 1,
+      ForStrat.Value == "Ar" ~ 2,
+      ForStrat.Value == "G" ~ 3,
+      ForStrat.Value == "M" ~ 4,
+      ForStrat.Value == "S" ~ 5
+      ),
+    for_strat_num = as.numeric(for_strat_num)
+  )
+
+```
+
+### Variable Selection
+Explanatory Variables: Diet, Foraging Stratum, Activity, Body Mass. It appears that you cannot make single explanatory variable KNN models.
+```{r mammal knn variable selection}
+
+mammal_knn_variables = list(c(4, 5, 6, 7, 8, 9, 10, 11, 12, 13), # all diet variables
+                            c(7, 9, 10, 11, 12, 13), # selected diet variables
+                            c(19, 20, 21, 41), # activity and body mass
+                            c(4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 20, 21), 
+                            # all diet and activity variables
+                            c(4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 41),        
+                            # all diet and body mass
+                            c(41, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 20, 21), 
+                            # all diet and activity and body mass
+                            c(7, 9, 10, 11, 12, 13, 41),
+                            # selected activity variables and body mass
+                            c(7, 9, 10, 11, 12, 13, 19, 20, 21), 
+                            # selected diet and activity
+                            c(7, 9, 10, 11, 12, 13, 19, 20, 21, 41), 
+                            # selected diet, activity and body mass
+                            c(42, 43, 44, 45, 46, 47, 48), # 7 PCA for diet
+                            c(42, 43, 44, 45, 46, 47, 48, 41), 
+                            # PCA for diet and bodymass
+                            c(42, 43, 44, 45, 46, 47, 48, 19, 20, 21), 
+                            # PCA for diet and activity
+                            c(42, 43, 44, 45, 46, 47, 48, 19, 20, 21, 41), 
+                            # PCA for diet, activity, and body mass
+                            c(7, 9, 10, 11, 12, 13, 52),     
+                            # selected diet variables and foraging
+                            c(7, 9, 10, 11, 12, 13, 41, 52), 
+                            # selected activity variables and body mass and foraging
+                            c(52, 19, 20, 21), # activity and foraging
+                            c(52, 42, 43, 44, 45, 46, 47, 48, 41),   
+                            # PCA for diet, and body mass and foraging
+                            c(52, 42, 43, 44, 45, 46, 47, 48, 19, 20, 21, 41), 
+                            # PCA diet, and activity, body mass, and foraging
+                            c(7, 9, 10, 11, 12, 13, 19, 20, 21, 41, 52)
+                            # selected diet, activity and body mass and foraging
+                            )
+test_errors = rep(0, length(mammal_knn_variables))
+
+for(i in 1:length(mammal_knn_variables)){
+  var = mammal_knn_variables[[i]]
+  mammal_knn = knn(mammal_knn_train_df[,var],
+                 mammal_knn_test_df[,var],
+                 mammal_knn_train_df[,38], k=14)
+  test_errors[i] = mean(mammal_knn != mammal_knn_test_df$redlistCategory)
+}
+
+which.min(test_errors)
+mammal_knn_variables[[which.min(test_errors)]]
+
+# Best Variables: Selected Diet + Activity Variables 
+
+```
+
+```{r mammal prediction and error rate}
+
+mean(mammal_knn != mammal_knn_test_df$redlistCategory)
+table(preds = mammal_knn, truth = mammal_knn_test_df$redlistCategory)
+
+# Error rate = 0.311
+
+```
+
+### Hyperparameter Tuning
+
+```{r mammal k value selection}
+
+test_errors = rep(0, 25)
+for(i in 1:25){
+  mammal_knn = knn(mammal_knn_train_df[,c(7, 9, 10, 11, 12, 13, 19, 20, 21)],
+                 mammal_knn_test_df[,c(7, 9, 10, 11, 12, 13, 19, 20, 21)],
+                 mammal_knn_train_df[,38], k=i)
+  test_errors[i] = mean(mammal_knn != mammal_knn_test_df$redlistCategory)
+}
+
+which.min(test_errors)
+
+```
+
+### Best Model
+
+```{r mammal best knn model}
+
+mammal_knn = knn(mammal_knn_train_df[,c(7, 9, 10, 11, 12, 13, 19, 20, 21)],
+                 mammal_knn_test_df[,c(7, 9, 10, 11, 12, 13, 19, 20, 21)],
+                 mammal_knn_train_df[,38], k=14)
+mean(mammal_knn != mammal_knn_test_df$redlistCategory)
+
+# Error rate = 0.305
+
+```
+
+## Bird K-Nearest Neighbor
+
+### Format Variables
+
+```{r bird change factors to numeric}
+
+bird_knn_train_df = bird_train_df
+bird_knn_test_df = bird_test_df
+
+# Change factor variables to numeric
+bird_knn_train_df = bird_knn_train_df %>% 
+  mutate(
+    Nocturnal = as.numeric(Nocturnal)
+  )
+
+bird_knn_test_df = bird_knn_test_df %>% 
+  mutate(
+    Nocturnal = as.numeric(Nocturnal)
+  )
+
+```
+
+### Variable Selection
+Explanatory variables: Body Mass, Diet, Activity, Foraging
+```{r bird knn variable selection}
+
+# Commented out variable groups had too many ties
+bird_knn_variables = list(#c(12:21), # all diet variables
+                          c(37,57), # activity and body mass
+                          #c(12:21, 37), # all diet and activity variables
+                          c(12:21, 57), # all diet and body mass
+                          c(12:21, 37, 57), # all diet and activity and body mass
+                          c(26:33), # foraging variables
+                          c(26:33, 12:21), # diet and foraging
+                          c(26:33, 57), # foraging and body mass
+                          c(26:33, 12:21, 37, 57), 
+                          # foraging, body mass, activity, and diet
+                          c(75:91), # PCA for diet and foraing together
+                          c(75:91, 57), 
+                          # PCA for diet and foraging together and body mass
+                          c(75:91, 57, 37)
+                          # PCA for diet + foraging, activity, and body mass
+                        )
+test_errors = rep(0, length(bird_knn_variables))
+
+for(i in 1:length(bird_knn_variables)){
+  var = bird_knn_variables[[i]]
+  bird_knn = knn(bird_knn_train_df[,var],
+                 bird_knn_test_df[,var],
+                 bird_knn_train_df[,54], k=14)
+  test_errors[i] = mean(bird_knn != bird_knn_test_df$redlistCategory)
+}
+
+which.min(test_errors)
+bird_knn_variables[[which.min(test_errors)]]
+
+# Best Variables: Foraging variables
+
+```
+
+```{r bird prediction and error rate}
+
+mean(bird_knn != bird_knn_test_df$redlistCategory)
+table(preds = bird_knn, truth = bird_knn_test_df$redlistCategory)
+
+# Error rate = 0.223
+
+```
+
+### Hyperparameter Tuning
+
+```{r bird k value selection}
+
+test_errors = rep(0, 25)
+for(i in 1:25){
+  bird_knn = knn(bird_knn_train_df[,c(26:33)],
+                 bird_knn_test_df[,c(26:33)],
+                 bird_knn_train_df[,54], k=i)
+  test_errors[i] = mean(bird_knn != bird_knn_test_df$redlistCategory)
+}
+
+which.min(test_errors)
+
+```
+
+### Best Model
+
+```{r mammal best knn model}
+
+bird_knn = knn(bird_knn_train_df[,c(26:33)],
+                 bird_knn_test_df[,c(26:33)],
+                 bird_knn_train_df[,54], k=12)
+mean(bird_knn != bird_knn_test_df$redlistCategory)
+
+# Error rate = 0.222
+
+```
+
+# 5: Classification Tree
+
+## Mammal Classification Tree
+
+```{r mammal change variable types}
+
+mammal_train_df$redlistCategory = as.factor(mammal_train_df$redlistCategory)
+mammal_test_df$redlistCategory = as.factor(mammal_test_df$redlistCategory)
+
+```
+
+```{r mammal class tree}
+
+mammal_tree = tree(redlistCategory ~ log_bodymass + ForStrat.Value + 
+                   Activity.Crepuscular + Activity.Diurnal + Activity.Nocturnal + 
+                   Diet.Inv + Diet.Vend + Diet.Vect + Diet.Vfish + Diet.Vunk + 
+                   Diet.Scav + Diet.Fruit + Diet.PlantO, 
+                   mammal_train_df)
+
+```
+
+```{r mammal tree assessment}
+
+summary(mammal_tree)
+
+plot(mammal_tree)
+text(mammal_tree, pretty = 0)
+
+```
+
+# 6: Bagged Trees
+
+## Mammal Bagged Trees
+
+### Variable Selection
+
+```{r}
+#Using variables selected for LDA
+test_errors = rep(0, length(mammal_lda_variables))
 
 
 
+for(i in 1:length(mammal_lda_variables)){
+  var = mammal_lda_variables[[i]]
+  mammal_lda = randomForest(as.factor(redlistCategory) ~ .,
+                   data = mammal_train_df[,var],
+                   mtry = (length(var)-1))
+  bag_pred = predict(mammal_lda,newdata=mammal_test_df[,var])
+  test_errors[i] = mean(bag_pred != mammal_test_df$redlistCategory)
+}
+
+which.min(test_errors)
+mammal_lda_variables[[which.min(test_errors)]]
+
+
+```
+
+### Best Model
+
+```{r}
+var = mammal_lda_variables[[2]]
+mammal_lda = randomForest(as.factor(redlistCategory) ~ .,
+                   data = mammal_train_df[,var],
+                   mtry = (length(var)-1))
+bag_pred = predict(mammal_lda,newdata=mammal_test_df[,var])
+mean(bag_pred != mammal_test_df$redlistCategory)
+table(bag_pred, mammal_test_df$redlistCategory)
+
+colnames(mammal_train_df)[mammal_lda_variables[[2]]]
+
+# test error 0.3187325
+```
+
+## Bird Bagged Trees
+
+### Variable Selection
+
+```{r}
+#Using variables selected for LDA
+test_errors = rep(0, length(bird_lda_variables))
 
 
 
+for(i in 1:length(bird_lda_variables)){
+  var = bird_lda_variables[[i]]
+  bird_lda = randomForest(as.factor(redlistCategory) ~ .,
+                   data = bird_train_df[,var],
+                   mtry = (length(var)-1))
+  bag_pred = predict(bird_lda,newdata=bird_test_df[,var])
+  test_errors[i] = mean(bag_pred != bird_test_df$redlistCategory)
+}
+
+which.min(test_errors)
+bird_lda_variables[[which.min(test_errors)]]
+```
+
+### Best Model
+
+```{r}
+var = bird_lda_variables[[7]]
+bird_lda = randomForest(as.factor(redlistCategory) ~ .,
+                   data = bird_train_df[,var],
+                   mtry = (length(var)-1))
+bag_pred = predict(bird_lda,newdata=bird_test_df[,var])
+mean(bag_pred != bird_test_df$redlistCategory)
+table(bag_pred, bird_test_df$redlistCategory)
+
+colnames(bird_train_df)[bird_lda_variables[[7]]]
+
+#test error 0.2358825
+
+```
+
+# 7: Random Forests
+
+## Mammal Random Forests
+
+### Variable Selection
+
+```{r}
+#Using variables selected for LDA
+test_errors = rep(0, length(mammal_lda_variables))
 
 
+set.seed(10)
+for(i in 1:length(mammal_lda_variables)){
+  var = mammal_lda_variables[[i]]
+  mammal_rf = randomForest(as.factor(redlistCategory) ~ .,
+                   data = mammal_train_df[,var],
+                   mtry = round(sqrt(length(var)-1))
+                   )
+  bag_pred = predict(mammal_rf,newdata=mammal_test_df[,var])
+  test_errors[i] = mean(bag_pred != mammal_test_df$redlistCategory)
+}
+
+which.min(test_errors)
+mammal_lda_variables[[which.min(test_errors)]]
+
+mammal_rf_test_errors = test_errors
+```
+
+### Best Model
+
+```{r}
+set.seed(10)
+var = mammal_lda_variables[[10]]
+mammal_rf = randomForest(as.factor(redlistCategory) ~ .,
+                   data = mammal_train_df[,var],
+                   mtry = round(sqrt(length(var)-1))
+                   )
+bag_pred = predict(mammal_rf,newdata=mammal_test_df[,var])
+mean(bag_pred != mammal_test_df$redlistCategory)
+table(bag_pred, mammal_test_df$redlistCategory)
+
+colnames(mammal_train_df)[mammal_lda_variables[[10]]]
+
+varImpPlot(mammal_rf)
+
+#test error 0.3117428
+
+```
+
+Based on this plot, the body mass is the most important variable.
+
+## Bird Random Forest
+
+### Variable Selection
+
+```{r}
+test_errors = rep(0, length(bird_lda_variables))
+
+set.seed(10)
+for(i in 1:length(bird_lda_variables)){
+  var = bird_lda_variables[[i]]
+  bird_rf = randomForest(as.factor(redlistCategory) ~ .,
+                   data = bird_train_df[,var],
+                   mtry = round(sqrt(length(var)))
+                   )
+  bag_pred = predict(bird_rf,newdata=bird_test_df[,var])
+  test_errors[i] = mean(bag_pred != bird_test_df$redlistCategory)
+}
+
+which.min(test_errors)
+bird_lda_variables[[which.min(test_errors)]]
+
+bird_rf_test_errors = test_errors
+```
+
+### Best Model
+
+```{r}
+set.seed(10)
+var = bird_lda_variables[[7]]
+bird_rf = randomForest(as.factor(redlistCategory) ~ .,
+                   data = bird_train_df[,var],
+                   mtry = round(sqrt(length(var)-1))
+                   )
+bag_pred = predict(bird_rf,newdata=bird_test_df[,var])
+mean(bag_pred != bird_test_df$redlistCategory)
+table(bag_pred, bird_test_df$redlistCategory)
+
+colnames(bird_train_df)[bird_lda_variables[[7]]]
+
+varImpPlot(bird_rf)
+
+```
+
+# 8: Boosted Forests
+
+# 9: Neural Networks
+
+## Mammal Neural Network
+
+### Variable Selection
+
+```{r}
+
+mammal_nn_variables = list(c(38,4, 5, 6, 7, 8, 9, 10, 11, 12, 13), #all diet variables
+                            c(38,7, 9, 10, 11, 12, 13),                  #selected diet variables
+                            c(38,41),                               #log body mass
+                            c(38,19, 20, 21, 41),                   #activity and body mass
+                            c(38,4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 20, 21), #all diet and activity variables
+                            c(38,4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 41),         #all diet and body mass
+                            c(38,41, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 20, 21), #all diet and activity and body mass
+                            c(38,7, 9, 10, 11, 12, 13, 41), #selected activity variables and body mass
+                            c(38,7, 9, 10, 11, 12, 13, 19, 20, 21), #selected diet and activity
+                            c(38,7, 9, 10, 11, 12, 13, 19, 20, 21, 41), #selected diet, activity and body mass
+                            c(38,42, 43, 44, 45, 46, 47, 48), # 7 PC for diet
+                            c(38,42, 43, 44, 45, 46, 47, 48, 41), # PCA for diet and diet
+                            c(38,42, 43, 44, 45, 46, 47, 48, 19, 20, 21), # PCA for diet and activity
+                            c(38,42, 43, 44, 45, 46, 47, 48, 19, 20, 21, 41), # PCA for diet, activity, and body mass
+                            c(38,7, 9, 10, 11, 12, 13, 16),     #selected diet variables and foraging
+                            c(38,7, 9, 10, 11, 12, 13, 41, 16), #selected activity variables and body mass and foraging
+                            c(38, 16, 19, 20, 21), # activity and foraging
+                            c(38, 16, 42, 43, 44, 45, 46, 47, 48, 41),   # PCA for diet, and body mass and foraging
+                            c(38, 16, 42, 43, 44, 45, 46, 47, 48, 19, 20, 21, 41), #PCAdiet, and activity, body mass, and foraging
+                            c(38,7, 9, 10, 11, 12, 13, 19, 20, 21, 41, 16)#selected diet, activity and body mass and foraging
+                        
+                            )  
+test_errors = rep(0, length(mammal_nn_variables))
+
+for(i in 1:length(mammal_nn_variables)){
+  var = mammal_nn_variables[[i]]
+  mammal_nn = nnet(redlistCategory ~ .,
+                   data = mammal_train_df[,var], size = 20, linout = FALSE)
+  nn_pred = predict(mammal_nn, newdata=mammal_test_df[,var], type = "class")
+  test_errors[i] = mean(nn_pred != mammal_test_df$redlistCategory)
+}
+
+which.min(test_errors)
+mammal_nn_variables[[which.min(test_errors)]]
+
+```
+
+```{r}
+
+var = mammal_nn_variables[[4]]
+mammal_nn = nnet(redlistCategory ~ .,
+                   data = mammal_train_df[,var], size = 20, linout = FALSE)
+nn_pred = predict(mammal_nn, newdata=mammal_test_df[,var], type = "class")
+mean(nn_pred != mammal_test_df$redlistCategory)
+
+# Error rate = 0.3140
+
+```
+
+### Choosing Number of Hidden Units
+
+```{r}
+
+test_errors = rep(0, 20)
+
+for(i in seq(5, 100, 5)){
+  var = mammal_nn_variables[[4]]
+  mammal_nn = nnet(redlistCategory ~ .,
+                   data = mammal_train_df[,var], size = i, linout = FALSE)
+  nn_pred = predict(mammal_nn, newdata=mammal_test_df[,var], type = "class")
+  test_errors[i] = mean(nn_pred != mammal_test_df$redlistCategory)
+}
+
+which.min(test_errors)
+seq(5, 100, 5)[[which.min(test_errors)]]
+
+```
+
+### Best Model
+
+```{r}
+
+var = mammal_nn_variables[[4]]
+mammal_nn = nnet(redlistCategory ~ .,
+                   data = mammal_train_df[,var], size = 5, linout = FALSE)
+nn_pred = predict(mammal_nn, newdata=mammal_test_df[,var], type = "class")
+mean(nn_pred != mammal_test_df$redlistCategory)
+
+# Error rate = 0.312
+
+```
+
+## Bird Neural Network
+
+### Variable Selection
+
+```{r}
+
+bird_train_df = bird_train_df %>% 
+  mutate(redlistCategory = as.factor(redlistCategory))
+
+bird_test_df = bird_test_df %>% 
+  mutate(redlistCategory = as.factor(redlistCategory))
+
+bird_nn_variables = list(c(54, 12:21), # all diet variables
+                         c(54, 37,57), # activity and body mass
+                         c(54, 12:21, 37), # all diet and activity variables
+                         c(54, 12:21, 57), # all diet and body mass
+                         c(54, 12:21, 37, 57), # all diet and activity and body mass
+                         c(54, 26:33), # foraging variables
+                         c(54, 26:33, 12:21), # diet and foraging
+                         c(54, 26:33, 57), # foraging and body mass
+                         c(54, 26:33, 12:21, 37, 57), 
+                          # foraging, body mass, activity, and diet
+                         c(54, 75:91), # PCA for diet and foraing together
+                         c(54, 75:91, 57), 
+                          # PCA for diet and foraging together and body mass
+                         c(54, 75:91, 57, 37)
+                          # PCA for diet + foraging, activity, and body mass
+                        )
+test_errors = rep(0, length(bird_nn_variables))
+
+for(i in 1:length(bird_nn_variables)){
+  var = bird_nn_variables[[i]]
+  bird_nn = nnet(redlistCategory ~ .,
+                   data = bird_train_df[,var], size = 20, linout = FALSE)
+  nn_pred = predict(bird_nn, newdata=bird_test_df[,var], type = "class")
+  test_errors[i] = mean(nn_pred != bird_test_df$redlistCategory)
+}
+
+which.min(test_errors)
+bird_nn_variables[[which.min(test_errors)]]
+
+```
+
+```{r}
+
+var = bird_nn_variables[[4]]
+bird_nn = nnet(redlistCategory ~ .,
+                   data = bird_train_df[,var], size = 20, linout = FALSE)
+nn_pred = predict(bird_nn, newdata=bird_test_df[,var], type = "class")
+mean(nn_pred != bird_test_df$redlistCategory)
+
+# Error rate = 0.228
+
+```
+
+### Choosing Number of Hidden Units
+
+```{r}
+
+test_errors = rep(0, 10)
+
+for(i in seq(5, 50, 5)){
+  var = bird_nn_variables[[4]]
+  bird_nn = nnet(redlistCategory ~ .,
+                   data = bird_train_df[,var], size = i, linout = FALSE)
+  nn_pred = predict(bird_nn, newdata=bird_test_df[,var], type = "class")
+  test_errors[i] = mean(nn_pred != bird_test_df$redlistCategory)
+}
+
+which.min(test_errors)
+seq(5, 70, 5)[[which.min(test_errors)]]
+
+```
+
+### Best Model
+
+```{r}
+
+var = bird_nn_variables[[4]]
+bird_nn = nnet(redlistCategory ~ .,
+                   data = bird_train_df[,var], size = 5, linout = FALSE)
+nn_pred = predict(bird_nn, newdata=bird_test_df[,var], type = "class")
+mean(nn_pred != bird_test_df$redlistCategory)
+
+# Error rate = 0.222
+
+```
+
+## Bird Random Forest
+
+# 8: Boosted Forests
+
+## Mammal Boosted Forest
+
+### Variable Selection
+
+Boosted forests are computationally inefficient, so we are using the best half of the sets of variable identified by the random forests and using ony 500 trees.
+
+```{r}
+#selecting variable sets to use
+#variable_sets = c(1:20)[mammal_rf_test_errors<median(mammal_rf_test_errors)]
+
+#Using variables selected for LDA
+test_errors = rep(0, length(mammal_lda_variables))
 
 
+set.seed(10)
+for(i in 1:length(mammal_lda_variables)){ #using selected variable sets
+  var = mammal_lda_variables[[i]]
+  mammal_boost = gbm(as.factor(redlistCategory) ~ .,
+                      data=mammal_train_df[,var],n.trees=500,distribution = "multinomial",
+                     interaction.depth=4,shrinkage = 0.1)
+    
+  
+  pred_tmp = predict(mammal_boost,newdata = mammal_test_df[,var],n.trees = 500)
+  tmp_max = apply(pred_tmp, 1, which.max)
+  pred_boosted=c("Endangered","Least Concern", "Near Threatened","Vulnerable")[tmp_max]
+
+  test_errors[i] = mean(pred_boosted!= mammal_test_df$redlistCategory)
+}
+
+#making any test error
+test_errors[test_errors==0]=1
+
+which.min(test_errors)
+mammal_lda_variables[[which.min(test_errors)]]
+#shrinkage
+
+```
+
+##### Tuning Parameters
+
+```{r}
+
+test_errors = rep(0, 5)
+var = mammal_lda_variables[[1]] #best set from above
+for (i in 1:5){
+  mammal_boost = gbm(as.factor(redlistCategory) ~ .,
+                      data=mammal_train_df[,var],n.trees=1000,distribution = "multinomial",
+                     interaction.depth=4,shrinkage = c(1,0.1,0.01,0.001,0.0001)[i])
+  pred_tmp = predict(mammal_boost,newdata = mammal_test_df[,var],n.trees = 500)
+  tmp_max = apply(pred_tmp, 1, which.max)
+  pred_boosted=c("Endangered","Least Concern", "Near Threatened","Vulnerable")[tmp_max]
+}
+
+which.min(test_errors)
+c(1,0.1,0.01,0.001,0,0001)[which.min(test_errors)]
+```
+
+### Best Model
+
+```{r}
+mammal_boost = gbm(as.factor(redlistCategory) ~ .,
+                      data=mammal_train_df[,var],n.trees=1000,distribution = "multinomial",
+                     interaction.depth=4,shrinkage = 1)
+
+colnames(mammal_train_df)[mammal_lda_variables[[10]]]
+
+```
+
+# 10: Support Vector Machines
+
+## Mammal Support Vector Machines
+
+### Variable Selection
+
+#### Using a Linear Function
+
+```{r}
+#Using variables selected for LDA
+test_errors = rep(0, length(mammal_lda_variables))
 
 
+set.seed(10)
+for(i in 1:length(mammal_lda_variables)){
+  var = mammal_lda_variables[[i]]
+  
+  if(i==3) {
+    test_errors[i]=1
+    next
+  }
+  mammal_svm=svm(as.factor(redlistCategory)~., 
+                  data=mammal_train_df[,var],kernel="linear", gamma=1,cost=1)
+    
+  pred_svm = predict(mammal_svm,newdata=mammal_test_df[,var])
+  #best_params[i,] = mammal_svm$best.parameters
+  test_errors[i] = mean(pred_svm != mammal_test_df$redlistCategory)
+  
+}
+
+which.min(test_errors)
+mammal_lda_variables[[which.min(test_errors)]]
+
+colnames(mammal_train_df[mammal_lda_variables[[which.min(test_errors)]]])
+
+```
+
+#### Tuning Parameters
+```{r}
+
+var = mammal_lda_variables[[2]]
+mammal_svm = tune(svm, as.factor(redlistCategory)~., 
+                  data=mammal_train_df[,var],kernel="linear",
+                  ranges=list(cost=c(0.1,1,10),
+                  gamma=c(0.5,1,2,3,4)))
+
+pred_svm = predict(mammal_svm$best.model,newdata=mammal_test_df[,var])
+
+#Misclassification rate for endangered
+sum(pred_svm != mammal_test_df$redlistCategory & mammal_test_df$redlistCategory == "Endangered" )/sum(mammal_test_df$redlistCategory == "Endangered")
+
+mean(pred_svm != mammal_test_df$redlistCategory)
+table(pred_svm, mammal_test_df$redlistCategory)
+
+```
+Classified everything as least concern.
+
+#### Using a Radial Function
+```{r}
+#Using variables selected for LDA
+test_errors = rep(0, length(mammal_lda_variables))
 
 
+set.seed(10)
+for(i in 1:length(mammal_lda_variables)){
+  var = mammal_lda_variables[[i]]
+  
+  if(i==3) {
+    test_errors[i]=1
+    next
+  }
+  mammal_svm=svm(as.factor(redlistCategory)~., 
+                  data=mammal_train_df[,var],kernel="radial", gamma=1,cost=1)
+    
+  pred_svm = predict(mammal_svm,newdata=mammal_test_df[,var])
+  #best_params[i,] = mammal_svm$best.parameters
+  test_errors[i] = mean(pred_svm != mammal_test_df$redlistCategory)
+  
+}
+
+which.min(test_errors)
+mammal_lda_variables[[which.min(test_errors)]]
+
+colnames(mammal_train_df[mammal_lda_variables[[which.min(test_errors)]]])
+
+```
+
+### Tuning Parameters
+
+```{r}
+var = mammal_lda_variables[[11]]
+mammal_svm = tune(svm, as.factor(redlistCategory)~., 
+                  data=mammal_train_df[,var],kernel="radial",
+                  ranges=list(cost=c(0.1,1,10),
+                  gamma=c(0.5,1,2,3,4)))
+
+pred_svm = predict(mammal_svm$best.model,newdata=mammal_test_df[,var])
+
+mammal_svm$best.parameters
+
+#Misclassification rate for endangered
+sum(pred_svm != mammal_test_df$redlistCategory & mammal_test_df$redlistCategory == "Endangered" )/sum(mammal_test_df$redlistCategory == "Endangered")
+
+mean(pred_svm != mammal_test_df$redlistCategory)
+table(pred_svm, mammal_test_df$redlistCategory)
 
 
+#test error 0.304753
+```
+Best parameters have cost of 1 and gamma of 0.5.
+
+### Best Model
+
+```{r}
+var = mammal_lda_variables[[11]]
+mammal_svm=svm(as.factor(redlistCategory) ~., 
+                  data=mammal_train_df[,var],kernel="radial", gamma=0.5,cost=1)
+
+
+mean(pred_svm != mammal_test_df$redlistCategory)
+table(pred_svm, mammal_test_df$redlistCategory)
+colnames(mammal_train_df[var])
+
+```
+
+## Bird Support Vector Machine
+
+#### Using a Linear Function
+
+```{r, eval=FALSE}
+#Using variables selected for LDA
+test_errors = rep(0, length(bird_lda_variables))
+
+
+set.seed(10)
+for(i in 1:length(bird_lda_variables)){
+  var = bird_lda_variables[[i]]
+  
+  if(i==3) {
+    test_errors[i]=1
+    next
+  }
+  bird_svm=svm(as.factor(redlistCategory)~., 
+                  data=bird_train_df[,var],kernel="linear", gamma=1,cost=1)
+    
+  pred_svm = predict(bird_svm,newdata=bird_test_df[,var])
+  #best_params[i,] = bird_svm$best.parameters
+  test_errors[i] = mean(pred_svm != bird_test_df$redlistCategory)
+  
+}
+
+which.min(test_errors)
+bird_lda_variables[[which.min(test_errors)]]
+
+colnames(bird_train_df[bird_lda_variables[[which.min(test_errors)]]])
+
+```
+
+#### Tuning Parameters
+```{r, eval=FALSE}
+
+var = bird_lda_variables[[1]] #best from above
+bird_svm = tune(svm, as.factor(redlistCategory)∼., 
+                  data=bird_train_df[,var],kernel="linear",
+                  ranges=list(cost=c(0.1,1,10),
+                  gamma=c(0.5,1,2,3,4)))
+
+pred_svm = predict(bird_svm$best.model,newdata=bird_test_df[,var])
+
+#Misclassification rate for endangered
+sum(pred_svm != bird_test_df$redlistCategory & bird_test_df$redlistCategory == "Endangered" )/sum(bird_test_df$redlistCategory == "Endangered")
+
+mean(pred_svm != bird_test_df$redlistCategory)
+table(pred_svm, bird_test_df$redlistCategory)
+
+```
+Classifies everything as least concern, so not including.
+
+#### Using a Radial Function
+```{r}
+#Using variables selected for LDA
+test_errors = rep(0, length(bird_lda_variables))
+
+
+set.seed(10)
+for(i in 1:length(bird_lda_variables)){
+  var = bird_lda_variables[[i]]
+  
+  if(i==3) {
+    test_errors[i]=1
+    next
+  }
+  bird_svm=svm(as.factor(redlistCategory)~., 
+                  data=bird_train_df[,var],kernel="radial", gamma=1,cost=1)
+    
+  pred_svm = predict(bird_svm,newdata=bird_test_df[,var])
+  #best_params[i,] = bird_svm$best.parameters
+  test_errors[i] = mean(pred_svm != bird_test_df$redlistCategory)
+  
+}
+
+which.min(test_errors)
+bird_lda_variables[[which.min(test_errors)]]
+
+colnames(bird_train_df[bird_lda_variables[[which.min(test_errors)]]])
+
+```
+
+### Tuning Parameters
+
+```{r}
+var = bird_lda_variables[[9]]
+bird_svm = tune(svm, as.factor(redlistCategory)∼., 
+                  data=bird_train_df[,var],kernel="radial",
+                  ranges=list(cost=c(0.1,1,10),
+                  gamma=c(0.5,1,2,3,4)))
+
+pred_svm = predict(bird_svm$best.model,newdata=bird_test_df[,var])
+
+bird_svm$best.parameters
+
+#Misclassification rate for endangered
+sum(pred_svm != bird_test_df$redlistCategory & bird_test_df$redlistCategory == "Endangered" )/sum(bird_test_df$redlistCategory == "Endangered")
+
+mean(pred_svm != bird_test_df$redlistCategory)
+table(pred_svm, bird_test_df$redlistCategory)
+
+#test error 
+```
+Best parameters have cost of 0.1 and gamma of 0.5.
+
+### Best Model
+
+```{r}
+var = bird_lda_variables[[9]]
+bird_svm=svm(as.factor(redlistCategory)~., 
+                  data=bird_train_df[,var],kernel="radial", gamma=0.1,cost=0.1)
+
+
+mean(pred_svm != bird_test_df$redlistCategory)
+table(pred_svm, bird_test_df$redlistCategory)
+colnames(bird_train_df[var])
+
+
+```
+test eror 0.227339
+
+
+# Model Comparison
+
+## Half Training Data and Half Test Data 
+
+### Best Mammal Models
+
+```{r}
+
+# Logistic Regression
+var = mammal_log_variables[[16]]
+mammal_log = glm(redlistCategory ~ .,
+                   data = mammals_log_train_df[,var])
+log_prob = predict(mammal_log, newdata=mammals_log_test_df[,var], type = "response")
+log_pred = rep(0, 2146)
+log_pred[log_prob > 0.5] = 1
+mean(log_pred != mammals_log_test_df$redlistCategory)
+
+# Linear Discriminant Analysis
+mammal_lda = lda(redlistCategory ~ .,
+                   data = mammal_train_df[,mammal_lda_variables[[14]]])
+lda_pred = predict(mammal_lda,newdata=mammal_test_df[,mammal_lda_variables[[14]]])
+mean(lda_pred$class != mammal_test_df$redlistCategory)
+table(pred=lda_pred$class,truth=mammal_test_df$redlistCategory)
+
+# Quadratic Discriminant Analysis
+mammal_qda = qda(redlistCategory ~ .,
+                   data = mammal_train_df[,mammal_qda_variables[[3]]])
+qda_pred = predict(mammal_qda,newdata=mammal_test_df[,mammal_qda_variables[[3]]])
+mean(qda_pred$class != mammal_test_df$redlistCategory)
+table(pred=qda_pred$class,truth=mammal_test_df$redlistCategory)
+
+# K Nearest Neighbors
+mammal_knn = knn(mammal_knn_train_df[,c(7, 9, 10, 11, 12, 13, 19, 20, 21)],
+                 mammal_knn_test_df[,c(7, 9, 10, 11, 12, 13, 19, 20, 21)],
+                 mammal_knn_train_df[,38], k=14)
+mean(mammal_knn != mammal_knn_test_df$redlistCategory)
+
+# Bagged Tree
+var = mammal_lda_variables[[2]]
+mammal_lda = randomForest(as.factor(redlistCategory) ~ .,
+                   data = mammal_train_df[,var],
+                   mtry = (length(var)-1))
+bag_pred = predict(mammal_lda,newdata=mammal_test_df[,var])
+mean(bag_pred != mammal_test_df$redlistCategory)
+
+# Random Forest
+set.seed(10)
+var = mammal_lda_variables[[10]]
+mammal_rf = randomForest(as.factor(redlistCategory) ~ .,
+                   data = mammal_train_df[,var],
+                   mtry = round(sqrt(length(var)-1))
+                   )
+bag_pred = predict(mammal_rf,newdata=mammal_test_df[,var])
+mean(bag_pred != mammal_test_df$redlistCategory)
+
+# Neural Network
+var = mammal_nn_variables[[4]]
+mammal_nn = nnet(redlistCategory ~ .,
+                   data = mammal_train_df[,var], size = 5, linout = FALSE)
+nn_pred = predict(mammal_nn, newdata=mammal_test_df[,var], type = "class")
+mean(nn_pred != mammal_test_df$redlistCategory)
+
+# Support Vector Machine
+var = mammal_lda_variables[[11]]
+mammal_svm=svm(as.factor(redlistCategory) ~., 
+                  data=mammal_train_df[,var],kernel="radial", gamma=0.5,cost=1)
+mean(pred_svm != mammal_test_df$redlistCategory)
+
+```
+
+Mammal Model Error Rates
+Logistic Regression = 0.280
+LDA = 0.309
+QDA = 0.329
+KNN = 0.305
+Bagged Tree = 0.319
+Random Forest = 0.312
+Neural Network = 0.312
+SVM = 0.315
+
+The best model to predict the redlist status of a mammal species based on its Elton traits was a Logistic Regression.  
+
+### Best Bird Models
+
+```{r}
+
+# Linear Discriminant Analysis
+bird_lda = lda(redlistCategory ~ .,
+                   data = bird_train_df[,bird_lda_variables[[7]]])
+lda_pred = predict(bird_lda,newdata=bird_test_df[,bird_lda_variables[[7]]])
+mean(lda_pred$class != bird_test_df$redlistCategory)
+table(pred=lda_pred$class,truth=bird_test_df$redlistCategory)
+
+# Quadratic Discriminant Analysis
+bird_qda = qda(redlistCategory ~ .,
+                   data = bird_train_df[,bird_qda_variables[[2]]])
+qda_pred = predict(bird_qda,newdata=bird_test_df[,bird_qda_variables[[2]]])
+mean(qda_pred$class != bird_test_df$redlistCategory)
+table(pred=qda_pred$class,truth=bird_test_df$redlistCategory)
+
+# K Nearest Neighbor
+bird_knn = knn(bird_knn_train_df[,c(26:33)],
+                 bird_knn_test_df[,c(26:33)],
+                 bird_knn_train_df[,54], k=12)
+mean(bird_knn != bird_knn_test_df$redlistCategory)
+
+# Bagged Tree
+var = bird_lda_variables[[7]]
+bird_lda = randomForest(as.factor(redlistCategory) ~ .,
+                   data = bird_train_df[,var],
+                   mtry = (length(var)-1))
+bag_pred = predict(bird_lda,newdata=bird_test_df[,var])
+mean(bag_pred != bird_test_df$redlistCategory)
+
+# Random Forest
+set.seed(10)
+var = bird_lda_variables[[7]]
+bird_rf = randomForest(as.factor(redlistCategory) ~ .,
+                   data = bird_train_df[,var],
+                   mtry = round(sqrt(length(var)-1))
+                   )
+bag_pred = predict(bird_rf,newdata=bird_test_df[,var])
+mean(bag_pred != bird_test_df$redlistCategory)
+
+# Neural Network
+var = bird_nn_variables[[4]]
+bird_nn = nnet(redlistCategory ~ .,
+                   data = bird_train_df[,var], size = 5, linout = FALSE)
+nn_pred = predict(bird_nn, newdata=bird_test_df[,var], type = "class")
+mean(nn_pred != bird_test_df$redlistCategory)
+
+# Support Vector Machines
+var = bird_lda_variables[[9]]
+bird_svm=svm(as.factor(redlistCategory)~., 
+                  data=bird_train_df[,var],kernel="radial", gamma=0.1,cost=0.1)
+mean(pred_svm != bird_test_df$redlistCategory)
+
+```
+
+Bird Model Variables
+LDA = 0.227
+QDA = 0.228
+KNN = 0.222
+Bagged Tree = 0.236
+Random Forest = 0.225
+Neural Network = 0.222
+SVM = 0.222
+
+Bird Model Error Rates 
+LDA = 0.227
+QDA = 0.228
+KNN = 0.222
+Bagged Tree = 0.236
+Random Forest = 0.225
+Neural Network = 0.222
+SVM = 0.222
+
+Neural Networks, Support Vector Machines, and K-Nearest-Neighbors were all equivalent in predicting the redlist status of a bird species. 
+
+## Two-Thirds Training Data and One-Third Test Data
+
+```{r creating test and training datasets 2}
+
+# Creating indices for training sets
+set.seed(10)
+train_mammal2 = sample(1:nrow(mammal_df), size = round(nrow(mammal_df)*0.667))
+train_bird2 = sample(1:nrow(bird_df), size = round(nrow(bird_df)*0.667))
+
+# Creating training and test sets
+mammal_train2_df = mammal_df[train_mammal,]
+mammal_test2_df = mammal_df[-train_mammal,]
+
+bird_train2_df = bird_df[train_bird,]
+bird_test2_df = bird_df[-train_bird,]
+
+```
+
+### Mammal Models 
+
+```{r}
+
+# Create separate logistic regression dataframe
+mammals_log_train2_df = mammal_train2_df
+mammals_log_test2_df = mammal_test2_df
+
+# Change Response to Binary
+mammals_log_train2_df = mammals_log_train2_df %>% 
+  mutate(
+    redlistCategory = case_when(
+      redlistCategory == "Endangered" ~ 1,
+      redlistCategory == "Near Threatened" ~ 1,
+      redlistCategory == "Vulnerable" ~ 1,
+      TRUE ~ 0
+    )
+  )
+
+mammals_log_test2_df = mammals_log_test2_df %>% 
+  mutate(
+    redlistCategory = case_when(
+      redlistCategory == "Endangered" ~ 1,
+      redlistCategory == "Near Threatened" ~ 1,
+      redlistCategory == "Vulnerable" ~ 1,
+      TRUE ~ 0
+    )
+  )
+
+# Logistic Regression
+var = mammal_log_variables[[16]]
+mammal_log = glm(redlistCategory ~ .,
+                   data = mammals_log_train2_df[,var])
+log_prob = predict(mammal_log, newdata=mammals_log_test2_df[,var], type = "response")
+log_pred = rep(0, 2146)
+log_pred[log_prob > 0.5] = 1
+mean(log_pred != mammals_log_test2_df$redlistCategory)
+
+
+```
+
+```{r}
+
+# Linear Discriminant Analysis
+mammal_lda = lda(redlistCategory ~ .,
+                   data = mammal_train2_df[,mammal_lda_variables[[14]]])
+lda_pred = predict(mammal_lda,newdata=mammal_test2_df[,mammal_lda_variables[[14]]])
+mean(lda_pred$class != mammal_test2_df$redlistCategory)
+
+# Quadratic Discriminant Analysis
+mammal_qda = qda(redlistCategory ~ .,
+                   data = mammal_train2_df[,mammal_qda_variables[[3]]])
+qda_pred = predict(mammal_qda,newdata=mammal_test2_df[,mammal_qda_variables[[3]]])
+mean(qda_pred$class != mammal_test2_df$redlistCategory)
+
+```
+
+```{r}
+
+# Create separate dataframes for KNN
+mammal_knn_train2_df = mammal_train2_df
+mammal_knn_test2_df = mammal_test2_df
+
+# Change factor variables to numeric
+mammal_knn_train2_df = mammal_knn_train2_df %>% 
+  mutate(
+    Activity.Diurnal = as.numeric(Activity.Diurnal),
+    Activity.Crepuscular = as.numeric(Activity.Crepuscular),
+    Activity.Nocturnal = as.numeric(Activity.Nocturnal),
+    
+    for_strat_num = case_when(
+      ForStrat.Value == "A" ~ 1,
+      ForStrat.Value == "Ar" ~ 2,
+      ForStrat.Value == "G" ~ 3,
+      ForStrat.Value == "M" ~ 4,
+      ForStrat.Value == "S" ~ 5
+      ),
+    for_strat_num = as.numeric(for_strat_num)
+  )
+
+mammal_knn_test2_df = mammal_knn_test2_df %>% 
+  mutate(
+    Activity.Diurnal = as.numeric(Activity.Diurnal),
+    Activity.Crepuscular = as.numeric(Activity.Crepuscular),
+    Activity.Nocturnal = as.numeric(Activity.Nocturnal),
+    
+    for_strat_num = case_when(
+      ForStrat.Value == "A" ~ 1,
+      ForStrat.Value == "Ar" ~ 2,
+      ForStrat.Value == "G" ~ 3,
+      ForStrat.Value == "M" ~ 4,
+      ForStrat.Value == "S" ~ 5
+      ),
+    for_strat_num = as.numeric(for_strat_num)
+  )
+
+# K Nearest Neighbors
+mammal_knn = knn(mammal_knn_train2_df[,c(7, 9, 10, 11, 12, 13, 19, 20, 21)],
+                 mammal_knn_test2_df[,c(7, 9, 10, 11, 12, 13, 19, 20, 21)],
+                 mammal_knn_train2_df[,38], k=14)
+mean(mammal_knn != mammal_knn_test2_df$redlistCategory)
+
+```
+
+```{r}
+
+# Bagged Tree
+var = mammal_lda_variables[[2]]
+mammal_lda = randomForest(as.factor(redlistCategory) ~ .,
+                   data = mammal_train2_df[,var],
+                   mtry = (length(var)-1))
+bag_pred = predict(mammal_lda,newdata=mammal_test2_df[,var])
+mean(bag_pred != mammal_test2_df$redlistCategory)
+
+# Random Forest
+set.seed(10)
+var = mammal_lda_variables[[10]]
+mammal_rf = randomForest(as.factor(redlistCategory) ~ .,
+                   data = mammal_train2_df[,var],
+                   mtry = round(sqrt(length(var)-1))
+                   )
+bag_pred = predict(mammal_rf,newdata=mammal_test2_df[,var])
+mean(bag_pred != mammal_test2_df$redlistCategory)
+
+```
+
+```{r}
+# Neural Network
+
+mammal_train2_df$redlistCategory = as.factor(mammal_train2_df$redlistCategory)
+mammal_test2_df$redlistCategory = as.factor(mammal_test2_df$redlistCategory)
+
+var = mammal_nn_variables[[4]]
+mammal_nn = nnet(redlistCategory ~ .,
+                   data = mammal_train2_df[,var], size = 5, linout = FALSE)
+nn_pred = predict(mammal_nn, newdata=mammal_test2_df[,var], type = "class")
+mean(nn_pred != mammal_test2_df$redlistCategory)
+
+# Support Vector Machine
+var = mammal_lda_variables[[11]]
+mammal_svm=svm(as.factor(redlistCategory) ~., 
+                  data=mammal_train2_df[,var],kernel="radial", gamma=0.5,cost=1)
+mean(pred_svm != mammal_test2_df$redlistCategory)
+
+```
+
+Mammal Model Error Rates:
+Logistic Regression = 0.288
+LDA = 0.315
+QDA = 0.337
+KNN = 0.305
+Bagged Tree = 0.322
+Random Forest = 0.303
+Neural Network = 0.311
+SVM = 0.325
+
+Logistic regression was the best model at predicting the redlist category of a mammal species. This is the same result from the 50/50 training/test data split. 
+
+### Bird Models 
+
+```{r}
+
+# Linear Discriminant Analysis
+bird_lda = lda(redlistCategory ~ .,
+                   data = bird_train2_df[,bird_lda_variables[[7]]])
+lda_pred = predict(bird_lda,newdata=bird_test2_df[,bird_lda_variables[[7]]])
+mean(lda_pred$class != bird_test2_df$redlistCategory)
+
+# Quadratic Discriminant Analysis
+bird_qda = qda(redlistCategory ~ .,
+                   data = bird_train2_df[,bird_qda_variables[[2]]])
+qda_pred = predict(bird_qda,newdata=bird_test2_df[,bird_qda_variables[[2]]])
+mean(qda_pred$class != bird_test2_df$redlistCategory)
+
+```
+
+```{r}
+
+# K Nearest Neighbor
+bird_knn_train2_df = bird_train2_df
+bird_knn_test2_df = bird_test2_df
+
+# Change factor variables to numeric
+bird_knn_train2_df = bird_knn_train2_df %>% 
+  mutate(
+    Nocturnal = as.numeric(Nocturnal)
+  )
+
+bird_knn_test2_df = bird_knn_test2_df %>% 
+  mutate(
+    Nocturnal = as.numeric(Nocturnal)
+  )
+
+bird_knn = knn(bird_knn_train2_df[,c(26:33)],
+                 bird_knn_test2_df[,c(26:33)],
+                 bird_knn_train2_df[,54], k=12)
+mean(bird_knn != bird_knn_test2_df$redlistCategory)
+
+```
+
+```{r}
+
+# Bagged Tree
+var = bird_lda_variables[[7]]
+bird_lda = randomForest(as.factor(redlistCategory) ~ .,
+                   data = bird_train2_df[,var],
+                   mtry = (length(var)-1))
+bag_pred = predict(bird_lda,newdata=bird_test2_df[,var])
+mean(bag_pred != bird_test2_df$redlistCategory)
+
+# Random Forest
+set.seed(10)
+var = bird_lda_variables[[7]]
+bird_rf = randomForest(as.factor(redlistCategory) ~ .,
+                   data = bird_train2_df[,var],
+                   mtry = round(sqrt(length(var)-1))
+                   )
+bag_pred = predict(bird_rf,newdata=bird_test2_df[,var])
+mean(bag_pred != bird_test2_df$redlistCategory)
+
+```
+
+```{r}
+
+# Neural Network
+bird_train2_df = bird_train2_df %>% 
+  mutate(redlistCategory = as.factor(redlistCategory))
+
+bird_test2_df = bird_test2_df %>% 
+  mutate(redlistCategory = as.factor(redlistCategory))
+
+var = bird_nn_variables[[4]]
+bird_nn = nnet(redlistCategory ~ .,
+                   data = bird_train2_df[,var], size = 5, linout = FALSE)
+nn_pred = predict(bird_nn, newdata=bird_test2_df[,var], type = "class")
+mean(nn_pred != bird_test2_df$redlistCategory)
+
+# Support Vector Machines
+var = bird_lda_variables[[9]]
+bird_svm=svm(as.factor(redlistCategory)~., 
+                  data=bird_train2_df[,var],kernel="radial", gamma=0.1,cost=0.1)
+mean(pred_svm != bird_test2_df$redlistCategory)
+
+```
+
+Bird Model Error Rates:
+LDA = 0.223
+QDA = 0.232
+KNN = 0.222
+Bagged Tree = 0.233
+Random Forest = 0.225
+Neural Network = 0.222
+SVM = 0.222
+
+K-Nearest-Neighbor, Neural Networks, and Support Vector Machines were all equivalent in predicting the redlist status of a bird species. This is the same result as the 50/50 training/test data split. 
 
 
 # Bibliography
