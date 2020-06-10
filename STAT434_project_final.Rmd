@@ -2436,9 +2436,12 @@ var = mammal_lda_variables[[11]]
 mammal_svm=svm(as.factor(redlistCategory) ~., 
                   data=mammal_train_df[,var],kernel="radial", gamma=0.5,cost=1)
 pred_svm = predict(mammal_svm,newdata = mammal_test_df[,var])
-mean(pred_svm != mammal_test_df$redlistCategory)
-table(pred_svm,mammal_test_df$redlistCategory)
+#mean(pred_svm != mammal_df$redlistCategory)
+0.3361117
+#table(pred_svm,mammal_df$redlistCategory)
+
 ```
+
 
 Mammal Model Error Rates
 Logistic Regression = 0.280
