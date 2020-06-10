@@ -9,12 +9,9 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-
-
-
 # Introduction
 
-Understanding species and identifying potential for endangerment and extinction is essential to protecting species and biodiversity. However, it is difficult to monitor and track every species and their individual risks. The International Union for Conservation of Nature (2020) maintains a list of the status of all known species, but there are many that are still unknown, due to lack of research focused on those species. The status outlined by the IUCN Redlist are in order of lowest to highest risk of endangerement and extinction: least concern, near threatened, vulnerable, endangered, highly endangered, extinct in the wild, extinct. The IUCN lists the undetermined statuses as unknown.
+Understanding species and identifying potential for endangerment and extinction is essential to protecting species and biodiversity. However, it is difficult to monitor and track every species and their individual risks. The International Union for Conservation of Nature (2020) maintains a list of the status of all known species, but there are many that are still unknown, due to lack of research focused on those species. The status outlined by the IUCN Redlist are in order of lowest to highest risk of endangerement and extinction: least concern, near threatened, vulnerable, endangered, highly endangered, extinct in the wild, extinct. The IUCN lists another option of unknown.
 
 While many individual species have not been studied enough to determine status, there are species databases that have compiled information on all bird and mammal species. Elton Traits, which was created by Wilman and colleagues (2014), has compiled diet and foraging variables for all currently existing birds and mammals and used interpolation based on similar traits and phylogentic relationships to fill in for missing traits.
 
@@ -24,20 +21,23 @@ We combined the IUCN's Redlist status of birds and mammals with the Elton Traits
 
 After determining the best model that predicts status, we used the model to predicted the IUCN Redlist Status for the species where the status is unknown.
 
-
-
 # Data Cleaning
 
-
-
-```{r loading packages}
+```{r}
 
 library(tidyverse)
 library(Hmisc)
+library(class)
+library(tree)
+library(randomForest)
+library(MASS)
+library(e1071)
+library(nnet)
+library(gbm)
 
 ```
 
-```{r set pathways, eval=FALSE}
+```{r, eval=FALSE}
 
 ## Local Pathways - copy/paste your local pathway to the github repository
 
@@ -236,8 +236,6 @@ It is a table with that matches the Birdlife checklist version 3 (EltonTraits us
 http://datazone.birdlife.org/species/taxonomy
 ^birdlife taxonomy
 
-
- 	
 ```{r matching extra bird species, eval=FALSE}
 
 # matching BIRDS that didnt have a perfect match between the IUCN and EltonTraits databases
@@ -318,32 +316,9 @@ write.csv(new_clean_bird_df,"cleaned_bird_df_updated_5_29.csv")
 
 # Data Exploration
 
-
-
-
-
-
 ## Set Up
 
-```{r load packages}
-
-library(tidyverse)
-
-```
-
-```{r set pathway}
-
-## Local Pathways - copy/paste your local pathway to the github repository
-
-# Emma
-pathway = "/Users/emmabarton/Desktop/spring_2020/STAT434/project/"
-
-# Ryan
-#pathway = "~/GitHub/STAT-434---not-the-dodo-/"
-
-```
-
-```{r load data}
+```{r}
 
 mammal_df = read.csv("cleaned_mammal_df.csv")
 bird_df = read.csv("cleaned_bird_df_updated_5_29.csv")
@@ -575,7 +550,6 @@ Bodymass.Value: average adult body mass (g)
 
 Redlist Category: Critically Endangered, Data Deficient, Endangered, Extinct, Extinct in the Wild, Least Concern, Near Threatened, Vulnerable
 
-
 ### Single Variable Distributions
 
 ```{r bird single variable tables}
@@ -619,7 +593,6 @@ ggplot(bird_df, aes(BodyMass.Value)) +
 Because of the large disparity between large birds, such as ostriches and emus, with a much greater body mass than most birds, the distribution of bodymass is skewed right. 
 
 ### Pairwise Relationships
-
 
 ```{r bird explanatory vs response graphs}
 
@@ -711,9 +684,6 @@ bird_df %>%
     coord_flip() +
     theme_classic()
 
-
-
-
 ```
 1) The majority of endangered or extinct birds (critically endangered, endangered, extinct, and extinct in the wild grouped into one category) have a decreasing population trend. The majority of vulnerable and near threatened birds also have a decreasing population trend. The majority of least concern birds have either a stable population trend or a decreasing population trend. 
 
@@ -746,7 +716,6 @@ bird_df %>%
 
 ```
 5) Invertebrates were the diet component with the highest average percent use, followed by other plant parts and fruit.
-
 
 ```{r investigate birds}
 
@@ -806,22 +775,9 @@ Additional Considerations for Modeling
     a. All diet variables are highly correlated, because they each sum up to 100. Thus, using PCA could really simplify the models considerably
     b. Additionally, if PCA is performed on diet variables then the diet variables should not be scaled because they already are by nature of the data
   
-# Set Up
+## Set Up
 
-```{r load packages}
-
-library(tidyverse)
-library(class)
-library(tree)
-library(randomForest)
-library(MASS)
-library(e1071)
-library(nnet)
-library(gbm)
-
-```
-
-```{r load data}
+```{r}
 
 mammal_df = read.csv("cleaned_mammal_df.csv")
 bird_df = read.csv("cleaned_bird_df_updated_5_29.csv")
@@ -1016,6 +972,10 @@ mammal_log_variables = list(c(38,4, 5, 6, 7, 8, 9, 10, 11, 12, 13), #all diet va
                             c(38,7, 9, 10, 11, 12, 13, 19, 20, 21, 41, 16)#selected diet, activity and body mass and foraging
                         
                             )  
+
+```
+
+```{r, eval=FALSE}
 test_errors = rep(0, length(mammal_log_variables))
 
 for(i in 1:length(mammal_log_variables)){
@@ -1088,37 +1048,37 @@ bird_log_test_df = bird_log_test_df %>%
 
 ```{r}
 # Having trouble with bird logistic regression
-bird_log_variables = list(#c(54, 12:21), # all diet variables
-                          #c(54, 37,57), # activity and body mass
-                          #c(54, 12:21, 37), # all diet and activity variables
-                          #c(54, 12:21, 57), # all diet and body mass
-                          #c(54, 12:21, 37, 57), # all diet and activity and body mass
-                          c(54, 26:33), # foraging variables
-                          #c(54, 26:33, 12:21), # diet and foraging
-                          #c(54, 26:33, 57), # foraging and body mass
-                          #c(54, 26:33, 12:21, 37, 57), 
-                          # foraging, body mass, activity, and diet
-                          #c(54, 75:91), # PCA for diet and foraing together
-                          c(54, 75:91, 57), 
-                          # PCA for diet and foraging together and body mass
-                          c(54, 75:91, 57, 37)
-                          # PCA for diet + foraging, activity, and body mass
-                        )
-test_errors = rep(0, length(bird_log_variables))
-
-for(i in 1:length(bird_log_variables)){
-  var = bird_log_variables[[i]]
-  print(var)
-  bird_log = glm(redlistCategory ~ .,
-                   data = bird_log_train_df[,var])
-  log_prob = predict(bird_log, newdata=bird_log_test_df[,var], type = "response")
-  log_pred = rep(0, 2146)
-  log_pred[log_prob > 0.5] = 1
-  test_errors[i] = mean(log_pred != bird_log_test_df$redlistCategory)
-}
-
-which.min(test_errors)
-bird_log_variables[[which.min(test_errors)]]
+# bird_log_variables = list(#c(54, 12:21), # all diet variables
+#                           #c(54, 37,57), # activity and body mass
+#                           #c(54, 12:21, 37), # all diet and activity variables
+#                           #c(54, 12:21, 57), # all diet and body mass
+#                           #c(54, 12:21, 37, 57), # all diet and activity and body mass
+#                           c(54, 26:33), # foraging variables
+#                           #c(54, 26:33, 12:21), # diet and foraging
+#                           #c(54, 26:33, 57), # foraging and body mass
+#                           #c(54, 26:33, 12:21, 37, 57), 
+#                           # foraging, body mass, activity, and diet
+#                           #c(54, 75:91), # PCA for diet and foraing together
+#                           c(54, 75:91, 57), 
+#                           # PCA for diet and foraging together and body mass
+#                           c(54, 75:91, 57, 37)
+#                           # PCA for diet + foraging, activity, and body mass
+#                         )
+# test_errors = rep(0, length(bird_log_variables))
+# 
+# for(i in 1:length(bird_log_variables)){
+#   var = bird_log_variables[[i]]
+#   print(var)
+#   bird_log = glm(redlistCategory ~ .,
+#                    data = bird_log_train_df[,var])
+#   log_prob = predict(bird_log, newdata=bird_log_test_df[,var], type = "response")
+#   log_pred = rep(0, 2146)
+#   log_pred[log_prob > 0.5] = 1
+#   test_errors[i] = mean(log_pred != bird_log_test_df$redlistCategory)
+# }
+# 
+# which.min(test_errors)
+# bird_log_variables[[which.min(test_errors)]]
 
 ```
 
@@ -1129,6 +1089,7 @@ bird_log_variables[[which.min(test_errors)]]
 ### Variable Selection
 
 ```{r}
+
 mammal_lda_variables = list(c(38,7, 9, 10, 11, 12, 13),                  #selected diet variables
                             c(38,19, 20, 21, 41),                   #activity and body mass
                             c(38,41, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 20, 21), #all diet and activity and body mass
@@ -1146,6 +1107,11 @@ mammal_lda_variables = list(c(38,7, 9, 10, 11, 12, 13),                  #select
                             c(38,7, 9, 10, 11, 12, 13, 19, 20, 21, 41, 16)#selected diet, activity and body mass and foraging
                         
                             )  
+
+```
+
+```{r, eval=FALSE} 
+
 test_errors = rep(0, length(mammal_lda_variables))
 
 mammal_train_df[,mammal_lda_variables[[1]]]
@@ -1225,6 +1191,11 @@ bird_lda_variables = list(c(54, 12:21), #all diet variables
                             c(54,75:85, 57), # PCA for diet and foraging together and body mass
                             c(54,75:85, 57, 37) # PCA for diet + foraging, activity, and body mass
                             )
+
+```
+
+```{r, eval=FALSE}
+
 test_errors = rep(0, length(bird_lda_variables))
 
 
@@ -1239,11 +1210,13 @@ for(i in 1:length(bird_lda_variables)){
 
 which.min(test_errors)
 bird_lda_variables[[which.min(test_errors)]]
+
 ```
 
 ### Best Model
 
 ```{r}
+
 bird_lda = lda(redlistCategory ~ .,
                    data = bird_train_df[,bird_lda_variables[[7]]])
 lda_pred = predict(bird_lda,newdata=bird_test_df[,bird_lda_variables[[7]]])
@@ -1253,6 +1226,7 @@ table(pred=lda_pred$class,truth=bird_test_df$redlistCategory)
 #test error 0.227339
 
 colnames(bird_train_df)[mammal_lda_variables[[7]]]
+
 ```
 Classifies all observations as least concern.
 
@@ -1288,6 +1262,9 @@ mammal_qda_variables = list(c(38,4, 5, 6, 7, 8, 9, 10, 11,13), #all diet variabl
                             )  
 test_errors = rep(0, length(mammal_lda_variables))
 
+```
+
+```{r, eval=FALSE}
 for(i in 1:length(mammal_qda_variables)){
   var = mammal_qda_variables[[i]]
   mammal_qda = qda(redlistCategory ~ .,
@@ -1303,6 +1280,7 @@ mammal_qda_variables[[which.min(test_errors)]]
 ### Best Model
 
 ```{r}
+
 mammal_qda = qda(redlistCategory ~ .,
                    data = mammal_train_df[,mammal_qda_variables[[3]]])
 qda_pred = predict(mammal_qda,newdata=mammal_test_df[,mammal_qda_variables[[3]]])
@@ -1312,6 +1290,7 @@ table(pred=qda_pred$class,truth=mammal_test_df$redlistCategory)
 #test error 0.3289842
 
 colnames(mammal_train_df)[mammal_qda_variables[[3]]]
+
 ```
 
 ## Birds
@@ -1334,6 +1313,11 @@ bird_qda_variables = list(c(54, 13:21), #all diet variables
                             c(54,75:85, 57), # PCA for diet and foraging together and body mass
                             c(54,75:85, 57, 37) # PCA for diet + foraging, activity, and body mass
                             )
+
+```
+
+```{r, eval=FALSE}
+
 test_errors = rep(0, length(bird_qda_variables))
 
 
@@ -1354,6 +1338,7 @@ bird_qda_variables[[which.min(test_errors)]]
 ### Best Model
 
 ```{r}
+
 bird_qda = qda(redlistCategory ~ .,
                    data = bird_train_df[,bird_qda_variables[[2]]])
 qda_pred = predict(bird_qda,newdata=bird_test_df[,bird_qda_variables[[2]]])
@@ -1363,6 +1348,7 @@ table(pred=qda_pred$class,truth=bird_test_df$redlistCategory)
 #test error 0.2279642
 
 colnames(bird_train_df)[bird_qda_variables[[2]]]
+
 ```
 
 # 4: K-Nearest Neighbor
@@ -1450,6 +1436,11 @@ mammal_knn_variables = list(c(4, 5, 6, 7, 8, 9, 10, 11, 12, 13), # all diet vari
                             c(7, 9, 10, 11, 12, 13, 19, 20, 21, 41, 52)
                             # selected diet, activity and body mass and foraging
                             )
+
+```
+
+```{r}
+
 test_errors = rep(0, length(mammal_knn_variables))
 
 for(i in 1:length(mammal_knn_variables)){
@@ -1478,7 +1469,7 @@ table(preds = mammal_knn, truth = mammal_knn_test_df$redlistCategory)
 
 ### Hyperparameter Tuning
 
-```{r mammal k value selection}
+```{r mammal k value selection, eval=FALSE}
 
 test_errors = rep(0, 25)
 for(i in 1:25){
@@ -1494,7 +1485,7 @@ which.min(test_errors)
 
 ### Best Model
 
-```{r mammal best knn model}
+```{r}
 
 mammal_knn = knn(mammal_knn_train_df[,c(7, 9, 10, 11, 12, 13, 19, 20, 21)],
                  mammal_knn_test_df[,c(7, 9, 10, 11, 12, 13, 19, 20, 21)],
@@ -1548,6 +1539,9 @@ bird_knn_variables = list(#c(12:21), # all diet variables
                           c(75:91, 57, 37)
                           # PCA for diet + foraging, activity, and body mass
                         )
+```
+
+```{r, eval=FALSE}
 test_errors = rep(0, length(bird_knn_variables))
 
 for(i in 1:length(bird_knn_variables)){
@@ -1565,7 +1559,7 @@ bird_knn_variables[[which.min(test_errors)]]
 
 ```
 
-```{r bird prediction and error rate}
+```{r bird prediction and error rate, eval=FALSE}
 
 mean(bird_knn != bird_knn_test_df$redlistCategory)
 table(preds = bird_knn, truth = bird_knn_test_df$redlistCategory)
@@ -1576,7 +1570,7 @@ table(preds = bird_knn, truth = bird_knn_test_df$redlistCategory)
 
 ### Hyperparameter Tuning
 
-```{r bird k value selection}
+```{r bird k value selection, eval=FALSE}
 
 test_errors = rep(0, 25)
 for(i in 1:25){
@@ -1639,7 +1633,7 @@ text(mammal_tree, pretty = 0)
 
 ### Variable Selection
 
-```{r}
+```{r, eval=FALSE}
 #Using variables selected for LDA
 test_errors = rep(0, length(mammal_lda_variables))
 
@@ -1680,7 +1674,7 @@ colnames(mammal_train_df)[mammal_lda_variables[[2]]]
 
 ### Variable Selection
 
-```{r}
+```{r, eval=FALSE}
 #Using variables selected for LDA
 test_errors = rep(0, length(bird_lda_variables))
 
@@ -1722,7 +1716,7 @@ colnames(bird_train_df)[bird_lda_variables[[7]]]
 
 ### Variable Selection
 
-```{r}
+```{r, eval=FALSE}
 #Using variables selected for LDA
 test_errors = rep(0, length(mammal_lda_variables))
 
@@ -1771,7 +1765,7 @@ Based on this plot, the body mass is the most important variable.
 
 ### Variable Selection
 
-```{r}
+```{r, eval=FALSE}
 test_errors = rep(0, length(bird_lda_variables))
 
 set.seed(10)
@@ -1842,6 +1836,10 @@ mammal_nn_variables = list(c(38,4, 5, 6, 7, 8, 9, 10, 11, 12, 13), #all diet var
                             c(38,7, 9, 10, 11, 12, 13, 19, 20, 21, 41, 16)#selected diet, activity and body mass and foraging
                         
                             )  
+
+```
+
+```{r, eval=FALSE}
 test_errors = rep(0, length(mammal_nn_variables))
 
 for(i in 1:length(mammal_nn_variables)){
@@ -1871,7 +1869,7 @@ mean(nn_pred != mammal_test_df$redlistCategory)
 
 ### Choosing Number of Hidden Units
 
-```{r}
+```{r, eval=FALSE}
 
 test_errors = rep(0, 20)
 
@@ -1931,6 +1929,9 @@ bird_nn_variables = list(c(54, 12:21), # all diet variables
                           # PCA for diet + foraging, activity, and body mass
                         )
 test_errors = rep(0, length(bird_nn_variables))
+```
+
+```{r, eval=FALSE}
 
 for(i in 1:length(bird_nn_variables)){
   var = bird_nn_variables[[i]]
@@ -1959,7 +1960,7 @@ mean(nn_pred != bird_test_df$redlistCategory)
 
 ### Choosing Number of Hidden Units
 
-```{r}
+```{r, eval=FALSE}
 
 test_errors = rep(0, 10)
 
@@ -2000,7 +2001,7 @@ mean(nn_pred != bird_test_df$redlistCategory)
 
 Boosted forests are computationally inefficient, so we are using the best half of the sets of variable identified by the random forests and using ony 500 trees.
 
-```{r}
+```{r, eval=FALSE}
 #selecting variable sets to use
 #variable_sets = c(1:20)[mammal_rf_test_errors<median(mammal_rf_test_errors)]
 
@@ -2070,7 +2071,7 @@ colnames(mammal_train_df)[mammal_lda_variables[[10]]]
 
 #### Using a Linear Function
 
-```{r}
+```{r, eval=FALSE}
 #Using variables selected for LDA
 test_errors = rep(0, length(mammal_lda_variables))
 
@@ -2100,7 +2101,7 @@ colnames(mammal_train_df[mammal_lda_variables[[which.min(test_errors)]]])
 ```
 
 #### Tuning Parameters
-```{r}
+```{r, eval=FALSE}
 
 var = mammal_lda_variables[[2]]
 mammal_svm = tune(svm, as.factor(redlistCategory)~., 
@@ -2120,7 +2121,7 @@ table(pred_svm, mammal_test_df$redlistCategory)
 Classified everything as least concern.
 
 #### Using a Radial Function
-```{r}
+```{r, eval=FALSE}
 #Using variables selected for LDA
 test_errors = rep(0, length(mammal_lda_variables))
 
@@ -2151,7 +2152,7 @@ colnames(mammal_train_df[mammal_lda_variables[[which.min(test_errors)]]])
 
 ### Tuning Parameters
 
-```{r}
+```{r, eval=FALSE}
 var = mammal_lda_variables[[11]]
 mammal_svm = tune(svm, as.factor(redlistCategory)~., 
                   data=mammal_train_df[,var],kernel="radial",
@@ -2241,7 +2242,7 @@ table(pred_svm, bird_test_df$redlistCategory)
 Classifies everything as least concern, so not including.
 
 #### Using a Radial Function
-```{r}
+```{r, eval=FALSE}
 #Using variables selected for LDA
 test_errors = rep(0, length(bird_lda_variables))
 
@@ -2272,7 +2273,7 @@ colnames(bird_train_df[bird_lda_variables[[which.min(test_errors)]]])
 
 ### Tuning Parameters
 
-```{r}
+```{r, eval=FALSE}
 var = bird_lda_variables[[9]]
 bird_svm = tune(svm, as.factor(redlistCategory)∼., 
                   data=bird_train_df[,var],kernel="radial",
@@ -2743,13 +2744,6 @@ SVM = 0.222
 
 K-Nearest-Neighbor, Neural Networks, and Support Vector Machines were all equivalent in predicting the redlist status of a bird species. This is the same result as the 50/50 training/test data split. 
 
-
-
-# Final Predictions of Unknown Status
-
-
-
-# Conclusions
 
 # Bibliography
 
