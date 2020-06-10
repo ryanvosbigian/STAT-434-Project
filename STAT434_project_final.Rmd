@@ -705,21 +705,21 @@ bird_df %>%
 
 
 ```
-1) The majority of endangered or extinct birds (critically endangered, endangered, extinct, and extinct in the wild grouped into one category) have a decreasing population trend. The majority of vulnerable and near threatened birds also have a decreasing population trend. The majority of least concern birds have either a stable population trend or an unknown population trend. 
+1) The majority of endangered or extinct birds (critically endangered, endangered, extinct, and extinct in the wild grouped into one category) have a decreasing population trend. The majority of vulnerable and near threatened birds also have a decreasing population trend. The majority of least concern birds have either a stable population trend or a decreasing population trend. 
 
-It is very likely that the redlist category of a bird is designated based on population trend knowledge. Many of the birds in the least concern category may actually be more threatened than believed becasue their population trend is unknown.  
+It is very likely that the redlist category of a bird is designated based on population trend knowledge. Many of the birds in the least concern category may actually be more threatened than believed becasue their population trend is unknown. Thus, we will be excluding this variable from out models.
 
-2) Natural log transformed body mass value (g) vs redlist category. There are visually no major differences in body mass distributions between categories other than birds categorized as least concern and data deficient seem to have more outliers with large body mass values. 
+2) Natural log transformed body mass value (g) vs redlist category. On average, the endangered or extinct birds have higher body mass than least concern, and endangered and extinct and vulnerable have similar body mass.
 
-3) Average percent use of each diet category for each redlist category. Averages appear similar across redlist categories. 
+3) Average percent use of each diet category for each redlist category. Averages appear pretty similar across redlist categories, but least concern species tend to have higher percentages of invertebrates in their diet than other cateogires most scavenging birds have higher status (endangered being considered a higher status than vulnerable than near threatened and finally least concern). 
 
-4) Distribution of foraging strageties divided by redlist category.       
+4) Distribution of foraging strageties divided by redlist category. There appears to be a some variation. For instance, aerial foraging birds tend to be lower status.       
 
 ```{r bird explanatory vs explanatory graphs}
 
 # 5
 # Average Percent Use of Each Diet Type
-mammal_df %>% 
+bird_df %>% 
   gather(key = "diet_type", value = "percentage", Diet.Inv, Diet.Vend, 
          Diet.Vect, Diet.Vfish, Diet.Vunk, Diet.Scav, Diet.Fruit, Diet.Nect,
          Diet.Seed, Diet.PlantO) %>% 
@@ -733,22 +733,9 @@ mammal_df %>%
     coord_flip() + 
     theme_classic()
 
-# 6 
-# Activity vs Body Mass Boxplot
-mammal_df %>%
-  gather(key = "activity_type", value = "value", Activity.Nocturnal, 
-         Activity.Crepuscular, Activity.Diurnal) %>% 
-  filter(value == 1) %>% 
-  ggplot(aes(activity_type, BodyMass.Value)) +
-    geom_boxplot() +
-    scale_y_continuous(trans = "log") +
-    coord_flip() +
-    theme_classic()
 
 ```
 5) Invertebrates were the diet component with the highest average percent use, followed by other plant parts and fruit.
-
-6) Average body mass value for each activity type. Diurnal and Crepuscular have slightly larger median bodymass values.
 
 
 ```{r investigate birds}
@@ -785,10 +772,6 @@ sapply(split(bird_df$BodyMass.Value,bird_df$redlistCategory),mean)
 sapply(split(bird_df$BodyMass.Value,bird_df$redlistCategory),length)
 
 ```
-
-# Descriptive Statistics
-
-
 
 
 
