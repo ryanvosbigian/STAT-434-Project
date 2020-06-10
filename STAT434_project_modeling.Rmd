@@ -44,7 +44,11 @@ library(tree)
 library(randomForest)
 library(MASS)
 library(e1071)
+<<<<<<< HEAD
+library(nnet)
+=======
 library(gbm)
+>>>>>>> e3a97ee3c26b5a0a6eb3e8aa787c90a3ff5e2b0f
 
 ```
 
@@ -197,7 +201,7 @@ bird_test_df = bird_df[-train_bird,]
 
 # 1: Logistic Regression
   
-## Mammals 
+## Mammal Logistic Regression
 
 ### Format Variables
 
@@ -291,7 +295,7 @@ mean(log_pred != mammals_log_test_df$redlistCategory)
 
 ```
 
-## Birds
+## Bird Logistic Regression
   
 ### Format Variables
 
@@ -1068,6 +1072,183 @@ varImpPlot(bird_rf)
 # 8: Boosted Forests
 
 # 9: Neural Networks
+
+## Mammal Neural Network
+
+### Variable Selection
+
+```{r}
+
+mammal_nn_variables = list(c(38,4, 5, 6, 7, 8, 9, 10, 11, 12, 13), #all diet variables
+                            c(38,7, 9, 10, 11, 12, 13),                  #selected diet variables
+                            c(38,41),                               #log body mass
+                            c(38,19, 20, 21, 41),                   #activity and body mass
+                            c(38,4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 20, 21), #all diet and activity variables
+                            c(38,4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 41),         #all diet and body mass
+                            c(38,41, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 20, 21), #all diet and activity and body mass
+                            c(38,7, 9, 10, 11, 12, 13, 41), #selected activity variables and body mass
+                            c(38,7, 9, 10, 11, 12, 13, 19, 20, 21), #selected diet and activity
+                            c(38,7, 9, 10, 11, 12, 13, 19, 20, 21, 41), #selected diet, activity and body mass
+                            c(38,42, 43, 44, 45, 46, 47, 48), # 7 PC for diet
+                            c(38,42, 43, 44, 45, 46, 47, 48, 41), # PCA for diet and diet
+                            c(38,42, 43, 44, 45, 46, 47, 48, 19, 20, 21), # PCA for diet and activity
+                            c(38,42, 43, 44, 45, 46, 47, 48, 19, 20, 21, 41), # PCA for diet, activity, and body mass
+                            c(38,7, 9, 10, 11, 12, 13, 16),     #selected diet variables and foraging
+                            c(38,7, 9, 10, 11, 12, 13, 41, 16), #selected activity variables and body mass and foraging
+                            c(38, 16, 19, 20, 21), # activity and foraging
+                            c(38, 16, 42, 43, 44, 45, 46, 47, 48, 41),   # PCA for diet, and body mass and foraging
+                            c(38, 16, 42, 43, 44, 45, 46, 47, 48, 19, 20, 21, 41), #PCAdiet, and activity, body mass, and foraging
+                            c(38,7, 9, 10, 11, 12, 13, 19, 20, 21, 41, 16)#selected diet, activity and body mass and foraging
+                        
+                            )  
+test_errors = rep(0, length(mammal_nn_variables))
+
+for(i in 1:length(mammal_nn_variables)){
+  var = mammal_nn_variables[[i]]
+  mammal_nn = nnet(redlistCategory ~ .,
+                   data = mammal_train_df[,var], size = 20, linout = FALSE)
+  nn_pred = predict(mammal_nn, newdata=mammal_test_df[,var], type = "class")
+  test_errors[i] = mean(nn_pred != mammal_test_df$redlistCategory)
+}
+
+which.min(test_errors)
+mammal_nn_variables[[which.min(test_errors)]]
+
+```
+
+```{r}
+
+var = mammal_nn_variables[[4]]
+mammal_nn = nnet(redlistCategory ~ .,
+                   data = mammal_train_df[,var], size = 20, linout = FALSE)
+nn_pred = predict(mammal_nn, newdata=mammal_test_df[,var], type = "class")
+mean(nn_pred != mammal_test_df$redlistCategory)
+
+# Error rate = 0.3140
+
+```
+
+### Choosing Number of Hidden Units
+
+```{r}
+
+test_errors = rep(0, 20)
+
+for(i in seq(5, 100, 5)){
+  var = mammal_nn_variables[[4]]
+  mammal_nn = nnet(redlistCategory ~ .,
+                   data = mammal_train_df[,var], size = i, linout = FALSE)
+  nn_pred = predict(mammal_nn, newdata=mammal_test_df[,var], type = "class")
+  test_errors[i] = mean(nn_pred != mammal_test_df$redlistCategory)
+}
+
+which.min(test_errors)
+seq(5, 100, 5)[[which.min(test_errors)]]
+
+```
+
+### Best Model
+
+```{r}
+
+var = mammal_nn_variables[[4]]
+mammal_nn = nnet(redlistCategory ~ .,
+                   data = mammal_train_df[,var], size = 5, linout = FALSE)
+nn_pred = predict(mammal_nn, newdata=mammal_test_df[,var], type = "class")
+mean(nn_pred != mammal_test_df$redlistCategory)
+
+# Error rate = 0.312
+
+```
+
+## Bird Neural Network
+
+### Variable Selection
+
+```{r}
+
+bird_train_df = bird_train_df %>% 
+  mutate(redlistCategory = as.factor(redlistCategory))
+
+bird_test_df = bird_test_df %>% 
+  mutate(redlistCategory = as.factor(redlistCategory))
+
+bird_nn_variables = list(c(54, 12:21), # all diet variables
+                         c(54, 37,57), # activity and body mass
+                         c(54, 12:21, 37), # all diet and activity variables
+                         c(54, 12:21, 57), # all diet and body mass
+                         c(54, 12:21, 37, 57), # all diet and activity and body mass
+                         c(54, 26:33), # foraging variables
+                         c(54, 26:33, 12:21), # diet and foraging
+                         c(54, 26:33, 57), # foraging and body mass
+                         c(54, 26:33, 12:21, 37, 57), 
+                          # foraging, body mass, activity, and diet
+                         c(54, 75:91), # PCA for diet and foraing together
+                         c(54, 75:91, 57), 
+                          # PCA for diet and foraging together and body mass
+                         c(54, 75:91, 57, 37)
+                          # PCA for diet + foraging, activity, and body mass
+                        )
+test_errors = rep(0, length(bird_nn_variables))
+
+for(i in 1:length(bird_nn_variables)){
+  var = bird_nn_variables[[i]]
+  bird_nn = nnet(redlistCategory ~ .,
+                   data = bird_train_df[,var], size = 20, linout = FALSE)
+  nn_pred = predict(bird_nn, newdata=bird_test_df[,var], type = "class")
+  test_errors[i] = mean(nn_pred != bird_test_df$redlistCategory)
+}
+
+which.min(test_errors)
+bird_nn_variables[[which.min(test_errors)]]
+
+```
+
+```{r}
+
+var = bird_nn_variables[[4]]
+bird_nn = nnet(redlistCategory ~ .,
+                   data = bird_train_df[,var], size = 20, linout = FALSE)
+nn_pred = predict(bird_nn, newdata=bird_test_df[,var], type = "class")
+mean(nn_pred != bird_test_df$redlistCategory)
+
+# Error rate = 0.228
+
+```
+
+### Choosing Number of Hidden Units
+
+```{r}
+
+test_errors = rep(0, 10)
+
+for(i in seq(5, 50, 5)){
+  var = bird_nn_variables[[4]]
+  bird_nn = nnet(redlistCategory ~ .,
+                   data = bird_train_df[,var], size = i, linout = FALSE)
+  nn_pred = predict(bird_nn, newdata=bird_test_df[,var], type = "class")
+  test_errors[i] = mean(nn_pred != bird_test_df$redlistCategory)
+}
+
+which.min(test_errors)
+seq(5, 70, 5)[[which.min(test_errors)]]
+
+```
+
+### Best Model
+
+```{r}
+
+var = bird_nn_variables[[4]]
+bird_nn = nnet(redlistCategory ~ .,
+                   data = bird_train_df[,var], size = 5, linout = FALSE)
+nn_pred = predict(bird_nn, newdata=bird_test_df[,var], type = "class")
+mean(nn_pred != bird_test_df$redlistCategory)
+
+# Error rate = 0.222
+
+```
+
 =======
 ## Bird Random Forest
 
