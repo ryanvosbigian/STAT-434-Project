@@ -1168,7 +1168,7 @@ colnames(mammal_train_df)[mammal_lda_variables[[10]]]
 # 10: Support Vector Machines
 
 
-## Mammal Boosted Forest
+## Mammal Support Vector Machines
 
 ### Variable Selection
 
@@ -1263,24 +1263,23 @@ colnames(mammal_train_df[mammal_lda_variables[[which.min(test_errors)]]])
 #### Using a Radial Function
 ```{r}
 #Using variables selected for LDA
-test_errors = rep(0, length(mammal_lda_variables)*5)
+test_errors = rep(0, length(mammal_lda_variables))
 
-best_params = data.frame(cost = rep(0, length(mammal_lda_variables)*5),
-                         gamma=rep(0, length(mammal_lda_variables)*5))
 
 set.seed(10)
 for(i in 1:length(mammal_lda_variables)){
   var = mammal_lda_variables[[i]]
   
-  if(i==3) next
-  
-  mammal_svm = tune(svm, as.factor(redlistCategory)∼., 
-                  data=mammal_train_df[,var],kernel="radial",
-                  ranges=list(cost=c(0.1,1,10),
-                  gamma=c(0.5,1,2,3,4)))
+  if(i==3) {
+    test_errors[i]=1
+    next
+  }
+  mammal_svm=svm(as.factor(redlistCategory)∼., 
+                  data=mammal_train_df[,var],kernel="radial", gamma=1,cost=1)
     
-  best_params[i] = mammal_svm$best.parameters
-  test_errors[i] = mean(dat[-train ,"y"] != predict(tune.out$best.model,newdata=dat[-train ,]))
+  pred_svm = predict(mammal_svm,newdata=mammal_test_df[,var])
+  #best_params[i,] = mammal_svm$best.parameters
+  test_errors[i] = mean(pred_svm != mammal_test_df$redlistCategory)
     
   
 
@@ -1289,7 +1288,30 @@ for(i in 1:length(mammal_lda_variables)){
 
 which.min(test_errors)
 mammal_lda_variables[[which.min(test_errors)]]
-best_params[which.min(test_errors),]
+
+colnames(mammal_train_df[mammal_lda_variables[[which.min(test_errors)]]])
+
+```
+
+
+### Tuning Parameters
+
+```{r}
+var = mammal_lda_variables[[11]]
+mammal_svm = tune(svm, as.factor(redlistCategory)∼., 
+                  data=mammal_train_df[,var],kernel="radial",
+                  ranges=list(cost=c(0.1,1,10),
+                  gamma=c(0.5,1,2,3,4)))
+
+pred_svm = predict(mammal_svm$best.model,newdata=mammal_test_df[,var])
+
+#mammal_svm$best.parameters
+
+#Misclassification rate for endangered
+sum(pred_svm != mammal_test_df$redlistCategory & mammal_test_df$redlistCategory == "Endangered" )/sum(mammal_test_df$redlistCategory == "Endangered")
+
+mean(pred_svm != mammal_test_df$redlistCategory)
+table(pred_svm, mammal_test_df$redlistCategory)
 ```
 
 

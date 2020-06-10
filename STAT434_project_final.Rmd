@@ -1,0 +1,11 @@
+---
+title: "STAT 434 Final Project"
+author: "Emma Barton & Ryan Vosbigian"
+date: "6/10/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
