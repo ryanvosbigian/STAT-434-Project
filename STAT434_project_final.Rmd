@@ -14,7 +14,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Introduction
 
-Understanding species and identifying potential for endangerment and extinction is essential to protecting species and biodiversity. However, it is difficult to monitor and track every species and their individual risks. The International Union for Conservation of Nature (2020) maintains a list of the status of all known species, but there are many that are still unknown, due to lack of research focused on those species. The status outlined by the IUCN Redlist are in order of lowest to highest risk of endangerement and extinction: least concern, near threatened, vulnerable, endangered, highly endangered, extinct in the wild, extinct. The IUCN lists another option of unknown.
+Understanding species and identifying potential for endangerment and extinction is essential to protecting species and biodiversity. However, it is difficult to monitor and track every species and their individual risks. The International Union for Conservation of Nature (2020) maintains a list of the status of all known species, but there are many that are still unknown, due to lack of research focused on those species. The status outlined by the IUCN Redlist are in order of lowest to highest risk of endangerement and extinction: least concern, near threatened, vulnerable, endangered, highly endangered, extinct in the wild, extinct. The IUCN lists the undetermined statuses as unknown.
 
 While many individual species have not been studied enough to determine status, there are species databases that have compiled information on all bird and mammal species. Elton Traits, which was created by Wilman and colleagues (2014), has compiled diet and foraging variables for all currently existing birds and mammals and used interpolation based on similar traits and phylogentic relationships to fill in for missing traits.
 
@@ -2743,6 +2743,13 @@ SVM = 0.222
 
 K-Nearest-Neighbor, Neural Networks, and Support Vector Machines were all equivalent in predicting the redlist status of a bird species. This is the same result as the 50/50 training/test data split. 
 
+
+
+# Final Predictions of Unknown Status
+
+
+
+# Conclusions
 
 # Bibliography
 
