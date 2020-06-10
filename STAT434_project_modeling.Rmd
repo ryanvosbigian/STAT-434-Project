@@ -692,197 +692,135 @@ text(mammal_tree, pretty = 0)
 
 ### Variable Selection
 
-```{r}
-set.seed(10)
-bag.mam1 = randomForest(as.factor(redlistCategory) ~ Diet.Vfish + Diet.Vend + Diet.Scav + Diet.Seed + Diet.Inv + 
-                          Diet.Fruit + Diet.Nect +  + Diet.PlantO + ForStrat.Value + Activity.Nocturnal +
-                          Activity.Crepuscular +  Activity.Diurnal + log_bodymass,
-                        data=mammal_train_df,
-                        mtry=13,
-                        importance=TRUE)
-
-bag.mam1
-
-yhat.bag = predict(bag.mam1 ,newdata=mammal_test_df)
-
-table(yhat.bag,mammal_knn_test_df$redlistCategory)
-
-mean(yhat.bag!=mammal_knn_test_df$redlistCategory)
-#test error 0.3657968
-
-bag.mam1$importance
-
-```
-
-Dropping leaset important variable, based on Gini index: Diet.Vfish
 
 ```{r}
-set.seed(10)
-bag.mam2 = randomForest(as.factor(redlistCategory) ~ Diet.Vend + Diet.Scav + Diet.Seed + Diet.Inv + 
-                          Diet.Fruit + Diet.Nect +  + Diet.PlantO + ForStrat.Value + Activity.Nocturnal +
-                          Activity.Crepuscular +  Activity.Diurnal + log_bodymass,
-                        data=mammal_train_df,
-                        mtry=12,
-                        importance=TRUE)
-
-bag.mam2
-
-yhat.bag = predict(bag.mam2 ,newdata=mammal_test_df)
-
-table(yhat.bag,mammal_knn_test_df$redlistCategory)
-
-mean(yhat.bag!=mammal_knn_test_df$redlistCategory)
-#test error 0.3648649
-
-bag.mam2$importance
-```
-# Now dropping: Diet.Scav
-
-```{r}
-set.seed(10)
-bag.mam3 = randomForest(as.factor(redlistCategory) ~ Diet.Vend + Diet.Seed + Diet.Inv + 
-                          Diet.Fruit + Diet.Nect +  + Diet.PlantO + ForStrat.Value + Activity.Nocturnal +
-                          Activity.Crepuscular +  Activity.Diurnal + log_bodymass,
-                        data=mammal_train_df,
-                        mtry=11,
-                        importance=TRUE)
-
-bag.mam3
-
-yhat.bag = predict(bag.mam3 ,newdata=mammal_test_df)
-
-table(yhat.bag,mammal_knn_test_df$redlistCategory)
-
-mean(yhat.bag!=mammal_knn_test_df$redlistCategory)
-#test error 0.3667288
-
-bag.mam3$importance
-```
+#Using variables selected for LDA
+test_errors = rep(0, length(mammal_lda_variables))
 
 
-#### Using PCA
 
-```{r}
+for(i in 1:length(mammal_lda_variables)){
+  var = mammal_lda_variables[[i]]
+  mammal_lda = randomForest(as.factor(redlistCategory) ~ .,
+                   data = mammal_train_df[,var],
+                   mtry = (length(var)-1))
+  bag_pred = predict(mammal_lda,newdata=mammal_test_df[,var])
+  test_errors[i] = mean(bag_pred != mammal_test_df$redlistCategory)
+}
 
-set.seed(10)
-bag.mam.pca1 = randomForest(as.factor(redlistCategory) ~ DietPC1 + DietPC2 + DietPC3 + DietPC4 + DietPC5 + 
-                          DietPC6 + DietPC7 + ForStrat.Value + Activity.Nocturnal +
-                          Activity.Crepuscular +  Activity.Diurnal + log_bodymass,
-                        data=mammal_train_df,
-                        mtry=12,
-                        importance=TRUE)
+which.min(test_errors)
+mammal_lda_variables[[which.min(test_errors)]]
 
-bag.mam.pca1
 
-yhat.bag = predict(bag.mam.pca1 ,newdata=mammal_test_df)
-
-table(yhat.bag,mammal_test_df$redlistCategory)
-
-mean(yhat.bag!=mammal_test_df$redlistCategory)
-# test error 0.3699907
-
-bag.mam.pca1$importance
 ```
 
 ### Best Model
 
 ```{r}
-set.seed(10)
-bag.mam1 = randomForest(as.factor(redlistCategory) ~ Diet.Vfish + Diet.Vend + Diet.Scav + Diet.Seed + Diet.Inv + 
-                          Diet.Fruit + Diet.Nect +  + Diet.PlantO + ForStrat.Value + Activity.Nocturnal +
-                          Activity.Crepuscular +  Activity.Diurnal + log_bodymass,
-                        data=mammal_train_df,
-                        mtry=13,
-                        importance=TRUE)
+var = mammal_lda_variables[[2]]
+mammal_lda = randomForest(as.factor(redlistCategory) ~ .,
+                   data = mammal_train_df[,var],
+                   mtry = (length(var)-1))
+bag_pred = predict(mammal_lda,newdata=mammal_test_df[,var])
+mean(bag_pred != mammal_test_df$redlistCategory)
+table(bag_pred, mammal_test_df$redlistCategory)
 
-bag.mam1
+colnames(mammal_train_df)[mammal_lda_variables[[2]]]
 
-yhat.bag = predict(bag.mam1 ,newdata=mammal_test_df)
-
-table(yhat.bag,mammal_knn_test_df$redlistCategory)
-
-mean(yhat.bag!=mammal_knn_test_df$redlistCategory)
-#test error 0.3657968
-
+# test error 0.3187325
 ```
-
 
 ## Bird Bagged Trees
 
 ### Variable Selection
 
 ```{r}
-set.seed(10)
-bag.bird1 = randomForest(as.factor(redlistCategory) ~ Diet.Inv + Diet.Vend + Diet.Vect + Diet.Vfish + Diet.Vunk + 
-                          Diet.Scav + Diet.Fruit + Diet.Nect + Diet.Seed + Diet.PlantO +  
-                          ForStrat.watbelowsurf + ForStrat.wataroundsurf + ForStrat.aerial +  
-                          PelagicSpecialist + Nocturnal + log_bodymass,
-                        data=bird_train_df,
-                        mtry=16,
-                        importance=TRUE)
+#Using variables selected for LDA
+test_errors = rep(0, length(bird_lda_variables))
 
-bag.bird1
 
-yhat.bag = predict(bag.bird1 ,newdata=bird_test_df)
 
-table(yhat.bag,bird_test_df$redlistCategory)
+for(i in 1:length(bird_lda_variables)){
+  var = bird_lda_variables[[i]]
+  bird_lda = randomForest(as.factor(redlistCategory) ~ .,
+                   data = bird_train_df[,var],
+                   mtry = (length(var)-1))
+  bag_pred = predict(bird_lda,newdata=bird_test_df[,var])
+  test_errors[i] = mean(bag_pred != bird_test_df$redlistCategory)
+}
 
-mean(yhat.bag!=bird_test_df$redlistCategory)
-#test error 0.2821421
-
-bag.bird1$importance
-
+which.min(test_errors)
+bird_lda_variables[[which.min(test_errors)]]
 ```
-#### Using Principle Components
+
+### Best Model
 
 ```{r}
-set.seed(10)
-bag.bird2 = randomForest(as.factor(redlistCategory) ~ DietForPC1 + DietForPC2 + DietForPC3 + DietForPC4 + 
-                           DietForPC5 + DietForPC6 + DietForPC7 + DietForPC8 + DietForPC9 + DietForPC10 +DietForPC11 +  
-                          Nocturnal + log_bodymass,
-                        data=bird_train_df,
-                        mtry=13,
-                        importance=TRUE)
+var = bird_lda_variables[[7]]
+bird_lda = randomForest(as.factor(redlistCategory) ~ .,
+                   data = bird_train_df[,var],
+                   mtry = (length(var)-1))
+bag_pred = predict(bird_lda,newdata=bird_test_df[,var])
+mean(bag_pred != bird_test_df$redlistCategory)
+table(bag_pred, bird_test_df$redlistCategory)
 
-bag.bird2
+colnames(bird_train_df)[bird_lda_variables[[7]]]
 
-yhat.bag = predict(bag.bird2 ,newdata=bird_test_df)
+#test error 0.2358825
 
-table(yhat.bag,bird_test_df$redlistCategory)
-
-mean(yhat.bag!=bird_test_df$redlistCategory)
-#test error 0.2783913
-
-bag.bird2$importance
 ```
 
+# 7: Random Forests
+
+Hey Emma! I started on Random Forests bc it took about 30 seconds to copy and paste what I had for bagging. Is this what you were thinking of doing?
+
+## Mammal Random Forests
+
+### Variable Selection
+
+```{r}
+#Using variables selected for LDA
+test_errors = rep(0, length(mammal_lda_variables))
+
+
+set.seed(10)
+for(i in 1:length(mammal_lda_variables)){
+  var = mammal_lda_variables[[i]]
+  mammal_lda = randomForest(as.factor(redlistCategory) ~ .,
+                   data = mammal_train_df[,var],
+                   mtry = round(sqrt(length(var)-1))
+                   )
+  bag_pred = predict(mammal_lda,newdata=mammal_test_df[,var])
+  test_errors[i] = mean(bag_pred != mammal_test_df$redlistCategory)
+}
+
+which.min(test_errors)
+mammal_lda_variables[[which.min(test_errors)]]
+
+
+```
 
 ### Best Model
 
 ```{r}
 set.seed(10)
-bag.bird2 = randomForest(as.factor(redlistCategory) ~ DietForPC1 + DietForPC2 + DietForPC3 + DietForPC4 + 
-                           DietForPC5 + DietForPC6 + DietForPC7 + DietForPC8 + DietForPC9 + DietForPC10 +DietForPC11 +  
-                          Nocturnal + log_bodymass,
-                        data=bird_train_df,
-                        mtry=13,
-                        importance=TRUE)
+var = mammal_lda_variables[[10]]
+mammal_lda = randomForest(as.factor(redlistCategory) ~ .,
+                   data = mammal_train_df[,var],
+                   mtry = round(sqrt(length(var)-1))
+                   )
+bag_pred = predict(mammal_lda,newdata=mammal_test_df[,var])
+mean(bag_pred != mammal_test_df$redlistCategory)
+table(bag_pred, mammal_test_df$redlistCategory)
 
-bag.bird2
+colnames(mammal_train_df)[mammal_lda_variables[[10]]]
 
-yhat.bag = predict(bag.bird2 ,newdata=bird_test_df)
-
-table(yhat.bag,bird_test_df$redlistCategory)
-
-mean(yhat.bag!=bird_test_df$redlistCategory)
-#test error 0.2783913
-
+#test error 0.3117428
 ```
 
 
-# 7: Random Forests
-
 # 8: Boosted Forests
+
 
 
 
