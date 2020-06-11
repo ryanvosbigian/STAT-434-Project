@@ -9,10 +9,8 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-<<<<<<< HEAD
-=======
 
->>>>>>> d6f8883c26636d511d23aaeeee2e5e461bb04c7f
+
 # Introduction
 
 Understanding species and identifying potential for endangerment and extinction is essential to protecting species and biodiversity. However, it is difficult to monitor and track every species and their individual risks. The International Union for Conservation of Nature (2020) maintains a list of the status of all known species, but there are many that are still unknown, due to lack of research focused on those species. The status outlined by the IUCN Redlist are in order of lowest to highest risk of endangerement and extinction: least concern, near threatened, vulnerable, endangered, highly endangered, extinct in the wild, extinct. The IUCN lists another option of unknown.
@@ -2438,9 +2436,9 @@ mammal_svm=svm(as.factor(redlistCategory) ~.,
 pred_svm = predict(mammal_svm,newdata = mammal_test_df[,var])
 #mean(pred_svm != mammal_df$redlistCategory)
 0.3361117
-#table(pred_svm,mammal_df$redlistCategory)
-
+table(pred_svm != mammal_df$redlistCategory)
 ```
+
 
 
 Mammal Model Error Rates
@@ -2458,8 +2456,8 @@ After logistic regression, K-Nearest Neighbors provides the best error rate. Thu
 
 ### Best Bird Models
 
-```{r}
 
+``` {r}
 # Linear Discriminant Analysis
 bird_lda = lda(redlistCategory ~ .,
                    data = bird_train_df[,bird_lda_variables[[7]]])
@@ -2514,7 +2512,7 @@ var = bird_lda_variables[[9]]
 bird_svm=svm(as.factor(redlistCategory)~., 
                   data=bird_train_df[,var],kernel="radial", gamma=0.1,cost=0.1)
 mean(pred_svm != bird_test_df$redlistCategory)
-table(pred_svm, bird_test_df$redlistCategory)
+#table(pred_svm, bird_test_df$redlistCategory)
 
 ```
 
@@ -2820,7 +2818,7 @@ Based on the above model results we will use KNN for predicting mammals and QDA 
 
 ```{r predict mammals}
 
-data_deficient_mammals_df
+
 
 
 mammal_knn = knn(mammal_df[,c(7, 9, 10, 11, 12, 13, 19, 20, 21)],
@@ -2840,7 +2838,7 @@ data_deficient_mammals_df$scientificName[qda_pred$class=="Endangered"]
 
 
 ```{r predict birds}
-data_deficient_birds_df
+
 bird_qda = qda(redlistCategory ~ .,
                    data = bird_df[,bird_qda_variables[[2]]])
 qda_pred = predict(bird_qda,newdata=data_deficient_birds_df[,bird_qda_variables[[2]]])
